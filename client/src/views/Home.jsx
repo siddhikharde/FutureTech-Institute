@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
 import studReviews from "../configs/Reviews";
+import bgImage from '../assets/home-bg.png'
 
 function Home (){
   const navigate=useNavigate();
@@ -11,7 +12,8 @@ function Home (){
     <div className="bg-[#F8FAFC]">
 
       <Navbar/>
-      <div className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] text-white">
+      <div 
+       className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] filter: bg-blend-multiply  text-white">
         <div className="max-w-7xl mx-auto px-5 py-24 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">
             Learn Skills for the Future with <span className="text-[#38BDF8]">FutureTech</span>
