@@ -28,7 +28,12 @@ function Home (){
           </div>
         </div>
       </div>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 px-5 p-10">
+  <div className="flex flex-col items-center justify-center px-5 p-10">
+      <h2 className="text-4xl font-bold text-center text-[#020617] mb-12">
+            Why Choose FutureTech?
+          </h2>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 ">
+        
           {featuresConfig.map((feature) => (
             <FeatureCard
               key={feature.id}
@@ -38,6 +43,30 @@ function Home (){
             />
           ))}
         </div>
+  </div>
+
+        <section className="bg-[#EFF6FF] py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <h2 className="text-4xl font-bold text-center text-[#020617] mb-12">
+            Popular Courses
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {["Web Development", "Data Science", "AI & ML"].map((course, i) => (
+              <div
+                key={i}
+                className="bg-white rounded-xl border border-[#E2E8F0] p-6 hover:border-[#2563EB] transition"
+              >
+                <h3 className="text-xl font-semibold mb-2">{course}</h3>
+                <p className="text-[#475569] mb-4">
+                  Learn {course} from scratch with practical projects.
+                </p>
+                <Button size="sm" title={"Enroll Now"} onClick={()=>navigate("/courses")}/>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
     </div>
   );
