@@ -9,7 +9,22 @@ import {
 } from "lucide-react";
 import Navbar from "../components/Navbar";
 
-/* ---------------- SMALL COMPONENTS ---------------- */
+const  statData=[{
+  title:"500+",
+  subtitle:"Students Trained"
+},
+{
+  title:"20+",
+  subtitle:"Professional Courses"
+},
+{
+  title:"25+",
+  subtitle:"Live Projects"
+},
+{
+  title:"95%",
+  subtitle:"Student Satisfaction"
+}]
 
 function StatCard({ title, subtitle }) {
   return (
@@ -42,7 +57,7 @@ function ValueCard({ icon: Icon, title, text }) {
   );
 }
 
-/* ---------------- MAIN PAGE ---------------- */
+
 
 function About() {
   return (
@@ -61,7 +76,17 @@ function About() {
         </div>
       </div>
 
-     
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+          {
+            statData.map((item, index)=>{
+              return(
+              <StatCard title={item.title} subtitle={item.subtitle}/>
+            )})
+          }
+        </div>
+      </div>
+
     </div>
   );
 }
