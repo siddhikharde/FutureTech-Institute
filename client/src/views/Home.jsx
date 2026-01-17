@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router";
 import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
+import studReviews from "../configs/Reviews";
 
 function Home (){
   const navigate=useNavigate();
@@ -29,7 +30,7 @@ function Home (){
         </div>
       </div>
   <div className="flex flex-col items-center justify-center px-5 p-10">
-      <h2 className="text-4xl font-bold text-center text-[#020617] mb-12">
+      <h2 className="md:text-4xl text-3xl font-bold text-center text-[#020617] mb-12">
             Why Choose FutureTech?
           </h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 ">
@@ -45,9 +46,9 @@ function Home (){
         </div>
   </div>
 
-        <section className="bg-[#EFF6FF] py-16">
+        <div className="bg-[#EFF6FF] py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-[#020617] mb-12">
+          <h2 className="md:text-4xl text-3xl font-bold text-center text-[#020617] mb-12">
             Popular Courses
           </h2>
 
@@ -66,7 +67,32 @@ function Home (){
             ))}
           </div>
         </div>
-      </section>
+      </div>
+        <div className="py-16">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-3xl font-bold text-[#020617] mb-10">
+            Student Reviews
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-8">
+           {
+              studReviews.map((item, index)=>{
+                return(
+                 <div className="bg-white p-6 rounded-xl shadow" key={index}>
+              <p className="text-[#475569] mb-4">
+               {item.message}
+              </p>
+              <h4 className="font-semibold">- {item.name}</h4>
+            </div>
+                )
+              })
+
+           } 
+
+
+          </div>
+        </div>
+      </div>
 
     </div>
   );
