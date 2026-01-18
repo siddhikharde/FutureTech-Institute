@@ -1,6 +1,7 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import {motion} from 'framer-motion'
+import courses from '../configs/courses'
 function Courses() {
   const containerAnimation={
     hidden:{},
@@ -28,9 +29,25 @@ function Courses() {
             Industry-focused programs designed to build real skills and careers.
           </p>
           </motion.div>
-        
-
+          
       </div>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-6 px-6 py-10'>
+            {
+              courses.map((item, index)=>{
+                const {id, title, img, duration,  description}=item;
+                return(
+                <div className='flex flex-col ' key={index}>
+                  <div className='overflow-hidden relative top-0 right-0 h-85 w-full object-contain rounded-2xl h-[300px] bg-gray-900  filtre:bg-blend-multuply'>
+                    <img src={img} alt={title} className='w-full h-full  transition-all duration-500 ease-in-out
+    hover:scale-125 hover:brightness-70' />
+                  </div>
+
+                  </div>
+                )
+              })
+            }
+          </div>
+
   
     </div>
   )
