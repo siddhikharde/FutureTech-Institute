@@ -13,7 +13,7 @@ function Register() {
     email: "",
     password: "",
     confirmPassword: "",
-  });
+  },[]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

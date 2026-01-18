@@ -11,7 +11,7 @@ import { useEffect } from "react";
 function Home (){
   useEffect(()=>{
     setPageTitle({title:""})
-  })
+  },[])
   const navigate=useNavigate();
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },

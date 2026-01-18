@@ -11,7 +11,7 @@ import { useEffect } from "react";
 function Login() {
   const navigate = useNavigate(); useEffect(()=>{
       setPageTitle({title:"Login"})
-    })
+    },[])
 
   const [form, setForm] = useState({
     email: "",
