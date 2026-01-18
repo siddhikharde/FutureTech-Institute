@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import {setPageTitle} from '../Utils'
+import { useEffect } from "react";
 
 function Contact() {
    useEffect(()=>{
