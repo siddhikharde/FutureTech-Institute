@@ -7,6 +7,8 @@ import studReviews from "../configs/Reviews";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import courses from "../configs/HomeCourses";
+import CourseCard from "../components/CourseCard";
 
 function Home (){
   useEffect(()=>{
@@ -81,20 +83,14 @@ function Home (){
           </h2>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {["Web Development", "Data Science", "AI & ML"].map((course, i) => (
-              <motion.div
-                key={i}
-                className="bg-white rounded-xl border  border-[#E2E8F0] p-6 cursor-pointer hover:border-[#2563EB] transition"
-                whileHover={{ y: -5,    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",}}
-                 transition={{ ease: "easeOut" , duration: 0.1 }}
-              >
-                <h3 className="text-xl font-semibold mb-2">{course}</h3>
-                <p className="text-[#475569] mb-4">
-                  Learn {course} from scratch with practical projects.
-                </p>
-                <Button size="sm" title={"Enroll Now"} onClick={()=>navigate("/courses")}/>
-              </motion.div>
-            ))}
+            {
+              courses.map((item, index)=>{
+                const {id, title, img, duration,  description}=item;
+                return(
+                <CourseCard title={title} description={description} duration={duration}uration img={img} buttonTitle={"Explore Courses"} onClick={()=>navigate("/courses")} key={index}/>
+                )
+              })
+            }
           </div>
         </div>
       </div>

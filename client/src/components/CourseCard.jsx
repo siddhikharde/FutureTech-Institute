@@ -2,7 +2,7 @@ import React from 'react'
 import Button from './Button'
 import { Clock } from 'lucide-react'
 
-function CourseCard({title, description, duration, img}) {
+function CourseCard({title, description, duration, img, buttonTitle, onClick}) {
   return (
    <div className='flex flex-col shadow-[2px_2px_10px_#666666] rounded-2xl ' >
                   <div className='overflow-hidden cursor-pointer relative top-0 right-0 w-full object-contain  rounded-t-2xl h-[200px]'>
@@ -14,7 +14,7 @@ function CourseCard({title, description, duration, img}) {
                     <p className='text-gray-700 text-[15px]'>{description}</p>
                     <p className='flex items-center gap-2 text-[15px] text-gray-500'><Clock size={17}/>{duration}</p>
                     <div className='flex items-center'>
-                      <Button title={"Enroll Now"} size='lg' onClick={()=>navigate("/contact")}/>
+                      <Button title={buttonTitle} size='lg' onClick={onClick}/>
                     </div>
                     </div>
 

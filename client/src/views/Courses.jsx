@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import {motion} from 'framer-motion'
 import courses from '../configs/courses'
-import { Clock } from 'lucide-react'
-import Button from '../components/Button'
 import { useNavigate } from 'react-router'
 import { setPageTitle } from '../Utils'
 import CourseCard from '../components/CourseCard'
@@ -41,7 +39,7 @@ function Courses() {
               courses.map((item, index)=>{
                 const {id, title, img, duration,  description}=item;
                 return(
-                <CourseCard title={title} description={description} img={img} key={index}/>
+                <CourseCard title={title} description={description} duration={duration}uration img={img} buttonTitle={"Enroll Now"} onClick={()=>navigate("/contact")} key={index}/>
                 )
               })
             }
