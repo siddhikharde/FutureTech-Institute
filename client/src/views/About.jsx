@@ -3,24 +3,43 @@ import { Cpu, Users, Award, BookOpen, Target, } from "lucide-react";
 import Navbar from "../components/Navbar";
 import { StatCard, InfoCard, ValueCard } from "../components/AboutCards";
 import { statData, visionMession, values } from '../configs/About'
+import { motion } from "framer-motion";
 
 
 function About() {
+   const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const containerAnimation = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.2 } },
+  };
   return (
     <div className="bg-[#F9FAFB] min-h-screen">
       <Navbar />
-      <div className="relative overflow-hidden">
+      <motion.div className="relative overflow-hidden"
+      variants={containerAnimation}
+      initial="hidden"
+      animate="visible">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A]" />
         <div className="relative max-w-7xl mx-auto px-4 py-24 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-200 mb-4">
+          <motion.h1 className="text-4xl md:text-5xl font-bold text-gray-200 mb-4"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}>
             About <span className="text-[#0EA5E9]">FutureTech</span>
-          </h1>
-          <p className="text-gray-400 max-w-3xl mx-auto text-lg">
+          </motion.h1>
+          <motion.p className="text-gray-400 max-w-3xl mx-auto text-lg 
+          "initial="hidden"
+          animate="visible"
+          variants={fadeInUp}>
             Shaping future-ready professionals through practical,
             industry-focused technology education.
-          </p>
+          </motion.p>
         </div>
-      </div>
+      </motion.div>
 
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
@@ -99,7 +118,7 @@ function About() {
             values.map((item, index) => {
               const Icon = item.icon;
               return (
-                <ValueCard title={item.title} text={item.text} key={index} icon={<Icon size={28} />} />
+                <ValueCard title={item.title} text={item.text} key={index} icon={<Icon size={28}  />} />
               )
             })
           }
