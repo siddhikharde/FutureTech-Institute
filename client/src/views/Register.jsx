@@ -33,7 +33,7 @@ const [form, setForm] = useState({
             Create Account
           </h2>
 
-          <form className="space-y-4">
+          <form className="gap-4 flex flex-col" >
             <Input
               type="text"
               placeholder="Full Name"
@@ -41,6 +41,30 @@ const [form, setForm] = useState({
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               
             />
+             <  Input
+              type="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+            />
+             <Input
+              type="password"
+              placeholder="Confirm Password"
+              value={form.confirmPassword}
+              onChange={(e) =>
+                setForm({ ...form, confirmPassword: e.target.value })
+              }
+            />
+
+         <div className="flex items-center justify-center">
+            <Button type="submit" size="lg" title="Register" className="w-full" />
+         </div>
            
           </form>
 
