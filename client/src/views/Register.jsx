@@ -7,43 +7,43 @@ import { motion } from "framer-motion";
 import Input from "../components/Input";
 
 function Register() {
-   const navigate = useNavigate();
-const [form, setForm] = useState({
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
 
-   const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    
-    const storedUser=localStorage.getItem("UserData") ;
+
+    const storedUser = localStorage.getItem("UserData");
     const parsedUser = storedUser ? JSON.parse(storedUser) : null;
 
     const { name, email, password, confirmPassword } = form;
 
     if (!name || !email || !password || !confirmPassword) {
-      toast.error("Please fill all fields",{id:"error"});
+      toast.error("Please fill all fields", { id: "error" });
       return;
     }
 
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match", {id:"pass"});
+      toast.error("Passwords do not match", { id: "pass" });
       return;
     }
-  if(parsedUser && parsedUser.email === form.email){
-    toast.error("User already exists, please Login", {id:"userexists"});
-    return
-  }else{
-    localStorage.setItem("UserData", JSON.stringify(form));
-     toast.success("Account created successfully!", {id:"success"});
-    setForm({ name: "", email: "", password: "", confirmPassword: "" });
-    setTimeout(() => navigate("/login"), 1500);
-   
-  }
-    
-   
+    if (parsedUser && parsedUser.email === form.email) {
+      toast.error("User already exists, please Login", { id: "userexists" });
+      return
+    } else {
+      localStorage.setItem("UserData", JSON.stringify(form));
+      toast.success("Account created successfully!", { id: "success" });
+      setForm({ name: "", email: "", password: "", confirmPassword: "" });
+      setTimeout(() => navigate("/login"), 1500);
+
+    }
+
+
   };
 
   const fadeInUp = {
@@ -66,15 +66,15 @@ const [form, setForm] = useState({
             Create Account
           </h2>
 
-          <form className="gap-4 flex flex-col"onSubmit={handleSubmit} >
+          <form className="gap-4 flex flex-col" onSubmit={handleSubmit} >
             <Input
               type="text"
               placeholder="Full Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              
+
             />
-             <  Input
+            <  Input
               type="email"
               placeholder="Email Address"
               value={form.email}
@@ -86,7 +86,7 @@ const [form, setForm] = useState({
               value={form.password}
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
-             <Input
+            <Input
               type="password"
               placeholder="Confirm Password"
               value={form.confirmPassword}
@@ -95,13 +95,20 @@ const [form, setForm] = useState({
               }
             />
 
-         <div className="flex items-center justify-center">
-            <Button type="submit" size="lg" title="Register" className="w-full" />
-         </div>
-           
-          </form>
+            <div className="flex items-center justify-center">
+              <Button type="submit" size="lg" title="Register" className="w-full" />
+            </div>
 
-          
+          </form>
+          <p className="text-center text-gray-500 mt-4">
+            Already have an account?{" "}
+            <span
+              className="text-[#38BDF8] cursor-pointer hover:underline"
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </span>
+          </p>
         </div>
       </motion.div>
     </div>
