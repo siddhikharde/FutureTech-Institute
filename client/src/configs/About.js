@@ -12,7 +12,7 @@ export const  statData=[{
   subtitle:"Live Projects"
 },
 {
-  title:"95%",
+  title:"98%+",
   subtitle:"Student Satisfaction"
 }]
 
