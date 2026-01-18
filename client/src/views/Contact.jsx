@@ -45,7 +45,43 @@ function Contact() {
           </motion.p>
         </div>
       </motion.div>
+<motion.div
+        className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-12"
+        variants={containerAnimation}
+        initial="hidden"
+        animate="visible"
+      >
+      
+        <motion.div variants={fadeInUp} className="space-y-6">
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-[#111827] mb-4">
+              Get in Touch
+            </h2>
 
+            <div className="flex items-center gap-3 text-[#4B5563] mb-3">
+              <Mail className="text-[#0EA5E9]" />
+              <a href="mailto:info@futuretech.com" className="hover:underline">
+                info@futuretech.com
+              </a>
+            </div>
+
+            <div className="flex items-center gap-3 text-[#4B5563] mb-3">
+              <Phone className="text-[#0EA5E9]" />
+              <a href="tel:7774912734" className="hover:underline">
+                +91 77749 12734
+              </a>
+            </div>
+
+            <div className="flex items-start gap-3 text-[#4B5563]">
+              <MapPin className="text-[#0EA5E9] mt-1" />
+              <p>
+                Anantaa City Center, Office No.13,<br />
+                Shrirampur–Newasa Road, Shrirampur
+              </p>
+            </div>
+          </div>
+        </motion.div>
+        </motion.div>
       
     </div>
   );
