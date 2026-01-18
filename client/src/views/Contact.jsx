@@ -7,6 +7,11 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 
 function Contact() {
+   const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -79,6 +84,51 @@ function Contact() {
                 Shrirampur–Newasa Road, Shrirampur
               </p>
             </div>
+          </div>
+        </motion.div>
+         <motion.div variants={fadeInUp}>
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            <h2 className="text-2xl font-bold text-[#111827] mb-6">
+              Send a Message
+            </h2>
+
+            <form className="flex flex-col gap-4 " >
+              <Input
+                type="text"
+                placeholder="Your Name"
+                value={form.name}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
+              />
+
+              <Input
+                type="email"
+                placeholder="Your Email"
+                value={form.email}
+                onChange={(e) =>
+                  setForm({ ...form, email: e.target.value })
+                }
+              />
+
+              <textarea
+                placeholder="Your Message"
+                value={form.message}
+                onChange={(e) =>
+                  setForm({ ...form, message: e.target.value })
+                }
+                className="w-full border border-gray-300 rounded-lg p-3 h-32 resize-none outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+              />
+
+              <div className="flex items-center justify-center">
+                <Button
+                type="submit"
+                size="lg"
+                title="Send Message"
+                className="w-full"
+              />
+              </div>
+            </form>
           </div>
         </motion.div>
         </motion.div>
