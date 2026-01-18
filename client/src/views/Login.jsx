@@ -59,7 +59,7 @@ const handleSubmit = (e) => {
 
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen">
+    <div className="bg-[#F8FAFC] min-h-screen overflow-y-scroll">
       <Navbar />
 
       <motion.div
