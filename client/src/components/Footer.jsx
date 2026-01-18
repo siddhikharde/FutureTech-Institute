@@ -2,6 +2,7 @@ import React from "react";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import { Link } from "react-router";
+import logo from '../assets/logo.png'
 
 function Footer() {
   return (
@@ -13,8 +14,8 @@ function Footer() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
         >
-          <h2 className="text-2xl font-bold text-white mb-3">
-            Future<span className="text-[#38BDF8]">Tech</span>
+          <h2 className="text-2xl flex items-center font-bold text-white mb-3">
+          <img src={logo} alt="FutureTech Logo" className="h-9" />  Future<span className="text-[#38BDF8]">Tech</span>
           </h2>
           <p className="text-sm text-gray-400">
             Empowering students with future-ready skills through

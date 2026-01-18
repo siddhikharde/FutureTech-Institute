@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import Button from "./Button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
+import logo from '../assets/logo.png'
 
 function Navbar(){
     const [open, setOpen] = useState(false);
@@ -12,8 +13,9 @@ function Navbar(){
 
           <Link
             to="/"
-            className="text-2xl font-bold text-[#38BDF8]"
+            className="text-2xl font-bold text-[#38BDF8] flex items-center justify-center"
           >
+            <img src={logo} alt="FutureTech Logo" className="h-9" />
             FutureTech
           </Link>
 
