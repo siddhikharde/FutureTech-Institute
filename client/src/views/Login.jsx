@@ -6,6 +6,7 @@ import Input from "../components/Input";
 import toast from "react-hot-toast";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 function Login() {
   const navigate = useNavigate(); useEffect(()=>{
@@ -98,16 +99,6 @@ const handleSubmit = (e) => {
               />
             </div>
           </form>
-
-          <p className="text-center text-gray-500 mt-4">
-            Don’t have an account?{" "}
-            <span
-              className="text-[#38BDF8] cursor-pointer hover:underline"
-              onClick={() => navigate("/register")}
-            >
-              Register
-            </span>
-          </p>
         </div>
       </motion.div>
     </div>

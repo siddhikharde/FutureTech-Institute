@@ -36,10 +36,6 @@ function Navbar(){
             <Link to="/login">
               <Button variant="outline" size="md" title={"Login"}/>
             </Link>
-
-            <Link to="/register">
-              <Button variant="primary" size="md" title={" Register"}/>
-            </Link>
           </div>
            <button
             onClick={() => setOpen(!open)}
@@ -60,9 +56,6 @@ function Navbar(){
           <div className=" flex gap-3 py-2 w-full items-start justify-start pt-3 border-t border-gray-700">
             <Link to="/login">
               <Button variant="outline" size="md" title={"Login"} className="w-full"/>
-            </Link>
-            <Link to="/register">
-              <Button size="md" className="w-full" title={"Register"}/>
             </Link>
           </div>
         </div>
