@@ -37,7 +37,7 @@ function Contact() {
 
   const containerAnimation = {
     hidden: {},
-    visible: { transition: { staggerChildren: 0.2 } },
+    visible: { transition: { containerAnimation: 0.2 } },
   };
   return (
     <div className="bg-[#F9FAFB] min-h-screen">
