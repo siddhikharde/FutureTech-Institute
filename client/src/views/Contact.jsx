@@ -5,8 +5,12 @@ import Button from "../components/Button";
 import toast from "react-hot-toast";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
+import {setPageTitle} from '../Utils'
 
 function Contact() {
+   useEffect(()=>{
+      setPageTitle({title:"Contact Us"})
+    })
    const [form, setForm] = useState({
     name: "",
     email: "",

@@ -4,10 +4,13 @@ import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import toast from "react-hot-toast";
+import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 
 function Login() {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); useEffect(()=>{
+      setPageTitle({title:"Login"})
+    })
 
   const [form, setForm] = useState({
     email: "",

@@ -4,9 +4,14 @@ import { useNavigate } from "react-router";
 import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
 import studReviews from "../configs/Reviews";
+import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 
 function Home (){
+  useEffect(()=>{
+    setPageTitle({title:""})
+  })
   const navigate=useNavigate();
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },

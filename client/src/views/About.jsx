@@ -4,9 +4,14 @@ import Navbar from "../components/Navbar";
 import { StatCard, InfoCard, ValueCard } from "../components/AboutCards";
 import { statData, visionMession, values } from '../configs/About'
 import { motion } from "framer-motion";
+import {setPageTitle} from '../Utils'
+import { useEffect } from "react";
 
 
 function About() {
+   useEffect(()=>{
+      setPageTitle({title:"About"})
+    })
    const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
