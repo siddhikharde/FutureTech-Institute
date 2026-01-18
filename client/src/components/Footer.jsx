@@ -105,7 +105,7 @@ function Footer() {
       </div>
 
       <div className="border-t border-gray-500 py-6 text-center text-sm text-gray-400">
-        © {new Date().getFullYear()}FutureTech Pvt. Ltd.
+        © {new Date().getFullYear()} FutureTech Pvt. Ltd.
       </div>
     </footer>
   );

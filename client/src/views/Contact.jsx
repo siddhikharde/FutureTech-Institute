@@ -28,7 +28,26 @@ function Contact() {
       return;
     }
 
-    toast.success("Message sent successfully..", { id: "contact-success" });
+    const phoneNumber = "917774912734"; 
+
+  const whatsappMessage = `
+New Contact Message – FutureTech Institute
+
+ Name: ${form.name}
+ Email: ${form.email}
+Message: ${form.message}
+  `;
+
+  const encodedMessage = encodeURIComponent(whatsappMessage);
+
+  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+  window.open(whatsappURL, "_blank");
+
+  toast.success("Redirecting to WhatsApp...", {
+    id: "contact-success",
+  });
+
     setForm({ name: "", email: "", message: "" });
   };
 
