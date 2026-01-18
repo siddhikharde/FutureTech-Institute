@@ -35,30 +35,6 @@ function StatCard({ title, subtitle }) {
   );
 }
 
-function InfoCard({ icon: Icon, title, text }) {
-  return (
-    <div className="bg-white border border-[#E5E7EB] rounded-2xl p-8 hover:shadow-md transition">
-      <Icon className="text-[#0EA5E9] mb-3" size={32} />
-      <h3 className="text-xl font-semibold text-[#111827] mb-2">
-        {title}
-      </h3>
-      <p className="text-[#4B5563]">{text}</p>
-    </div>
-  );
-}
-
-function ValueCard({ icon: Icon, title, text }) {
-  return (
-    <div className="bg-white border border-[#E5E7EB] rounded-xl p-6 text-center hover:shadow-md transition">
-      <Icon className="mx-auto mb-3 text-[#0EA5E9]" size={28} />
-      <h4 className="font-semibold text-[#111827] mb-2">{title}</h4>
-      <p className="text-[#4B5563] text-sm">{text}</p>
-    </div>
-  );
-}
-
-
-
 function About() {
   return (
     <div className="bg-[#F9FAFB] min-h-screen">
@@ -87,6 +63,48 @@ function About() {
         </div>
       </div>
 
+
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold text-[#111827] mb-4">
+              Who We Are
+            </h2>
+            <p className="text-[#4B5563] mb-4">
+              <strong>FutureTech</strong> is a modern technology institute
+              dedicated to bridging the gap between academic learning and
+              real-world industry needs.
+            </p>
+            <p className="text-[#4B5563]">
+              We focus on hands-on training, real projects, and mentorship
+              that helps students build confidence and careers.
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-8">
+            <ul className="space-y-4 text-[#111827]">
+              <li className="flex items-center gap-3">
+                <BookOpen className="text-[#0EA5E9]" />
+                Practical Learning Approach
+              </li>
+              <li className="flex items-center gap-3">
+                <Cpu className="text-[#0EA5E9]" />
+                Latest Technologies
+              </li>
+              <li className="flex items-center gap-3">
+                <Award className="text-[#0EA5E9]" />
+                Industry Certifications
+              </li>
+              <li className="flex items-center gap-3">
+                <Users className="text-[#0EA5E9]" />
+                Expert Faculty & Mentors
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+     
     </div>
   );
 }
