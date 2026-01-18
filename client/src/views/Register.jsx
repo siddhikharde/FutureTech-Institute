@@ -7,12 +7,45 @@ import { motion } from "framer-motion";
 import Input from "../components/Input";
 
 function Register() {
+   const navigate = useNavigate();
 const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+   const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const storedUser=localStorage.getItem("UserData") ;
+    const parsedUser = storedUser ? JSON.parse(storedUser) : null;
+
+    const { name, email, password, confirmPassword } = form;
+
+    if (!name || !email || !password || !confirmPassword) {
+      toast.error("Please fill all fields",{id:"error"});
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match", {id:"pass"});
+      return;
+    }
+  if(parsedUser && parsedUser.email === form.email){
+    toast.error("User already exists, please Login", {id:"userexists"});
+    return
+  }else{
+    localStorage.setItem("UserData", JSON.stringify(form));
+     toast.success("Account created successfully!", {id:"success"});
+    setForm({ name: "", email: "", password: "", confirmPassword: "" });
+    setTimeout(() => navigate("/login"), 1500);
+   
+  }
+    
+   
+  };
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
@@ -33,7 +66,7 @@ const [form, setForm] = useState({
             Create Account
           </h2>
 
-          <form className="gap-4 flex flex-col" >
+          <form className="gap-4 flex flex-col"onSubmit={handleSubmit} >
             <Input
               type="text"
               placeholder="Full Name"
