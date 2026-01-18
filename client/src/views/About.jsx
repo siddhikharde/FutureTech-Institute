@@ -1,39 +1,9 @@
 import React from "react";
-import {
-  GraduationCap,
-  Cpu,
-  Users,
-  Target,
-  Award,
-  BookOpen,
-} from "lucide-react";
+import { Cpu, Users, Award, BookOpen, Icon,} from "lucide-react";
 import Navbar from "../components/Navbar";
+import { StatCard, InfoCard   } from "../components/AboutCards";
+import {statData, visionMession} from '../configs/About'
 
-const  statData=[{
-  title:"500+",
-  subtitle:"Students Trained"
-},
-{
-  title:"20+",
-  subtitle:"Professional Courses"
-},
-{
-  title:"25+",
-  subtitle:"Live Projects"
-},
-{
-  title:"95%",
-  subtitle:"Student Satisfaction"
-}]
-
-function StatCard({ title, subtitle }) {
-  return (
-    <div className="bg-white rounded-xl shadow-md p-6 text-center">
-      <h3 className="text-2xl font-bold text-[#0EA5E9]">{title}</h3>
-      <p className="text-[#4B5563] text-sm">{subtitle}</p>
-    </div>
-  );
-}
 
 function About() {
   return (
@@ -104,7 +74,21 @@ function About() {
         </div>
       </div>
 
-     
+
+      <div className="bg-white">
+        <div className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-8">
+         {
+          visionMession.map((item, index)=>{
+             const Icon = item.icon;
+            return(
+              <InfoCard title={item.title} text={item.text}  icon={<Icon size={32} />}
+              key={index}/>
+            )
+          })
+         }
+        </div>
+      </div>
+
     </div>
   );
 }
