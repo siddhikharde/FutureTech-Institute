@@ -11,7 +11,8 @@ import { useEffect } from "react";
 function Contact() {
    useEffect(()=>{
       setPageTitle({title:"Contact Us"})
-    })
+       window.scrollTo(0, 0);
+    },[])
    const [form, setForm] = useState({
     name: "",
     email: "",
