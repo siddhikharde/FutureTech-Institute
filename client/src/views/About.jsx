@@ -1,14 +1,14 @@
 import React from "react";
-import { Cpu, Users, Award, BookOpen, Icon,} from "lucide-react";
+import { Cpu, Users, Award, BookOpen, Target, } from "lucide-react";
 import Navbar from "../components/Navbar";
-import { StatCard, InfoCard   } from "../components/AboutCards";
-import {statData, visionMession} from '../configs/About'
+import { StatCard, InfoCard, ValueCard } from "../components/AboutCards";
+import { statData, visionMession, values } from '../configs/About'
 
 
 function About() {
   return (
     <div className="bg-[#F9FAFB] min-h-screen">
-     <Navbar/>
+      <Navbar />
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A]" />
         <div className="relative max-w-7xl mx-auto px-4 py-24 text-center">
@@ -25,10 +25,11 @@ function About() {
       <div className="max-w-7xl mx-auto px-4 py-16">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {
-            statData.map((item, index)=>{
-              return(
-              <StatCard title={item.title} subtitle={item.subtitle}/>
-            )})
+            statData.map((item, index) => {
+              return (
+                <StatCard title={item.title} subtitle={item.subtitle} />
+              )
+            })
           }
         </div>
       </div>
@@ -77,18 +78,33 @@ function About() {
 
       <div className="bg-white">
         <div className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-8">
-         {
-          visionMession.map((item, index)=>{
-             const Icon = item.icon;
-            return(
-              <InfoCard title={item.title} text={item.text}  icon={<Icon size={32} />}
-              key={index}/>
-            )
-          })
-         }
+          {
+            visionMession.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <InfoCard title={item.title} text={item.text} icon={<Icon size={32} />}
+                  key={index} />
+              )
+            })
+          }
         </div>
       </div>
+      <div className="max-w-7xl mx-auto px-4 py-20">
+        <h2 className="text-3xl font-bold text-center text-[#111827] mb-12">
+          Our Core Values
+        </h2>
 
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {
+            values.map((item, index) => {
+              const Icon = item.icon;
+              return (
+                <ValueCard title={item.title} text={item.text} key={index} icon={<Icon size={28} />} />
+              )
+            })
+          }
+        </div>
+      </div>
     </div>
   );
 }

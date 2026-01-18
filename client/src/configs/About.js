@@ -1,4 +1,4 @@
-import {GraduationCap, Target} from "lucide-react";
+import {GraduationCap, Target,Cpu, Users, Award, } from "lucide-react";
 export const  statData=[{
   title:"500+",
   subtitle:"Students Trained"
@@ -25,6 +25,24 @@ export const visionMession=[{
     title:"Our Vision",
     text:"To become a leading technology institute known for innovation, excellence, and career-focused learning."
 
+}]
+
+export const values=[{
+    icon:Cpu,
+  title:"Innovation",
+ text:"Encouraging creative and future-focused thinking."
+},{
+    icon:Users,
+  title:"Community",
+ text:"Building a supportive learning environment."
+},{
+    icon:Award,
+  title:"Excellence",
+ text:"Delivering quality education and outcomes."
+},{
+    icon:Target,
+  title:"Integrity",
+ text:"Honest, transparent, and student-first approach."
 }]
 
 
