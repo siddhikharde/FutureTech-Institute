@@ -78,8 +78,8 @@ function Contact() {
 
             <div className="flex items-center gap-3 text-[#4B5563] mb-3">
               <Mail className="text-[#0EA5E9]" />
-              <a href="mailto:info@futuretech.com" className="hover:underline">
-                info@futuretech.com
+              <a href="mailto:Info@futuret.in" className="hover:underline">
+                Info@futuret.in
               </a>
             </div>
 
