@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import courses from "../configs/HomeCourses";
 import CourseCard from "../components/CourseCard";
+import Footer from "../components/Footer";
 
 function Home (){
   useEffect(()=>{
@@ -120,7 +121,7 @@ function Home (){
           </div>
         </div>
       </div>
-
+<Footer/>
     </div>
   );
 };
