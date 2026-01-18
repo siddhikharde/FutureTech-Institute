@@ -118,7 +118,7 @@ function About() {
             values.map((item, index) => {
               const Icon = item.icon;
               return (
-                <ValueCard title={item.title} text={item.text} key={index} icon={<Icon size={28}  />} />
+                <ValueCard title={item.title} text={item.text} key={index} icon={<Icon size={28} />} />
               )
             })
           }
