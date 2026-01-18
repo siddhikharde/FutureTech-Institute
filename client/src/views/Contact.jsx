@@ -12,6 +12,19 @@ function Contact() {
     email: "",
     message: "",
   });
+
+   const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!form.name || !form.email || !form.message) {
+      toast.error("Please fill all fields", { id: "contact-error" });
+      return;
+    }
+
+    toast.success("Message sent successfully..", { id: "contact-success" });
+    setForm({ name: "", email: "", message: "" });
+  };
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
@@ -92,7 +105,7 @@ function Contact() {
               Send a Message
             </h2>
 
-            <form className="flex flex-col gap-4 " >
+            <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
               <Input
                 type="text"
                 placeholder="Your Name"
