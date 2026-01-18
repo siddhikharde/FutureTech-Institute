@@ -6,7 +6,7 @@ import { Link } from "react-router";
 function Footer() {
   return (
     <footer className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] text-gray-300">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid gap-10 md:grid-cols-4">
+      <div className="max-w-7xl mx-auto px-6 py-10 grid gap-10 md:grid-cols-4">
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -22,7 +22,7 @@ function Footer() {
           </p>
         </motion.div>
 
-        <motion.div
+        <motion.div className="hidden md:block "
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -30,7 +30,7 @@ function Footer() {
           <h3 className="text-lg font-semibold text-white mb-4">
             Quick Links
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {["Home", "About", "Courses", "Contact", "Login"].map(
               (item, i) => (
                 <li key={i}>
@@ -46,15 +46,15 @@ function Footer() {
           </ul>
         </motion.div>
 
-        <motion.div
+        <motion.div className="hidden md:block"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="text-lg  font-semibold text-white mb-4">
             Popular Courses
           </h3>
-          <ul className="space-y-2">
+          <ul className="space-y-1">
             {[
               "Web Development",
               "Python",
@@ -76,7 +76,7 @@ function Footer() {
             Contact Us
           </h3>
 
-          <div className="space-y-3 text-sm">
+          <div className="text-sm space-y-2">
             <div className="flex items-center gap-3">
               <Mail className="text-[#38BDF8]" size={18} />
               <a href="mailto:info@futuret.in" className="hover:underline">
@@ -103,7 +103,7 @@ function Footer() {
         </motion.div>
       </div>
 
-      <div className="border-t border-white/10 py-6 text-center text-sm text-gray-400">
+      <div className="border-t border-gray-500 py-6 text-center text-sm text-gray-400">
         © {new Date().getFullYear()}FutureTech Pvt. Ltd.
       </div>
     </footer>
