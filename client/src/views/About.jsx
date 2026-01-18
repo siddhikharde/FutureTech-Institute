@@ -10,7 +10,8 @@ import { useEffect } from "react";
 
 function About() {
    useEffect(()=>{
-      setPageTitle({title:"About"})
+      setPageTitle({title:"About"});
+      window.scrollTo(0, 0);
     },[])
    const fadeInUp = {
     hidden: { opacity: 0, y: 20 },

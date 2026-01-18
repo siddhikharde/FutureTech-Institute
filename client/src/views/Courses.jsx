@@ -7,7 +7,8 @@ import { setPageTitle } from '../Utils'
 import CourseCard from '../components/CourseCard'
 function Courses() {
   useEffect(()=>{
-   setPageTitle({title:"Courses"})
+   setPageTitle({title:"Courses"});
+   window.scrollTo(0, 0);
   },[])
  const navigate=useNavigate();
   const fadeInUp={

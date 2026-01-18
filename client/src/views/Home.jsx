@@ -12,7 +12,8 @@ import CourseCard from "../components/CourseCard";
 
 function Home (){
   useEffect(()=>{
-    setPageTitle({title:""})
+    setPageTitle({title:""});
+    window.scrollTo(0, 0);
   },[])
   const navigate=useNavigate();
   const fadeInUp = {

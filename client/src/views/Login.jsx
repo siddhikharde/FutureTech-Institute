@@ -10,7 +10,8 @@ import { useEffect } from "react";
 
 function Login() {
   const navigate = useNavigate(); useEffect(()=>{
-      setPageTitle({title:"Login"})
+      setPageTitle({title:"Login"});
+      window.scrollTo(0, 0);
     },[])
 
   const [form, setForm] = useState({
