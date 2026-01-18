@@ -4,33 +4,54 @@ import { useNavigate } from "react-router";
 import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
 import studReviews from "../configs/Reviews";
-import bgImage from '../assets/home-bg.png'
+import { motion } from "framer-motion";
 
 function Home (){
   const navigate=useNavigate();
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  };
+
+  const containerAnimation = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.2 } },
+  };
   return (
     <div className="bg-[#F8FAFC]">
 
       <Navbar/>
-      <div 
-       className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] filter: bg-blend-multiply  text-white">
+      <motion.div 
+       className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] filter: bg-blend-multiply  text-white"
+       initial="hidden"
+       animate="visible"
+       variants={containerAnimation}>
         <div className="max-w-7xl mx-auto px-5 py-24 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
+          <motion.h1 className="text-4xl md:text-6xl font-bold mb-6"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}>
             Learn Skills for the Future with <span className="text-[#38BDF8]">FutureTech</span>
-          </h1>
-          <p className="text-xl text-gray-300 mb-8">
+          </motion.h1>
+          <motion.p className="text-xl text-gray-300 mb-8"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}>
             Industry-ready courses, expert trainers, and recorded lectures.
-          </p>
-          <div className="flex justify-center gap-4">
+          </motion.p>
+          <motion.div className="flex justify-center gap-4"
+          initial="hidden"
+          animate="visible"
+          variants={fadeInUp}>
             <Button size="lg"title={"Explore Courses"} onClick={()=>{
                 navigate("/courses")
             }} />
             <Button variant="secondary" size="lg" title={"Contact Us"}
             onClick={()=>navigate("/contact")}/>
 
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
   <div className="flex flex-col items-center justify-center px-5 p-10">
       <h2 className="md:text-4xl text-3xl font-bold text-center text-[#020617] mb-12">
             Why Choose FutureTech?
@@ -56,16 +77,18 @@ function Home (){
 
           <div className="grid md:grid-cols-3 gap-8">
             {["Web Development", "Data Science", "AI & ML"].map((course, i) => (
-              <div
+              <motion.div
                 key={i}
-                className="bg-white rounded-xl border border-[#E2E8F0] p-6 hover:border-[#2563EB] transition"
+                className="bg-white rounded-xl border  border-[#E2E8F0] p-6 cursor-pointer hover:border-[#2563EB] transition"
+                whileHover={{ y: -5,    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",}}
+                 transition={{ ease: "easeOut" , duration: 0.1 }}
               >
                 <h3 className="text-xl font-semibold mb-2">{course}</h3>
                 <p className="text-[#475569] mb-4">
                   Learn {course} from scratch with practical projects.
                 </p>
                 <Button size="sm" title={"Enroll Now"} onClick={()=>navigate("/courses")}/>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
