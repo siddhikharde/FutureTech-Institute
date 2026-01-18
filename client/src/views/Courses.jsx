@@ -5,6 +5,7 @@ import courses from '../configs/courses'
 import { useNavigate } from 'react-router'
 import { setPageTitle } from '../Utils'
 import CourseCard from '../components/CourseCard'
+import Footer from '../components/Footer'
 function Courses() {
   useEffect(()=>{
    setPageTitle({title:"Courses"});
@@ -45,8 +46,7 @@ function Courses() {
               })
             }
           </div>
-
-  
+     <Footer/>
     </div>
   )
 }

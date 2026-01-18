@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import Footer from "../components/Footer";
 
 function Login() {
   const navigate = useNavigate(); useEffect(()=>{
@@ -102,6 +103,7 @@ const handleSubmit = (e) => {
           </form>
         </div>
       </motion.div>
+      <Footer/>
     </div>
   );
 }

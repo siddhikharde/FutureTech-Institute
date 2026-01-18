@@ -7,6 +7,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
 import {setPageTitle} from '../Utils'
 import { useEffect } from "react";
+import Footer from "../components/Footer";
 
 function Contact() {
    useEffect(()=>{
@@ -151,7 +152,7 @@ function Contact() {
           </div>
         </motion.div>
         </motion.div>
-      
+      <Footer/>
     </div>
   );
 }

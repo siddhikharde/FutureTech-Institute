@@ -6,6 +6,7 @@ import { statData, visionMession, values } from '../configs/About'
 import { motion } from "framer-motion";
 import {setPageTitle} from '../Utils'
 import { useEffect } from "react";
+import Footer from "../components/Footer";
 
 
 function About() {
@@ -130,6 +131,7 @@ function About() {
           }
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
