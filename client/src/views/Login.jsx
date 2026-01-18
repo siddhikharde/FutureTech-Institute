@@ -13,6 +13,39 @@ function Login() {
     email: "",
     password: "",
   });
+const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const { email, password } = form;
+
+    if (!email || !password) {
+      toast.error("Please fill all fields", { id: "empty" });
+      return;
+    }
+
+    const storedUser = localStorage.getItem("UserData");
+
+    if (!storedUser) {
+      toast.error("No account found, please Register", { id: "nouser" });
+      return;
+    }
+
+    const parsedUser = JSON.parse(storedUser);
+
+    if (
+      parsedUser.email !== email ||
+      parsedUser.password !== password
+    ) {
+      toast.error("Invalid email or password", { id: "invalid" });
+      return;
+    }
+
+    toast.success("Login successful.", { id: "success" });
+
+    setForm({ email: "", password: "" });
+
+    setTimeout(() => navigate("/"), 1200);
+  };
 
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
@@ -35,7 +68,7 @@ function Login() {
             Login to FutureTech
           </h2>
 
-          <form className="space-y-4" >
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <Input
               type="email"
               placeholder="Email Address"
