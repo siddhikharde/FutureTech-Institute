@@ -31,10 +31,11 @@ function Home (){
 
       <Navbar/>
       <motion.div 
-       className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] filter: bg-blend-multiply  text-white"
+       className="bg-gradient-to-r  from-[#0F172A] via-[#143a8a] to-[#0F172A] filter bg-blend-multiply text-white"
        initial="hidden"
        animate="visible"
-       variants={containerAnimation}>
+       variants={containerAnimation}
+      >
         <div className="max-w-7xl mx-auto px-5 py-24 text-center">
           <motion.h1 className="text-4xl md:text-6xl font-bold mb-6"
           initial="hidden"
