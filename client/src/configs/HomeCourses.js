@@ -9,7 +9,7 @@ const courses=[
   {
     id: 2,
     title: ".NET Development",
-    img: "/courseImages/.net.jpg",
+    img: "/courseImages/dotnet.jpg",
     duration: "4 Months",
     description: "Build modern applications using .NET framework, C#, ASP.NET, and Entity Framework for creating robust enterprise-level software.",
   },
