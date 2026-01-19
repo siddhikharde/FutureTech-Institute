@@ -1,0 +1,1 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/ca70f67c-f01e-4ede-b6eb-0b8920afbbe1/deploy-status)](https://app.netlify.com/projects/futuretechitcourses/deploys)
