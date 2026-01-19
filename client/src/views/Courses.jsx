@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import {motion} from 'framer-motion'
-import courses from '../configs/courses'
+import courses from '../configs/Courses'
 import { useNavigate } from 'react-router'
 import { setPageTitle } from '../Utils'
 import CourseCard from '../components/CourseCard'
