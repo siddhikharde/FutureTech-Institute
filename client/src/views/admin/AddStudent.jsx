@@ -48,14 +48,23 @@ function AddStudent() {
     );
     }
     }
+const fadeInUp={
+    hidden:{opacity:0, y:20},
+    visible:{opacity:1, y:0, transition: { duration: 0.5 } }
+}
+
     return (
-        <div className='bg-[#F9FAFB] min-h-screen'>
+        <div className='bg-[#F8FAFC]  min-h-screen'>
             <Navbar />
 
             <div className='flex items-center justify-center flex-col gap-4 p-5'>
                 <h1 className='text-center p-2 mt-5 text-4xl font-bold text-[#0F172A]'>Add Students</h1>
-                <form onSubmit={handleSubmit} 
-                className='bg-white rounded-2xl shadow-lg p-10 w-full max-w-md'>
+                <motion.form onSubmit={handleSubmit} 
+                className='bg-white rounded-2xl shadow-lg p-10 w-full max-w-md'
+                initial="hidden"
+                animate="visible"
+                variants={fadeInUp}
+                >
                     <div className='flex justify-center flex-col items-start gap-4'>
                         <div className='flex flex-col gap-2 w-full'>  <label className='text-md font-semibold'>Name of the Student:</label>
                             <Input type={"text"} placeholder={"Enter name"} value={form.name} onChange={(e) => {
@@ -94,7 +103,7 @@ function AddStudent() {
                     </div>
 
                        </div>
-                </form>
+                </motion.form>
             </div>
             <Toaster/>
         </div>
