@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import StatCard from "../../components/adminComponenets/StatCard";
 import toast from "react-hot-toast";
+import StudentTable from "../../components/adminComponenets/StudentTable";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -32,6 +33,7 @@ export default function Dashboard() {
         students: students.length,
         pendingFees: pending,
       });
+      
        toast.success("Students data loaded..", {id:"success"});
        console.log(response.data)
     }else{
@@ -49,14 +51,15 @@ console.error(error);
      
 }, []); 
   return (
-    <>
+    <div className="min-h-screen ">
       <div className="p-8 flex items-center flex-col md:flex-row justify-center gap-5 gap-6">
         <StatCard title="Total Students" value={stats.students} />
         <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} />
-       
       </div>
-
+     <div>
+        <StudentTable/>
+     </div>
       
-    </>
+    </div>
   );
 }
