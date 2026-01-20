@@ -27,6 +27,7 @@ function AddStudent() {
      const token=localStorage.getItem("JwtToken");
      if(!token){
         navigate("/login");
+        return;
      }
      
     const response=await axios.post("http://localhost:8080/students",form,{
