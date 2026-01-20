@@ -205,6 +205,11 @@ app.post("/login", async (req, res)=>{
     }
 })
 
+app.post("/courses" , async (req, res)=>{
+  const{studentId, }=req.body;
+
+})
+
 
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
