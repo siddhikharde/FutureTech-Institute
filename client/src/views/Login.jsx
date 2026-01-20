@@ -29,6 +29,8 @@ const handleSubmit = async (e) => {
       toast.error("Please fill all fields", { id: "empty" });
       return;
     }
+
+    try{
     const response=await axios.post("http://localhost:8080/login", form);
     if(response.data.success){
       toast.success(response.data.message || "Login Successful");
@@ -45,6 +47,10 @@ const handleSubmit = async (e) => {
     }
     else{
       toast.error(response.data.message || "Invalid email or password..")
+    }}catch(e){
+       toast.error(
+      error.response?.data?.message || "Server error. Try again."
+    );
     }
 
   };

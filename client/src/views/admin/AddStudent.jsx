@@ -23,7 +23,17 @@ function AddStudent() {
        toast.error("Please fill all fields", { id: "error" })
        return
     }
-    const response=await axios.post("http://localhost:8080/students",form);
+    try{
+     const token=localStorage.getItem("JwtToken");
+     if(!token){
+        navigate("/login");
+     }
+     
+    const response=await axios.post("http://localhost:8080/students",form,{
+        headers:{
+             Authorization:`Bearer ${token}`}
+    });
+   
     if(response.data.success){
         toast.success(response.data.message || "Student created successfuly");
         setForm({
@@ -31,6 +41,11 @@ function AddStudent() {
         })
     }else{
         toast.error(response.data.message)
+    }}
+    catch(e){
+         toast.error(
+      error.response?.data?.message || "Server error. Try again."
+    );
     }
     }
     return (
