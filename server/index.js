@@ -87,7 +87,30 @@ app.post("/students", async (req, res)=>{
       error:e.message
     })
   }
-  
+})
+
+app.post("/payment", async (req, res)=>{
+  const {email, amount} = req.body;
+ try{
+  const totalFee= await User.findOneAndUpdate({email},
+    {$inc:{"fee.paid":amount}}
+  )
+  const user= await User.findOne({email});
+  const remainingFee=user.fee.total-user.fee.paid;
+
+ 
+  return res.json({
+    success:true,
+    message:"Fee updated",
+    data:remainingFee
+  })
+ }catch(e){
+  return res.json({
+    success:false,
+    message:"Error occure while updating Fees",
+    error:e.message
+  })
+ }
 
 })
 app.listen(PORT,()=>{
