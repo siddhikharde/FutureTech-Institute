@@ -230,7 +230,8 @@ app.post("/courses" ,auth, admin, async (req, res)=>{
 })
 
 app.post("/enroll-course",auth, admin, async (req, res)=>{
-  const {studentId, courseId}=req.body;
+ try{
+   const {studentId, courseId}=req.body;
   if(!studentId || !courseId){
      return res.json({
       success:false,
@@ -257,6 +258,13 @@ app.post("/enroll-course",auth, admin, async (req, res)=>{
     message:"Student enrolled successfully",
     data:student,
   })
+ }catch(e){
+  return res.json({
+     success: false,
+      message: "Enrollment failed",
+      error: error.message,
+  })
+ }
 })
 
 
