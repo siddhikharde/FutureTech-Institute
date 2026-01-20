@@ -29,7 +29,9 @@ const userSchema=new Schema({
         {
             type:Schema.Types.ObjectId, ref:"Course"
         }
-    ]
+    ],phone:{
+    type:Number,
+},
 },{
     timestamps:true
 })

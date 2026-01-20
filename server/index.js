@@ -59,7 +59,7 @@ const auth=(req, res, next)=>{
   next();
 }
 app.post("/students", auth, admin, async (req, res)=>{
-  const {name, email, password, totalFee} = req.body;
+  const {name, email, password, totalFee, phone} = req.body;
 
    if(!name){
         return res.json({
@@ -79,6 +79,12 @@ app.post("/students", auth, admin, async (req, res)=>{
             message:"password is required"
         })
        }
+       if(!phone){
+        return res.json({
+          success:false,
+          message:"Mobile Number required"
+        })
+       }
 
  const exists=await User.findOne({email});
   if(exists){
@@ -92,6 +98,7 @@ app.post("/students", auth, admin, async (req, res)=>{
   const student=new User({
     name,
     email,
+    phone,
     password:hashedPassword,
     role:"student",
     fee:{total:totalFee}
