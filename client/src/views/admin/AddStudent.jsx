@@ -4,6 +4,8 @@ import { motion } from 'framer-motion'
 import Input from '../../components/Input'
 import { useState } from 'react'
 import Button from '../../components/Button'
+import axios from 'axios';
+import toast,{Toaster} from 'react-hot-toast'
 
 function AddStudent() {
     const [form, setForm] = useState({
@@ -13,13 +15,32 @@ function AddStudent() {
         phone: "",
         totalFee: ""
     });
+
+    const handleSubmit=async (e)=>{
+      e.preventDefault();
+    const {name, email, password, phone, totalFee}=form;
+    if(!name || !email || !password || !phone || !totalFee){
+       toast.error("Please fill all fields", { id: "error" })
+       return
+    }
+    const response=await axios.post("http://localhost:8080/students",form);
+    if(response.data.success){
+        toast.success(response.data.message || "Student created successfuly");
+        setForm({
+            name:"",email:"", password:"",phone:"", totalFee:""
+        })
+    }else{
+        toast.error(response.data.message)
+    }
+    }
     return (
         <div className='bg-[#F9FAFB] min-h-screen'>
             <Navbar />
 
             <div className='flex items-center justify-center flex-col gap-4 p-5'>
                 <h1 className='text-center p-2 mt-5 text-4xl font-bold text-[#0F172A]'>Add Students</h1>
-                <form className='bg-white rounded-2xl shadow-lg p-10 w-full max-w-md'>
+                <form onSubmit={handleSubmit} 
+                className='bg-white rounded-2xl shadow-lg p-10 w-full max-w-md'>
                     <div className='flex justify-center flex-col items-start gap-4'>
                         <div className='flex flex-col gap-2 w-full'>  <label className='text-md font-semibold'>Name of the Student:</label>
                             <Input type={"text"} placeholder={"Enter name"} value={form.name} onChange={(e) => {
@@ -42,7 +63,7 @@ function AddStudent() {
                         <div  className='flex flex-col gap-2 w-full'>
                             <label className='text-md font-semibold'>Total Fees:</label>
                             <Input type={"text"} placeholder={"Enter Total Fees"} value={form.fees} onChange={(e) => {
-                                setForm({ ...form, fees: e.target.value })
+                                setForm({ ...form, totalFee: e.target.value })
                             }} />
                         </div>
 
@@ -52,13 +73,15 @@ function AddStudent() {
                                 setForm({ ...form, phone: e.target.value })
                             }} />
                         </div>
-
-                        <Button type='submit' title={"Add Student"} variant='secondary' size='lg' />
+                       <div className='flex items-center justify-center w-full mt-2'>
+                         <Button type='submit' title={"Add Student"}  size='lg' />
 
                     </div>
 
+                       </div>
                 </form>
             </div>
+            <Toaster/>
         </div>
     )
 }
