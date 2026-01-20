@@ -111,6 +111,23 @@ app.post("/payment", async (req, res)=>{
     error:e.message
   })
  }
+})
+
+app.get("/students", async(req, res)=>{
+  try{
+    const students=await User.find({role:"student"}).select("name email fee");
+    return res.json({
+      success:true,
+      message:"Students data fetched Successfully",
+      data:students
+    })
+  }catch(e){
+    return res.json({
+      success:false,
+      message:"Error occure while fetching students data",
+      error:e.message
+    })
+  }
 
 })
 app.listen(PORT,()=>{
