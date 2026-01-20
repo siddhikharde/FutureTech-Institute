@@ -155,6 +155,7 @@ app.post("/login", async (req, res)=>{
     if(isPassCorrect){
       const jwtToken=jwt.sign({
         id:existingUser.id,
+        role: existingUser.role,
         email:existingUser.email,
       },process.env.JWT_SECRET,
     {
