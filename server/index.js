@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose';
 import dotenv from 'dotenv'
 import cors from 'cors';
+import bcrypt from 'bcrypt'
 import User from './models/User.js';
 import Course from './models/Courses.js';
 const app=express();
@@ -32,6 +33,62 @@ app.get("/health",(req, res)=>{
     success:true,
     message:"Server is Healthy"
   })
+})
+
+app.post("/students", async (req, res)=>{
+  const {name, email, password, totalFee} = req.body;
+
+   if(!name){
+        return res.json({
+            success:false,
+            message:"Name is required"
+        })
+       }
+       if(!email || !email.includes('@')){
+        return res.json({
+            success:false,
+            message:"Email is required"
+        })
+       }
+       if(!password){
+        return res.json({
+            success:false,
+            message:"password is required"
+        })
+       }
+
+ const exists=await User.findOne({email});
+  if(exists){
+    return res.json({
+      success:false,
+      message:"Student already exists"
+    })
+  }
+   const salt = bcrypt.genSaltSync(10);
+    const hashedPassword=bcrypt.hashSync(password,salt)
+  const student=new User({
+    name,
+    email,
+    password:hashedPassword,
+    role:"student",
+    fee:{total:totalFee}
+  })
+  try{
+    const savedUser=await student.save()
+    return  res.json({
+    success:true,
+    data:savedUser,
+    message :"studenst info added successfully"
+  })
+  }catch(e){
+    return res.json({
+      success:flase,
+      message:`Error occure `,
+      error:e.message
+    })
+  }
+  
+
 })
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
