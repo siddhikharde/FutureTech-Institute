@@ -229,6 +229,36 @@ app.post("/courses" ,auth, admin, async (req, res)=>{
   
 })
 
+app.post("/enroll-course",auth, admin, async (req, res)=>{
+  const {studentId, courseId}=req.body;
+  if(!studentId || !courseId){
+     return res.json({
+      success:false,
+      message:"Student ID and Course ID required"
+     })
+  }
+
+  const course=await Course.findById(courseId);
+  if(!course){
+    return res.json({
+       success: false,
+        message: "Course not found",
+    })
+  }
+  const student=await User.findByIdAndUpdate(studentId,
+    {$addToSet:{enrolledCourses:courseId},
+      $inc: { "fee.total": course.price || 0 },
+  },
+      
+   {new: true}
+  )
+  return res.json({
+    success:true,
+    message:"Student enrolled successfully",
+    data:student,
+  })
+})
+
 
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
