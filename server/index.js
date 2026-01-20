@@ -37,7 +37,28 @@ app.get("/health",(req, res)=>{
   })
 })
 
-app.post("/students", async (req, res)=>{
+const admin=(req, res, next)=>{
+  if(req.existingUser.role !== "admin"){
+    return res.json({
+      success:false,
+      message:"Admin access only!"
+    })
+  }
+  next();
+}
+
+const auth=(req, res, next)=>{
+  const token= req.headers.authorization?.split(" ")[1];
+  if(!token){
+    return res.json({
+      success:false,
+      message:"Invalid or missing JWT Token"
+    })
+  }
+  req.existingUser=jwt.verify(token,process.env.JWT_SECRET);
+  next();
+}
+app.post("/students", auth, admin, async (req, res)=>{
   const {name, email, password, totalFee} = req.body;
 
    if(!name){
@@ -91,7 +112,7 @@ app.post("/students", async (req, res)=>{
   }
 })
 
-app.post("/payment", async (req, res)=>{
+app.post("/payment", auth, admin, async (req, res)=>{
   const {email, amount} = req.body;
  try{
   const totalFee= await User.findOneAndUpdate({email},
@@ -115,7 +136,7 @@ app.post("/payment", async (req, res)=>{
  }
 })
 
-app.get("/students", async(req, res)=>{
+app.get("/students", auth, admin, async(req, res)=>{
   try{
     const students=await User.find({role:"student"}).select("name email fee");
     return res.json({
@@ -175,8 +196,9 @@ app.post("/login", async (req, res)=>{
       })
      
     }
-
 })
+
+
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
