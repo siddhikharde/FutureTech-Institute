@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
+import axios from "axios";
 import Footer from "../components/Footer";
 
 function Login() {
@@ -19,7 +20,7 @@ function Login() {
     email: "",
     password: "",
   });
-const handleSubmit = (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { email, password } = form;
@@ -28,29 +29,24 @@ const handleSubmit = (e) => {
       toast.error("Please fill all fields", { id: "empty" });
       return;
     }
+    const response=await axios.post("http://localhost:8080/login", form);
+    if(response.data.success){
+      toast.success(response.data.message || "Login Successful");
+      setForm({
+        email:"",
+        password:""
+      })
 
-    const storedUser = localStorage.getItem("UserData");
+      const {jwt, data}=response.data;
+      localStorage.setItem("JwtToken", jwt);
+      localStorage.setItem("userData", JSON.stringify(data));
 
-    if (!storedUser) {
-      toast.error("No account found, please Register", { id: "nouser" });
-      return;
+       setTimeout(() => navigate("/"), 1200);
+    }
+    else{
+      toast.error(response.data.message || "Invalid email or password..")
     }
 
-    const parsedUser = JSON.parse(storedUser);
-
-    if (
-      parsedUser.email !== email ||
-      parsedUser.password !== password
-    ) {
-      toast.error("Invalid email or password", { id: "invalid" });
-      return;
-    }
-
-    toast.success("Login successful.", { id: "success" });
-
-    setForm({ email: "", password: "" });
-
-    setTimeout(() => navigate("/"), 1200);
   };
 
   const fadeInUp = {
