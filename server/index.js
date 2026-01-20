@@ -205,9 +205,28 @@ app.post("/login", async (req, res)=>{
     }
 })
 
-app.post("/courses" , async (req, res)=>{
-  const{studentId, }=req.body;
+app.post("/courses" ,auth, admin, async (req, res)=>{
+  const {title, description, price}=req.body;
+  const course = new Course({
+    title,
+    description,
+    price
+  });
+  try{
+    const data=await course.save();
+    return res.json({
+    success:true,
+    message:"Course Enrolled successfully..",
+    data:data
 
+  })}catch(e){
+    return res.json({
+      success:false,
+      message:"Error occure while enrolling course..",
+      error:e.message      
+    })
+  }
+  
 })
 
 
