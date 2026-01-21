@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function StudentTable() {
-    const [students, setStudesnts] = useState([]);
+    const [students, setStudents] = useState([]);
     const [course, setCourse] = useState([]);
 
     const token = localStorage.getItem("JwtToken");
@@ -16,53 +16,54 @@ function StudentTable() {
                 }
             })
             if (response.data.success) {
-                setStudesnts(response.data.data);
+                toast.success("Students data loaded", { id: "success" })
+                setStudents(response.data.data);
+            }
+        } catch (e) {
+            toast.error("Failed to load courses", { id: "failiour" });
+        }
+    }
+
+    const enrollCourse = async ({ studentId, courseId }) => {
+        try {
+            const response = await axios.post("http://localhost:8080/enroll-course", { studentId, courseId },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+            )
+            if (response.data.success) {
+                toast.success("Course enrolled");
+                loadStudents();
+            }
+        } catch (e) {
+            toast.error("Enrollment failed");
+        }
+    }
+
+    const loadCourses = async () => {
+        try {
+            const response = await axios.get("http://localhost:8080/courses", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            if (response.data.success) {
+                setCourse(response.data.data);
+                toast.success("Courses loaded", { id: "coursesuccess" });
+
             }
         } catch (e) {
             toast.error("Failed to load courses");
         }
     }
-  
-    const enrollCourses=async ({studentId, courseId})=>{
-        try{
-             const response=await axios.post("http://localhost:8080/enroll-course", {studentId, courseId},
-            {
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            }
-            
-         )
-         if(response.data.success){
-                  toast.success("Course enrolled");
-               loadStudents();
-            }
-        }catch(e){
-toast.error("Enrollment failed");
-        }
-    }
 
-    const loadCourses=async ()=>{
-        try{
-            const response=await axios.get("http://localhost:8080/courses",{
-                headers:{
-                    Authorization:`Bearer ${token}`
-                }
-            })
-            if(response.data.success){
-                setCourse(response.data.data);
-                toast.success("Courses loaded");
-
-            }
-        }catch(e){
-               toast.error("Failed to load courses");
-        }
-    }
-
-    useEffect(()=>{
-   loadStudents();
-   loadCourses();
-    },[])
+    useEffect(() => {
+        loadStudents();
+        loadCourses();
+    }, [])
 
     return (
         <div className="overflow-x-auto bg-white rounded-xl shadow-md p-6">
@@ -82,19 +83,41 @@ toast.error("Enrollment failed");
                 <tbody>
                     {
                         students.map((s) => {
-                            const remaining = s.fee.total - s.fee.paid;
-                            return(
-                            <tr key={s._id} className="text-center">
-                                <td className="p-2 border">{s.name}</td>
-                                <td className="p-2 border">{s.email}</td>
-                                <td className="p-2 border">{
-                                s. enrolledCourses.length>0?
-                                 ( s.enrolledCourses.map((c)=>c.title).join(", ")
-                                ):"None"
-                            }</td>
+                            const pendingFee = (s.fee?.total ||0) - (s.fee?.paid || 0);
+                            return (
+                                <tr key={s._id} className="text-center">
+                                    <td className="p-2 border">{s.name}</td>
+                                    <td className="p-2 border">{s.email}</td>
+                                    <td className="p-2 border">{
+                                        s.enrolledCourses.length > 0 ?
+                                            (s.enrolledCourses.map((c) => c.title).join(", ")
+                                            ) : "None"
+                                    }</td>
+                                    <td className="p-2 border">{s.fee.total}</td>
+                                    <td className="p-2 border text-red-400">{pendingFee}</td>
 
-                            </tr>
-                         ) })
+                                    <td className="p-2 border">
+                                        <select className="border p-1 rounded"
+                                            onChange={(e) => {
+                                                enrollCourse({
+                                                    studentId: s._id,
+                                                    courseId: e.target.value
+                                                })
+                                            }}
+                                            defaultValue="">
+                                            <option value="" disabled>
+                                                Select Course
+                                            </option>
+                                            {
+                                                course.map((c) => (
+                                                    <option key={c._id} value={c._id}>{c.title}</option>
+                                                ))
+                                            }
+                                        </select>
+                                    </td>
+                                </tr>
+                            )
+                        })
                     }
                 </tbody>
 
