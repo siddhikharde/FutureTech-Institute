@@ -18,20 +18,16 @@ export default function Dashboard() {
         return;
      }
      
-       const response=await axios.get("http://localhost:8080/students", {
+       const response=await axios.get("http://localhost:8080/dashboard-stats", {
         headers:{
            Authorization:`Bearer ${token}`
         }
     })
     if(response.data.success){
        const students=response.data.data;
-    let pending=0;
-    students.forEach((s)=>{
-        pending+=(s.fee.total || 0)-(s.fee.paid || 0)
-    })
         setStats({
-        students: students.length,
-        pendingFees: pending,
+        students: students.totalStudents,
+        pendingFees: students.pendingFee,
       });
       
        toast.success("Students data loaded..", {id:"success"});
@@ -54,7 +50,7 @@ console.error(error);
     <div className="min-h-screen ">
       <div className="p-8 flex items-center flex-col md:flex-row justify-center gap-5 gap-6">
         <StatCard title="Total Students" value={stats.students} />
-        <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} />
+        <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} valueColor={"red-400"}/>
       </div>
      <div>
         <StudentTable/>
