@@ -1,218 +1,243 @@
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { setDragLock } from "framer-motion";
-import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import Input from '../../components/Input'
-import StudentsCrad from "./StudentsCrad";
+import Input from "../../components/Input";
 
 function StudentTable() {
-    const [students, setStudents] = useState([]);
-    const [course, setCourse] = useState([]);
-    const [page, setPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(1);
-    const [search, setSearch] = useState("");
-     const limit = 10;
+  const [students, setStudents] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [search, setSearch] = useState("");
+  const limit = 10;
 
-    const token = localStorage.getItem("JwtToken");
-    const loadStudents = async (pageNo=1, searchText=search) => {
-        try {
-            const response = await axios.get(`http://localhost:8080/students?page=${pageNo}&limit=${limit}&search=${searchText}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            if (response.data.success) {
-                setStudents(response.data.data);
-      setPage(response.data.pagination.currentPage);
-      setTotalPages(response.data.pagination.totalPages);
-            }
-        } catch (e) {
-            toast.error("Failed to load courses", { id: "failiour" });
-        }
+  const token = localStorage.getItem("JwtToken");
+
+  const loadStudents = async (pageNo = 1, searchText = search) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/students?page=${pageNo}&limit=${limit}&search=${searchText}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        setStudents(response.data.data);
+        setPage(response.data.pagination.currentPage);
+        setTotalPages(response.data.pagination.totalPages);
+      }
+    } catch (e) {
+      toast.error("Failed to load students");
     }
+  };
 
-    const enrollCourse = async ({ studentId, courseId }) => {
-        try {
-            const response = await axios.post("http://localhost:8080/enroll-course", { studentId, courseId },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-
-            )
-            if (response.data.success) {
-                toast.success("Course enrolled");
-                loadStudents();
-            }
-        } catch (e) {
-            toast.error("Enrollment failed");
-        }
+  const loadCourses = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/courses", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (response.data.success) setCourses(response.data.data);
+    } catch {
+      toast.error("Failed to load courses");
     }
+  };
 
-    const loadCourses = async () => {
-        try {
-            const response = await axios.get("http://localhost:8080/courses", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            if (response.data.success) {
-                setCourse(response.data.data);
-                toast.success("Courses loaded", { id: "coursesuccess" });
+  const enrollCourse = async ({ studentId, courseId }) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/enroll-course",
+        { studentId, courseId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-            }
-        } catch (e) {
-            toast.error("Failed to load courses");
-        }
-    }
-
-    useEffect(() => {
+      if (response.data.success) {
+        toast.success("Course enrolled successfully");
         loadStudents(page);
-        loadCourses();
-    }, [])
+      }
+    } catch {
+      toast.error("Enrollment failed");
+    }
+  };
 
-    return (
-        <>
-         <div className="px-5 mt-8 flex flex-col gap-5">
-             <Input type={"text"} placeholder={"Search by name or email..."} value={search}
-             onChange={(e)=>{
-                setSearch(e.target.value);
-                loadStudents(1, e.target.value)
-             }}/>
-                <h2 className="text-2xl text-blue-950 text-center font-bold mb-4">Students List</h2>
+  useEffect(() => {
+    loadStudents(page);
+    loadCourses();
+  }, []);
 
-
-            </div>
-        <div className="md:block hidden h-[400px] overflow-y-auto scroll-auto overflow-x-auto bg-white rounded-xl shadow-md p-6">
-           
-            <table className="w-full border border-gray-200">
-                <thead className="bg-gray-100">
-                    <tr>
-                        <th className="p-3 border">Name</th>
-                        <th className="p-3 border">Email</th>
-                        <th className="p-3 border">Enrolled Courses</th>
-                        <th className="p-3 border">Total Fee</th>
-                        <th className="p-3 border">Remaining Fee</th>
-                        <th className="p-3 border">Enroll</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        students.map((s) => {
-                            const pendingFee = (s.fee?.total ||0) - (s.fee?.paid || 0);
-                            return (
-                                <tr key={s._id} className="text-center">
-                                    <td className="p-2 border">{s.name}</td>
-                                    <td className="p-2 border">{s.email}</td>
-                                    <td className="p-2 border">{
-                                        s.enrolledCourses.length > 0 ?
-                                            (s.enrolledCourses.map((c) => c.title).join(", ")
-                                            ) : "None"
-                                    }</td>
-                                    <td className="p-2 border">{s.fee.total}</td>
-                                    <td className="p-2 border">{pendingFee}</td>
-
-                                    <td className="p-2 border">
-                                        <select className="border p-1 rounded"
-                                            onChange={(e) => {
-                                                enrollCourse({
-                                                    studentId: s._id,
-                                                    courseId: e.target.value
-                                                })
-                                            }}
-                                            defaultValue="">
-                                            <option value="" disabled>
-                                                Select Course
-                                            </option>
-                                            {
-                                                course.map((c) => (
-                                                    <option key={c._id} value={c._id}>{c.title}</option>
-                                                ))
-                                            }
-                                        </select>
-                                    </td>
-                                </tr>
-                            )
-                        })
-                    }
-                </tbody>
-
-
-            </table>
-          
+  return (
+    <div className="max-w-7xl mx-auto px-6 mt-10">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-around gap-4 mb-6">
+        <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A]">
+          Students
+        </h2>
+        <div className="w-full md:w-[75%]">
+          <Input
+            type="text"
+            placeholder="Search students..."
+            value={search}
+            onChange={(e) => {
+              setSearch(e.target.value);
+              loadStudents(1, e.target.value);
+            }}
+          />
         </div>
+      </div>
 
-        <div className="">
-            <div className="md:hidden space-y-4 h-[500px] p-5 overflow-y-auto scroll-auto">
+  
+      <div className="hidden md:block bg-white shadow-lg rounded-2xl overflow-hidden">
+        <div className="overflow-x-auto max-h-[500px]">
+          <table className="w-full text-left border-collapse">
+            <thead className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] text-white">
+              <tr>
+                <th className="p-3 font-medium">Name</th>
+                <th className="p-3 font-medium">Email</th>
+                <th className="p-3 font-medium">Courses</th>
+                <th className="p-3 font-medium">Total Fee</th>
+                <th className="p-3 font-medium">Remaining</th>
+                <th className="p-3 font-medium">Enroll</th>
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((s) => {
+                const pending = (s.fee?.total || 0) - (s.fee?.paid || 0);
+                return (
+                  <tr
+                    key={s._id}
+                    className="border-b hover:bg-blue-50 transition-colors"
+                  >
+                    <td className="p-3">{s.name}</td>
+                    <td className="p-3">{s.email}</td>
+                    <td className="p-3">
+                      {s.enrolledCourses?.length
+                        ? s.enrolledCourses.map((c) => c.title).join(", ")
+                        : "None"}
+                    </td>
+                    <td className="p-3">₹{s.fee?.total || 0}</td>
+                    <td className="p-3 text-red-600 font-semibold">₹{pending}</td>
+                    <td className="p-3">
+                      <select
+                        className="border border-gray-300 rounded-lg p-1 text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        defaultValue=""
+                        onChange={(e) =>
+                          enrollCourse({
+                            studentId: s._id,
+                            courseId: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="" disabled>
+                          Select Course
+                        </option>
+                        {courses.map((c) => (
+                          <option key={c._id} value={c._id}>
+                            {c.title}
+                          </option>
+                        ))}
+                      </select>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+<div className="md:hidden max-w-7xl mx-auto p-4 space-y-4">
   {students.map((s) => {
-    const pendingFee = (s.fee?.total || 0) - (s.fee?.paid || 0);
-
+    const pending = (s.fee?.total || 0) - (s.fee?.paid || 0);
     return (
-      <div key={s._id} className="bg-white rounded-xl shadow-2xl p-4">
-        <h3 className="font-semibold text-lg">{s.name}</h3>
-        <p className="text-sm text-gray-500">{s.email}</p>
-
-        <div className="mt-2 text-sm space-y-2">
-          <p>Courses: {s.enrolledCourses.length ? s.enrolledCourses.map(c => c.title).join(", ") : "None"}</p>
-          <p>Total Fee: ₹{s.fee?.total}</p>
-          <p className="text-red-500">Remaining: ₹{pendingFee}</p>
+      <div
+        key={s._id}
+        className="bg-gradient-to-r from-[#0F172A]/5 via-[#143a8a]/5 to-[#0F172A]/5 shadow-lg rounded-3xl p-5 border border-gray-200 flex flex-col gap-3"
+      >
+        <div className="flex justify-between items-center">
+          <h3 className="text-lg md:text-xl font-bold text-[#0F172A]">{s.name}</h3>
+          <p className="text-gray-500 text-sm md:text-base">{s.email}</p>
         </div>
 
-        <select
-          className="w-full border p-2 rounded mt-3"
-          defaultValue=""
-          onChange={(e) =>
-            enrollCourse({
-              studentId: s._id,
-              courseId: e.target.value
-            })
-          }
-        >
-          <option value="" disabled>Select Course</option>
-          {course.map((c) => (
-            <option key={c._id} value={c._id}>{c.title}</option>
-          ))}
-        </select>
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-wrap gap-2 items-center">
+            <span className="font-semibold text-gray-700">Courses:</span>
+            {s.enrolledCourses?.length ? (
+              <div className="flex flex-wrap gap-1 items-center overflow-x-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-100">
+                {s.enrolledCourses.map((c) => (
+                  <span
+                    key={c._id}
+                    className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs whitespace-nowrap"
+                  >
+                    {c.title}
+                  </span>
+                ))}
+              </div>
+            ) : (
+              <span className="text-gray-400">None</span>
+            )}
+          </div>
+
+          <div className="flex justify-between text-sm md:text-base">
+            <p>Total Fee: <span className="font-semibold">₹{s.fee?.total || 0}</span></p>
+            <p className="text-red-600 font-semibold">Remaining: ₹{pending}</p>
+          </div>
+        </div>
+
+        <div>
+          <select
+            className="w-full border border-gray-300 rounded-xl p-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+            defaultValue=""
+            onChange={(e) =>
+              enrollCourse({ studentId: s._id, courseId: e.target.value })
+            }
+          >
+            <option value="" disabled>
+              Enroll in Course
+            </option>
+            {courses.map((c) => (
+              <option key={c._id} value={c._id}>
+                {c.title} - ₹{c.price || 0}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     );
   })}
 </div>
-        </div>
-     <div className="flex justify-center gap-2 mt-6 flex-wrap mb-10">
-  <button
-    disabled={page === 1}
-    onClick={() => loadStudents(page - 1)}
-    className="px-3 py-1 bg-gray-200 rounded cursor-pointer disabled:opacity-50"
-  >
-    Prev
-  </button>
 
-  {[...Array(totalPages)].map((_, i) => (
-    <button
-      key={i}
-      onClick={() => loadStudents(i + 1)}
-      className={`px-3 py-1 rounded cursor-pointer ${
-        page === i + 1
-          ? "bg-blue-600 text-white"
-          : "bg-gray-200"
-      }`}
-    >
-      {i + 1}
-    </button>
-  ))}
+      {/* Pagination */}
+      <div className="flex justify-center gap-2 mt-6 flex-wrap mb-10">
+        <button
+          disabled={page === 1}
+          onClick={() => loadStudents(page - 1)}
+          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Prev
+        </button>
 
-  <button
-    disabled={page === totalPages}
-    onClick={() => loadStudents(page + 1)}
-    className="px-3 py-1 bg-gray-200 cursor-pointer rounded disabled:opacity-50"
-  >
-    Next
-  </button>
-</div>
+        {[...Array(totalPages)].map((_, i) => (
+          <button
+            key={i}
+            onClick={() => loadStudents(i + 1)}
+            className={`px-4 py-2 rounded-full text-sm transition ${
+              page === i + 1
+                ? "bg-blue-600 text-white shadow"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
 
-</>
-    );
+        <button
+          disabled={page === totalPages}
+          onClick={() => loadStudents(page + 1)}
+          className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default StudentTable;

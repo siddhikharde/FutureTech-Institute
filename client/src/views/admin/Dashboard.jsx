@@ -47,15 +47,24 @@ console.error(error);
      
 }, []); 
   return (
-    <div className="min-h-screen ">
-      <div className="p-8 flex items-center flex-col md:flex-row justify-center gap-5 gap-6">
-        <StatCard title="Total Students" value={stats.students} />
-        <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} valueColor={"red-400"}/>
-      </div>
-     <div>
-        <StudentTable/>
-     </div>
-      
-    </div>
+    <>
+ <div className="max-w-7xl mx-auto px-6 py-8">
+  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+    <h1 className="text-3xl font-bold text-slate-900">
+      Admin Dashboard
+    </h1>
+    <p className="text-gray-500 mt-2 md:mt-0">
+      Manage students, courses & fees
+    </p>
+  </div>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+   <StatCard title="Total Students" value={7} type="students" />
+<StatCard title="Pending Fees" value="₹ 356294" type="fees"  valueColor={"red-400"}/>
+  </div>
+</div>
+ <StudentTable/>
+</>
+
   );
 }
