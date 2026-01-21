@@ -23,7 +23,7 @@ function StudentTable() {
         }
     }
   
-    const enrolledCourses=async ({studentId, courseId})=>{
+    const enrollCourses=async ({studentId, courseId})=>{
         try{
              const response=await axios.post("http://localhost:8080/enroll-course", {studentId, courseId},
             {
@@ -38,12 +38,30 @@ function StudentTable() {
                loadStudents();
             }
         }catch(e){
+toast.error("Enrollment failed");
+        }
+    }
 
+    const loadCourses=async ()=>{
+        try{
+            const response=await axios.get("http://localhost:8080/courses",{
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            })
+            if(response.data.success){
+                setCourse(response.data.data);
+                toast.success("Courses loaded");
+
+            }
+        }catch(e){
+               toast.error("Failed to load courses");
         }
     }
 
     useEffect(()=>{
    loadStudents();
+   loadCourses();
     },[])
 
     return (
