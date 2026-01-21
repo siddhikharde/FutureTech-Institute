@@ -55,8 +55,15 @@ const auth=(req, res, next)=>{
       message:"Invalid or missing JWT Token"
     })
   }
-  req.existingUser=jwt.verify(token,process.env.JWT_SECRET);
+try {
+  req.existingUser = jwt.verify(token, process.env.JWT_SECRET);
   next();
+} catch {
+  return res.status(401).json({
+    success:false,
+    message:"Invalid or expired token"
+  });
+}
 }
 app.post("/students", auth, admin, async (req, res)=>{
   const {name, email, password, totalFee, phone} = req.body;
@@ -112,7 +119,7 @@ app.post("/students", auth, admin, async (req, res)=>{
   })
   }catch(e){
     return res.json({
-      success:flase,
+      success:false,
       message:`Error occure `,
       error:e.message
     })
@@ -145,12 +152,29 @@ app.post("/payment", auth, admin, async (req, res)=>{
 
 app.get("/students", auth, admin, async(req, res)=>{
   try{
-    const students=await User.find({role:"student"}).select("name email fee enrolledCourses").populate("enrolledCourses", "title price");
-    return res.json({
-      success:true,
-      message:"Students data fetched Successfully",
-      data:students
-    })
+     const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const [students, total] = await Promise.all([
+      User.find({ role: "student" })
+        .select("name email fee enrolledCourses")
+        .populate("enrolledCourses", "title price")
+        .skip(skip)
+        .limit(limit)
+        .lean(),
+
+      User.countDocuments({ role: "student" })
+      
+    ]);
+   return res.json({
+      success: true,
+      data: students,
+      pagination: {
+        totalStudents: total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+      }
+    });
   }catch(e){
     return res.json({
       success:false,
@@ -262,7 +286,7 @@ app.post("/enroll-course",auth, admin, async (req, res)=>{
   return res.json({
      success: false,
       message: "Enrollment failed",
-      error: error.message,
+      error: e.message,
   })
  }
 })
