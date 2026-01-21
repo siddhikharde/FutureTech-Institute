@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
@@ -104,6 +104,7 @@ const handleSubmit = async (e) => {
             </div>
           </form>
         </div>
+        <Toaster/>
       </motion.div>
       <Footer/>
     </div>

@@ -7,29 +7,29 @@ import logo from '../assets/logo.png'
 function Navbar(){
     const [open, setOpen] = useState(false);
   return (
-    <div className="bg-[#0F172A] shadow-md z-1000 sticky top-0 left-0 right-0">
+    <div className="bg-white shadow-md z-1000 sticky top-0 left-0 right-0">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
 
           <Link
             to="/"
-            className="text-2xl font-bold text-[#38BDF8] flex items-center justify-center"
+            className="text-2xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent flex items-center justify-center"
           >
             <img src={logo} alt="FutureTech Logo" className="h-9" />
             FutureTech
           </Link>
 
           <div className="hidden md:flex space-x-6">
-            <Link to="/" className="text-gray-200 text-[17px] font-bold hover:text-[#06B6D4]">
+            <Link to="/" className="text-[#0F172A] text-[17px] font-bold hover:text-blue-700">
               Home
             </Link>
-            <Link to="/courses" className="text-gray-200 text-[17px] font-bold hover:text-[#06B6D4]">
+            <Link to="/courses" className="text-[#0F172A]  text-[17px] font-bold hover:text-blue-700">
               Courses
             </Link>
-            <Link to="/about" className="text-gray-200 font-bold text-[17px] hover:text-[#06B6D4]">
+            <Link to="/about" className="text-[#0F172A]  font-bold text-[17px] hover:text-blue-700">
               About
             </Link>
-            <Link to="/contact" className="text-gray-200 font-bold text-[17px] hover:text-[#06B6D4]">
+            <Link to="/contact" className="text-[#0F172A]  font-bold text-[17px] hover:text-blue-700">
               Contact
             </Link>
           </div>
@@ -41,7 +41,7 @@ function Navbar(){
           </div>
            <button
             onClick={() => setOpen(!open)}
-            className="md:hidden text-gray-200 cursor-pointer"
+            className="md:hidden text-[#0F172A] cursor-pointer"
           >
             {open ? <X size={26} /> : <Menu size={26} />}
           </button>

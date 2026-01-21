@@ -1,11 +1,11 @@
 import React from 'react'
-import Navbar from '../../components/Navbar'
 import { motion } from 'framer-motion'
 import Input from '../../components/Input'
 import { useState } from 'react'
 import Button from '../../components/Button'
 import axios from 'axios';
 import toast,{Toaster} from 'react-hot-toast'
+import AdminNavbar from '../../components/adminComponenets/AdminNavbar'
 
 function AddStudent() {
     const [form, setForm] = useState({
@@ -55,11 +55,11 @@ const fadeInUp={
 }
 
     return (
-        <div className='bg-[#F8FAFC]  min-h-screen'>
-            <Navbar />
+        <div className='bg-gray-50  min-h-screen'>
+            <AdminNavbar/>
 
             <div className='flex items-center justify-center flex-col gap-4 p-5'>
-                <h1 className='text-center p-2 mt-5 text-4xl font-bold text-[#0F172A]'>Add Students</h1>
+                <h1 className='text-center p-2 my-5 text-4xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent'>Add Students</h1>
                 <motion.form onSubmit={handleSubmit} 
                 className='bg-white rounded-2xl shadow-lg p-10 w-full max-w-md'
                 initial="hidden"

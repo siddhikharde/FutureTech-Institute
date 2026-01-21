@@ -4,7 +4,7 @@ export default function StatCard({ title, value, type, valueColor }) {
   const Icon = type === "students" ? Users : IndianRupee;
 
   return (
-    <div className="relative bg-white rounded-2xl p-6 shadow-md">
+    <div className="relative bg-white rounded-2xl p-6 shadow-md hover:-translate-y-1 duration-100 hover:shadow-lg">
       <p className="text-sm text-gray-500 mb-2">{title}</p>
 
       <h2 className={`text-4xl font-bold text-${valueColor || "slate-900"} `}>

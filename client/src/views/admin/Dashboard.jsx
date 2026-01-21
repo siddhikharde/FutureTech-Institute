@@ -3,6 +3,7 @@ import axios from "axios";
 import StatCard from "../../components/adminComponenets/StatCard";
 import toast from "react-hot-toast";
 import StudentTable from "../../components/adminComponenets/StudentTable";
+import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
@@ -48,9 +49,12 @@ console.error(error);
 }, []); 
   return (
     <>
- <div className="max-w-7xl mx-auto px-6 py-8">
+     <AdminNavbar/>
+  
+ <div className="max-w-7xl mx-auto px-6 py-8 bg-gray-50">
+   
   <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-    <h1 className="text-3xl font-bold text-slate-900">
+    <h1 className="text-3xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent">
       Admin Dashboard
     </h1>
     <p className="text-gray-500 mt-2 md:mt-0">
