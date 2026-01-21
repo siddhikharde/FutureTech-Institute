@@ -6,17 +6,23 @@ import toast from "react-hot-toast";
 function StudentTable() {
     const [students, setStudents] = useState([]);
     const [course, setCourse] = useState([]);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+     const limit = 5;
+
 
     const token = localStorage.getItem("JwtToken");
-    const loadStudents = async () => {
+    const loadStudents = async (pageNo=1) => {
         try {
-            const response = await axios.get("http://localhost:8080/students", {
+            const response = await axios.get(`http://localhost:8080/students?page=${pageNo}&limit=${limit}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             })
             if (response.data.success) {
-                toast.success("Students data loaded", { id: "success" })
+                setStudents(response.data.data);
+      setPage(response.data.pagination.currentPage);
+      setTotalPages(response.data.pagination.totalPages);
                 setStudents(response.data.data);
             }
         } catch (e) {
@@ -61,12 +67,13 @@ function StudentTable() {
     }
 
     useEffect(() => {
-        loadStudents();
+        loadStudents(page);
         loadCourses();
     }, [])
 
     return (
-        <div className="overflow-x-auto bg-white rounded-xl shadow-md p-6">
+        <>
+        <div className="md:block hidden overflow-x-auto bg-white rounded-xl shadow-md p-6">
             <h2 className="text-xl font-bold mb-4">Students</h2>
 
             <table className="w-full border border-gray-200">
@@ -123,7 +130,41 @@ function StudentTable() {
 
 
             </table>
+
         </div>
+     <div className="flex justify-center gap-2 mt-6 flex-wrap">
+  <button
+    disabled={page === 1}
+    onClick={() => loadStudents(page - 1)}
+    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+  >
+    Prev
+  </button>
+
+  {[...Array(totalPages)].map((_, i) => (
+    <button
+      key={i}
+      onClick={() => loadStudents(i + 1)}
+      className={`px-3 py-1 rounded ${
+        page === i + 1
+          ? "bg-blue-600 text-white"
+          : "bg-gray-200"
+      }`}
+    >
+      {i + 1}
+    </button>
+  ))}
+
+  <button
+    disabled={page === totalPages}
+    onClick={() => loadStudents(page + 1)}
+    className="px-3 py-1 bg-gray-200 rounded disabled:opacity-50"
+  >
+    Next
+  </button>
+</div>
+
+</>
     );
 }
 
