@@ -152,18 +152,30 @@ app.post("/payment", auth, admin, async (req, res)=>{
 
 app.get("/students", auth, admin, async(req, res)=>{
   try{
+    const search = req.query.search.trim();;
+
+const searchFilter = search
+  ? {
+      $or: [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        
+      ]
+    }
+  : {};
+
      const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const [students, total] = await Promise.all([
-      User.find({ role: "student" })
+      User.find({ role: "student", ...searchFilter })
         .select("name email fee enrolledCourses")
         .populate("enrolledCourses", "title price")
         .skip(skip)
         .limit(limit)
         .lean(),
 
-      User.countDocuments({ role: "student" })
+      User.countDocuments({ role: "student", ...searchFilter })
       
     ]);
    return res.json({

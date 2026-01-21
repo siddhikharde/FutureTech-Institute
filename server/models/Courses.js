@@ -1,7 +1,11 @@
 import mongoose from "mongoose";
 import {model, Schema} from 'mongoose';
 const courseSchema=new Schema({
-    title:String,
+    title:{
+        type:String,
+        required:true,
+         index:true
+        },
     description:String,
     price:Number,
 },
