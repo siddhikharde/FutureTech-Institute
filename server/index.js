@@ -145,7 +145,7 @@ app.post("/payment", auth, admin, async (req, res)=>{
 
 app.get("/students", auth, admin, async(req, res)=>{
   try{
-    const students=await User.find({role:"student"}).select("name email fee");
+    const students=await User.find({role:"student"}).select("name email fee enrolledCourses").populate("enrolledCourses", "title price");
     return res.json({
       success:true,
       message:"Students data fetched Successfully",
@@ -265,6 +265,22 @@ app.post("/enroll-course",auth, admin, async (req, res)=>{
       error: error.message,
   })
  }
+})
+app.get("/courses", auth, admin, async (req, res)=>{
+  try{
+     const courses=await Course.find().select("title");
+     return res.json({
+      success:true,
+      message:"Courses loaded successfully",
+      data:courses
+     })
+  }catch(e){
+      return res.json({ 
+      success:false,
+      message:"Error occure while feching courses",
+      error:e.message
+     })
+  }
 })
 
 
