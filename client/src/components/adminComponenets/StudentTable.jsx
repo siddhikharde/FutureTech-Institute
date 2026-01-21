@@ -2,19 +2,20 @@ import axios from "axios";
 import { setDragLock } from "framer-motion";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import Input from '../../components/Input'
 
 function StudentTable() {
     const [students, setStudents] = useState([]);
     const [course, setCourse] = useState([]);
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [search, setSearch] = useState("");
      const limit = 5;
 
-
     const token = localStorage.getItem("JwtToken");
-    const loadStudents = async (pageNo=1) => {
+    const loadStudents = async (pageNo=1, searchText=search) => {
         try {
-            const response = await axios.get(`http://localhost:8080/students?page=${pageNo}&limit=${limit}`, {
+            const response = await axios.get(`http://localhost:8080/students?page=${pageNo}&limit=${limit}&search=${searchText}`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -23,7 +24,6 @@ function StudentTable() {
                 setStudents(response.data.data);
       setPage(response.data.pagination.currentPage);
       setTotalPages(response.data.pagination.totalPages);
-                setStudents(response.data.data);
             }
         } catch (e) {
             toast.error("Failed to load courses", { id: "failiour" });
@@ -74,6 +74,14 @@ function StudentTable() {
     return (
         <>
         <div className="md:block hidden overflow-x-auto bg-white rounded-xl shadow-md p-6">
+            <div>
+             <Input type={"text"} placeholder={"Search by name or email..."} value={search}
+             onChange={(e)=>{
+                setSearch(e.target.value);
+                loadStudents(1, e.target.value)
+             }}/>
+
+            </div>
             <h2 className="text-xl font-bold mb-4">Students</h2>
 
             <table className="w-full border border-gray-200">
