@@ -320,6 +320,31 @@ app.get("/courses", auth, admin, async (req, res)=>{
 })
 
 
+app.get("/dashboard-stats", auth, admin, async (req, res)=>{
+  try{
+     const students=await User.find({role:"student"}).select("fee").lean();
+     let pendingFee=0;
+     students.forEach(s=>{
+     pendingFee+=(s.fee.total || 0)-(s.fee.paid || 0)
+  });
+
+  return res.json({
+      success: true,
+      data: {
+        totalStudents: students.length,
+        pendingFee
+      },          
+      message:"Students fetched successfully.."
+
+    })
+  }catch(e){
+     return res.json({
+       success: false,
+      message: "Failed to load dashboard stats",
+      error: e.message
+     })
+  }
+})
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
