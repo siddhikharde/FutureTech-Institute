@@ -8,7 +8,7 @@ function StudentTable() {
     const [course, setCourse] = useState([]);
 
     const token = localStorage.getItem("JwtToken");
-    const loadStuents = async () => {
+    const loadStudents = async () => {
         try {
             const response = await axios.get("http://localhost:8080/students", {
                 headers: {
@@ -22,8 +22,28 @@ function StudentTable() {
             toast.error("Failed to load courses");
         }
     }
+  
+    const enrolledCourses=async ({studentId, courseId})=>{
+        try{
+             const response=await axios.post("http://localhost:8080/enroll-course", {studentId, courseId},
+            {
+                headers:{
+                    Authorization:`Bearer ${token}`
+                }
+            }
+            
+         )
+         if(response.data.success){
+                  toast.success("Course enrolled");
+               loadStudents();
+            }
+        }catch(e){
+
+        }
+    }
+
     useEffect(()=>{
-   loadStuents();
+   loadStudents();
     },[])
 
     return (
@@ -49,6 +69,12 @@ function StudentTable() {
                             <tr key={s._id} className="text-center">
                                 <td className="p-2 border">{s.name}</td>
                                 <td className="p-2 border">{s.email}</td>
+                                <td className="p-2 border">{
+                                s. enrolledCourses.length>0?
+                                 ( s.enrolledCourses.map((c)=>c.title).join(", ")
+                                ):"None"
+                            }</td>
+
                             </tr>
                          ) })
                     }
