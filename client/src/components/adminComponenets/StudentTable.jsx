@@ -113,27 +113,7 @@ function StudentTable() {
                     </td>
                     <td className="p-3">₹{s.fee?.total || 0}</td>
                     <td className="p-3 text-red-600 font-semibold">₹{pending}</td>
-                    <td className="p-3">
-                      <select
-                        className="border border-gray-300 rounded-lg p-1 text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
-                        defaultValue=""
-                        onChange={(e) =>
-                          enrollCourse({
-                            studentId: s._id,
-                            courseId: e.target.value,
-                          })
-                        }
-                      >
-                        <option value="" disabled>
-                          Select Course
-                        </option>
-                        {courses.map((c) => (
-                          <option key={c._id} value={c._id}>
-                            {c.title}
-                          </option>
-                        ))}
-                      </select>
-                    </td>
+                  
                   </tr>
                 );
               })}

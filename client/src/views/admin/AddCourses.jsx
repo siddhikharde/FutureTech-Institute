@@ -140,7 +140,7 @@ const deleteCourse=async(id)=>{
 
                 </motion.form>
 
-                <div className="bg-white rounded-2xl shadow-md overflow-x-auto">
+                <div className="bg-white hidden md:block mt-10  rounded-2xl shadow-md overflow-x-auto">
                     <table className='w-full text-sm'>
                         <thead className="bg-gray-100 text-left">
                             <tr>
@@ -185,6 +185,34 @@ const deleteCourse=async(id)=>{
                     </table>
 
                 </div>
+
+      <div className="md:hidden space-y-4">
+  {courses.length === 0 ? (
+    <p className="text-center text-gray-500">No courses found</p>
+  ) : (
+    courses.map((c) => (
+      <div
+        key={c._id}
+        className="bg-white rounded-xl mt-10 shadow-md p-5 space-y-2"
+      >
+        <h3 className="text-lg font-semibold">{c.title}</h3>
+
+        <p className="text-sm text-gray-600">
+          Duration: <span className="font-medium">{c.duration || "-"}</span>
+        </p>
+
+        <p className="text-sm text-gray-600">
+          Price: <span className="font-medium">₹{c.price}</span>
+        </p>
+
+        <div className="flex gap-2 pt-2">
+          <Button title="Delete" size="sm" variant="danger" />
+        </div>
+      </div>
+    ))
+  )}
+</div>
+
 
             </div>
 <Toaster/>

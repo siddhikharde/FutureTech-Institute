@@ -67,7 +67,9 @@ console.error(error);
 <StatCard title="Pending Fees" value={stats.pendingFees} type="fees"  valueColor={"text-red-400"}/>
   </div>
 </div>
- <StudentTable/>
+<div className="md:p-5 bg-gray-50">
+   <StudentTable/>
+</div>
 </>
 
   );
