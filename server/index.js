@@ -264,11 +264,12 @@ app.post("/login", async (req, res)=>{
 })
 
 app.post("/courses" ,auth, admin, async (req, res)=>{
-  const {title, description, price}=req.body;
+  const {title, description, price, duration}=req.body;
   const course = new Course({
     title,
     description,
-    price
+    price,
+    duration
   });
   try{
     const data=await course.save();
@@ -326,7 +327,7 @@ app.post("/enroll-course",auth, admin, async (req, res)=>{
 })
 app.get("/courses", auth, admin, async (req, res)=>{
   try{
-     const courses=await Course.find().select("title price");
+     const courses=await Course.find().select("title price duration");
      return res.json({
       success:true,
       message:"Courses loaded successfully",

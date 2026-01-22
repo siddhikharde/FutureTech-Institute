@@ -8,6 +8,8 @@ const courseSchema=new Schema({
         },
     description:String,
     price:Number,
+    duration:{
+        type:String}
 },
 {
     timestamps:true
