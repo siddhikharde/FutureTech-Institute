@@ -342,6 +342,42 @@ app.get("/courses", auth, admin, async (req, res)=>{
   }
 })
 
+app.delete("/courses/:id", auth, admin, async(req, res)=>{
+  try{
+      const {id}=req.params;
+
+     const assigned=await User.findOne({
+        enrolledCourses:id,
+      })
+      if(assigned){
+        return res.json({
+          success:false,
+           message: "Course is assigned to students. Cannot delete.",
+        })
+      }
+
+      const course=await Course.findByIdAndDelete(id);
+       if(!course){
+      return res.json({
+        success:false,
+        message:"Course not Found",
+        data:null
+      })
+
+    }
+     res.json({
+      success: true,
+      message: "Course deleted successfully",
+    });
+  }catch(e){
+    res.json({
+       success: false,
+      message: "Failed to delete course",
+      error: error.message,
+    })
+  }
+})
+
 
 app.get("/dashboard-stats", auth, admin, async (req, res)=>{
   try{
