@@ -18,7 +18,7 @@ export default function AdminNavbar() {
     { name: "Dashboard", path: "/dashboard" },
     { name: "Add Student", path: "/addStudents" },
     { name: "Add Fee", path: "/add-fee" },
-    { name: "Courses", path: "/courses" },
+    { name: "Add Courses", path: "/add-courses" },
   ];
 
   return (

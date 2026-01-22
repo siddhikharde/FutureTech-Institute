@@ -9,6 +9,7 @@ import Courses from './views/Courses'
 import Home from './views/Home'
 import AddStudent from './views/admin/AddStudent'
 import Dashboard from './views/admin/Dashboard'
+import AddCourses from './views/admin/AddCourses'
 function App() {
   return (
     <div>
@@ -22,6 +23,7 @@ function App() {
           <Route path='/courses' element={<Courses />} />
           <Route path='/addStudents' element={<AddStudent />} />
           <Route path='/dashboard' element={<Dashboard />} />
+          <Route path='add-courses' element={<AddCourses/>}/>
         </Routes>
       </BrowserRouter>
 
