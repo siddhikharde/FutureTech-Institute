@@ -62,9 +62,9 @@ console.error(error);
     </p>
   </div>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-   <StatCard title="Total Students" value={7} type="students" />
-<StatCard title="Pending Fees" value="₹ 356294" type="fees"  valueColor={"red-400"}/>
+  <div className="grid grid-cols-1 my-2 sm:grid-cols-2 gap-6">
+   <StatCard title="Total Students" value={stats.students} type="students" />
+<StatCard title="Pending Fees" value={stats.pendingFees} type="fees"  valueColor={"text-red-400"}/>
   </div>
 </div>
  <StudentTable/>

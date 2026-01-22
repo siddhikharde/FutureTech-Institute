@@ -9,7 +9,7 @@ function StudentTable() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
-  const limit = 10;
+  const limit = 6;
 
   const token = localStorage.getItem("JwtToken");
 
@@ -83,17 +83,17 @@ function StudentTable() {
       </div>
 
   
-      <div className="hidden md:block bg-white shadow-lg rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto max-h-[500px]">
-          <table className="w-full text-left border-collapse">
-            <thead className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] text-white">
+      <div className="hidden md:block mt-10 bg-white shadow-md rounded-2xl overflow-hidden">
+        <div className="bg-white  rounded-2xl shadow-md overflow-x-aut">
+          <table className="w-full text-sm">
+            <thead className="bg-gray-100 text-left">
               <tr>
-                <th className="p-3 font-medium">Name</th>
-                <th className="p-3 font-medium">Email</th>
-                <th className="p-3 font-medium">Courses</th>
-                <th className="p-3 font-medium">Total Fee</th>
-                <th className="p-3 font-medium">Remaining</th>
-                <th className="p-3 font-medium">Enroll</th>
+                <th className="p-4">Name</th>
+                <th className="p-4">Email</th>
+                <th className="p-4">Courses</th>
+                <th className="p-4">Total Fee</th>
+                <th className="p-4">Remaining</th>
+                <th className="p-4">Enroll</th>
               </tr>
             </thead>
             <tbody>
@@ -102,7 +102,7 @@ function StudentTable() {
                 return (
                   <tr
                     key={s._id}
-                    className="border-b hover:bg-blue-50 transition-colors"
+                    className="border-t hover:bg-gray-50"
                   >
                     <td className="p-3">{s.name}</td>
                     <td className="p-3">{s.email}</td>
