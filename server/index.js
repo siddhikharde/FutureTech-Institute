@@ -70,8 +70,7 @@ app.post("/students", auth, admin, async (req, res)=>{
       email,
       password,
       phone,
-      parentName,
-      parentPhone,
+      parent,
       enrolledCourses = [],
       paidFee = 0} = req.body;
 
@@ -120,8 +119,8 @@ app.post("/students", auth, admin, async (req, res)=>{
       role: "student",
 
       parent: {
-        name: parentName,
-        phone: parentPhone
+        name: parent.name,
+        phone: parent.phone,
       },
 
       enrolledCourses,
@@ -149,19 +148,36 @@ app.post("/students", auth, admin, async (req, res)=>{
 })
 
 app.post("/payment", auth, admin, async (req, res)=>{
-  const {email, amount} = req.body;
+  const {studentId, amount} = req.body;
  try{
-  const totalFee= await User.findOneAndUpdate({email},
-    {$inc:{"fee.paid":amount}}
-  )
-  const user= await User.findOne({email});
+   if (!studentId || !amount) {
+      return res.json({
+        success: false,
+        message: "Student ID and amount are required",
+      });
+    }
+    const user = await User.findById(studentId);
+    if (!user) {
+      return res.json({
+        success: false,
+        message: "Student not found",
+      });
+    }
+     if (!user.fee) {
+      user.fee = { total: 0, paid: 0 };
+    }
+     user.fee.paid += Number(amount);
+    await user.save();
   const remainingFee=user.fee.total-user.fee.paid;
 
  
   return res.json({
-    success:true,
-    message:"Fee updated",
-    data:remainingFee
+    success: true,
+      message: "Fee updated",
+      data: {
+        paid: user.fee.paid,
+        remaining: remainingFee,
+      },
   })
  }catch(e){
   return res.json({
