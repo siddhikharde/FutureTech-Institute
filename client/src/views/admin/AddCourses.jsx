@@ -5,168 +5,192 @@ import { motion } from 'framer-motion';
 import AdminNavbar from '../../components/adminComponenets/AdminNavbar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 function AddCourses() {
-    const navigate=useNavigate();
-    const [courses, setCourses]=useState([]);
-    const [form, setForm]=useState({
-        title:"",
-        description:"",
-        price:"",
-        duration:"",
+    const navigate = useNavigate();
+    const [courses, setCourses] = useState([]);
+    const [form, setForm] = useState({
+        title: "",
+        description: "",
+        price: "",
+        duration: "",
     })
 
-    const fetchCourses=async ()=>{
-        try{
-   const token=localStorage.getItem("JwtToken");
-          const res=await axios.get("http://localhost:8080/courses", {
-            headers:{Authorization:`Bearer ${token}`}
-          });
-          if(res.data.success){
-            setCourses(res.data.data);
-          }
-        }catch(e){
+    const fetchCourses = async () => {
+        try {
+            const token = localStorage.getItem("JwtToken");
+            const res = await axios.get("http://localhost:8080/courses", {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.data.success) {
+                setCourses(res.data.data);
+            }
+        } catch (e) {
             toast.error("Failed to load courses");
         }
     }
-    
-    const handleSubmit=async(e)=>{
-         e.preventDefault();
-         const {title, description, price, duration}=form;
-         try{
-        const token=localStorage.getItem("JwtToken");
-        const res=await axios.post("http://localhost:8080/courses", {
-            title,
-            description,
-            price,
-            duration,
-        },{
-            headers:{Authorization:`Bearer ${token}`}
-        })
-        if(res.data.success){
-            toast.success("Course added");
-            setForm({
-                title:"",
-                description:"",
-                duration:"",
-                price:""
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const { title, description, price, duration } = form;
+        try {
+            const token = localStorage.getItem("JwtToken");
+            const res = await axios.post("http://localhost:8080/courses", {
+                title,
+                description,
+                price,
+                duration,
+            }, {
+                headers: { Authorization: `Bearer ${token}` }
             })
-            fetchCourses();
-        }
-
-         }catch(e){
-toast.error("Course creation failed");
-         }       
-    }
-    useEffect(()=>{
-        fetchCourses();
-    },[])
-
-const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4 },
-    },
-  };
-
-
-  return (
-    <div className='min-h-screen bg-gray-50'>
-        <AdminNavbar/>
-        <div className='max-w-7xl mx-auto p-4 space-y-5'>
-         <h1 className='text-4xl font-bold text-center my-8  bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent'>
-              Manage Courses
-         </h1>
-         <motion.form 
-         onSubmit={handleSubmit}
-         variants={fadeInUp}
-         initial="hidden"
-         animate="visible"
-         className="bg-white p-6 rounded-2xl shadow-md grid grid-cols-1 md:grid-cols-4 gap-4">
-
-            <Input type={"text"} placeholder={"Course Title"}
-            value={form.title}
-            onChange={(e)=>{
-                setForm({...form, title:e.target.value})
-            }}/>
-
-            <Input type={"number"} placeholder={"Price (₹)"}
-            value={form.price}
-            onChange={(e)=>{
-                setForm({...form, price:e.target.value})
-            }}/>
-
-            <Input type={"text"} placeholder={"Duration (eg. 3 Months)"}
-            value={form.duration}
-            onChange={(e)=>{
-                setForm({...form, duration:e.target.value})
-            }}/>
-
-            <Button title={"Add"} type='submit'/>
-            <textarea
-            placeholder='Description (optional)'
-            className="md:col-span-4 border rounded-xl p-3 border border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
-            value={form.description}
-            onChange={(e)=>{
+            if (res.data.success) {
+                toast.success("Course added");
                 setForm({
-                    ...form, description:e.target.value
+                    title: "",
+                    description: "",
+                    duration: "",
+                    price: ""
                 })
-            }}/>
+                fetchCourses();
+            }
+
+        } catch (e) {
+            toast.error("Course creation failed");
+        }
+    }
+
+const deleteCourse=async(id)=>{
+    if (!window.confirm("Are you sure you want to delete this course?")) return;
+
+    try{
+        const token=localStorage.getItem("JwtToken");
+        const res=await axios.delete(`http://localhost:8080/courses/${id}`,
+            {headers:{
+                Authorization:`Bearer ${token}`,
+            }}
+        )
+        if (res.data.success) {
+      toast.success("Course deleted");
+      fetchCourses();
+    }else{
+        toast.error(res.data.message)
+    }
+    }catch(e){
+         toast.error("Delete failed");
+    }
+}
+    useEffect(() => {
+        fetchCourses();
+    }, [])
+
+    const fadeInUp = {
+        hidden: { opacity: 0, y: 20 },
+        visible: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.4 },
+        },
+    };
 
 
-         </motion.form>
+    return (
+        <div className='min-h-screen bg-gray-50'>
+            <AdminNavbar />
+            <div className='max-w-7xl mx-auto p-4 space-y-5'>
+                <h1 className='text-4xl font-bold text-center my-8  bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent'>
+                    Manage Courses
+                </h1>
+                <motion.form
+                    onSubmit={handleSubmit}
+                    variants={fadeInUp}
+                    initial="hidden"
+                    animate="visible"
+                    className="bg-white p-6 rounded-2xl shadow-md grid grid-cols-1 md:grid-cols-4 gap-4">
 
-         <div className="bg-white rounded-2xl shadow-md overflow-x-auto">
-            <table className='w-full text-sm'>
-                <thead className="bg-gray-100 text-left">
-                    <tr>
-                          <th className="p-4">Title</th>
-                <th className="p-4">Duration</th>
-                <th className="p-4">Price</th>
-                <th className="p-4 text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        courses.length==0 ?(
-                            <tr>
-                                <td colSpan="4" className="p-6 text-center text-gray-500">
-                                                       No courses found
-                                </td>
-                            </tr>
-                        ):(
-                            courses.map((c)=>{
-                                return(
-                                   <tr  key={c._id}
-                    className="border-t hover:bg-gray-50">
-                                     <td className='p-4 font-medium'>{c.title} </td>
-                                    <td className="p-4">{c.duration?c.duration:"-" }</td>
-                    <td className="p-4">₹ {c.price}</td>
-                    <td className="p-4 text-center">
-                        <Button 
-                        title={" Delete"} variant='danger' size='sm'
-                        />
+                    <Input type={"text"} placeholder={"Course Title"}
+                        value={form.title}
+                        onChange={(e) => {
+                            setForm({ ...form, title: e.target.value })
+                        }} />
 
-                    </td>
-                                   </tr>
-                                )
+                    <Input type={"number"} placeholder={"Price (₹)"}
+                        value={form.price}
+                        onChange={(e) => {
+                            setForm({ ...form, price: e.target.value })
+                        }} />
+
+                    <Input type={"text"} placeholder={"Duration (eg. 3 Months)"}
+                        value={form.duration}
+                        onChange={(e) => {
+                            setForm({ ...form, duration: e.target.value })
+                        }} />
+
+                    <Button title={"Add"} type='submit' />
+                    <textarea
+                        placeholder='Description (optional)'
+                        className="md:col-span-4 border rounded-xl p-3 border border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
+                        value={form.description}
+                        onChange={(e) => {
+                            setForm({
+                                ...form, description: e.target.value
                             })
-                        )
-                    }
-                </tbody>
+                        }} />
 
-            </table>
 
-         </div>
+                </motion.form>
+
+                <div className="bg-white rounded-2xl shadow-md overflow-x-auto">
+                    <table className='w-full text-sm'>
+                        <thead className="bg-gray-100 text-left">
+                            <tr>
+                                <th className="p-4">Title</th>
+                                <th className="p-4">Duration</th>
+                                <th className="p-4">Price</th>
+                                <th className="p-4 text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {
+                                courses.length == 0 ? (
+                                    <tr>
+                                        <td colSpan="4" className="p-6 text-center text-gray-500">
+                                            No courses found
+                                        </td>
+                                    </tr>
+                                ) : (
+                                    courses.map((c) => {
+                                        return (
+                                            <tr key={c._id}
+                                                className="border-t hover:bg-gray-50">
+                                                <td className='p-4 font-medium'>{c.title} </td>
+                                                <td className="p-4">{c.duration ? c.duration : "-"}</td>
+                                                <td className="p-4">₹ {c.price}</td>
+                                                <td className="p-4 text-center">
+                                                    <Button
+                                                        title={" Delete"} variant='danger' size='sm'
+                                                        onClick={()=>{
+                                                            deleteCourse(c._id)
+                                                        }}
+                                                    />
+
+                                                </td>
+                                            </tr>
+                                        )
+                                    })
+                                )
+                            }
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+<Toaster/>
 
         </div>
-
-      
-    </div>
-  )
+    )
 }
 
 export default AddCourses
