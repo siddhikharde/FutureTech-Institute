@@ -10,6 +10,7 @@ import Home from './views/Home'
 import AddStudent from './views/admin/AddStudent'
 import Dashboard from './views/admin/Dashboard'
 import AddCourses from './views/admin/AddCourses'
+import StudentDetails from './views/admin/StudentDetail'
 function App() {
   return (
     <div>
@@ -24,6 +25,7 @@ function App() {
           <Route path='/addStudents' element={<AddStudent />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='add-courses' element={<AddCourses/>}/>
+          <Route path='/student-detail' element={<StudentDetails/>}/>
         </Routes>
       </BrowserRouter>
 
