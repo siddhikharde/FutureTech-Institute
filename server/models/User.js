@@ -19,6 +19,10 @@ const userSchema=new Schema({
         enum:["admin", "student"],
         default:"student",
     },
+     parent: {
+    name: String,
+    phone: String
+  },
     fee:{
         total:Number,
         paid:{

@@ -66,8 +66,18 @@ try {
 }
 }
 app.post("/students", auth, admin, async (req, res)=>{
-  const {name, email, password, totalFee, phone} = req.body;
+  const { name,
+      email,
+      password,
+      phone,
+      parentName,
+      parentPhone,
+      enrolledCourses = [],
+      paidFee = 0} = req.body;
 
+      const courses = await Course.find({ _id: { $in: enrolledCourses } });
+       const totalFee = courses.reduce((sum, c) => sum + (c.price || 0), 0);
+        const remainingFee = totalFee - paidFee;
    if(!name){
         return res.json({
             success:false,
@@ -102,14 +112,26 @@ app.post("/students", auth, admin, async (req, res)=>{
   }
    const salt = bcrypt.genSaltSync(10);
     const hashedPassword=bcrypt.hashSync(password,salt)
-  const student=new User({
-    name,
-    email,
-    phone,
-    password:hashedPassword,
-    role:"student",
-    fee:{total:totalFee}
-  })
+   const student = new User({
+      name,
+      email,
+      phone,
+      password: hashedPassword,
+      role: "student",
+
+      parent: {
+        name: parentName,
+        phone: parentPhone
+      },
+
+      enrolledCourses,
+
+      fee: {
+        total: totalFee,
+        paid: paidFee,
+        remaining: remainingFee
+      }
+    });
   try{
     const savedUser=await student.save()
     return  res.json({
@@ -304,7 +326,7 @@ app.post("/enroll-course",auth, admin, async (req, res)=>{
 })
 app.get("/courses", auth, admin, async (req, res)=>{
   try{
-     const courses=await Course.find().select("title");
+     const courses=await Course.find().select("title price");
      return res.json({
       success:true,
       message:"Courses loaded successfully",
