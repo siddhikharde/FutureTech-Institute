@@ -404,6 +404,19 @@ app.get("/dashboard-stats", auth, admin, async (req, res)=>{
      })
   }
 })
+
+app.get("/student/:id", auth, admin, async(req, res)=>{
+  const id=req.params.id;
+  const student=await User.findById(id).populate("enrolledCourses", "title price");
+  if(!student){
+    return res.json({
+      success:false,
+      message:"Student not found"
+    })
+  }
+  res.json({ success: true, data: student });
+  
+})
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
