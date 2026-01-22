@@ -64,8 +64,8 @@ function StudentTable() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 mt-10">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-around gap-4 mb-6">
+    <div className="max-w-7xl mx-auto px-6 ">
+      <div className="flex flex-col bg-white rounded-2xl p-5 shadow-md py-10 md:flex-row md:items-center md:justify-around gap-4 mb-6">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A]">
           Students
         </h2>
@@ -83,7 +83,7 @@ function StudentTable() {
       </div>
 
   
-      <div className="hidden md:block mt-10 bg-white shadow-md rounded-2xl overflow-hidden">
+      <div className="hidden md:block my-10 bg-white shadow-lg rounded-2xl overflow-hidden">
         <div className="bg-white  rounded-2xl shadow-md overflow-x-aut">
           <table className="w-full text-sm">
             <thead className="bg-gray-100 text-left">
@@ -93,7 +93,6 @@ function StudentTable() {
                 <th className="p-4">Courses</th>
                 <th className="p-4">Total Fee</th>
                 <th className="p-4">Remaining</th>
-                <th className="p-4">Enroll</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +111,7 @@ function StudentTable() {
                         : "None"}
                     </td>
                     <td className="p-3">₹{s.fee?.total || 0}</td>
-                    <td className="p-3 text-red-600 font-semibold">₹{pending}</td>
+                    <td className="p-3 text-red-400 font-semibold">₹{pending}</td>
                   
                   </tr>
                 );
@@ -123,68 +122,41 @@ function StudentTable() {
       </div>
 
 
-<div className="md:hidden max-w-7xl mx-auto p-4 space-y-4">
+<div className="md:hidden max-w-md mx-auto divide-y divide-gray-200 rounded-2xl bg-white">
   {students.map((s) => {
     const pending = (s.fee?.total || 0) - (s.fee?.paid || 0);
+
     return (
-      <div
-        key={s._id}
-        className="bg-gradient-to-r from-[#0F172A]/5 via-[#143a8a]/5 to-[#0F172A]/5 shadow-lg rounded-3xl p-5 border border-gray-200 flex flex-col gap-3"
-      >
-        <div className="flex justify-between items-center">
-          <h3 className="text-lg md:text-xl font-bold text-[#0F172A]">{s.name}</h3>
-          <p className="text-gray-500 text-sm md:text-base">{s.email}</p>
+      <div key={s._id} className="px-4 py-4 flex items-center justify-between">
+        
+        {/* Left */}
+        <div className="flex flex-col">
+          <span className="text-base font-medium text-gray-900">
+            {s.name}
+          </span>
+          <span className="text-sm text-gray-500 truncate max-w-[220px]">
+            {s.email}
+          </span>
         </div>
 
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-wrap gap-2 items-center">
-            <span className="font-semibold text-gray-700">Courses:</span>
-            {s.enrolledCourses?.length ? (
-              <div className="flex flex-wrap gap-1 items-center overflow-x-auto scrollbar-thin scrollbar-thumb-blue-400 scrollbar-track-gray-100">
-                {s.enrolledCourses.map((c) => (
-                  <span
-                    key={c._id}
-                    className="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs whitespace-nowrap"
-                  >
-                    {c.title}
-                  </span>
-                ))}
-              </div>
-            ) : (
-              <span className="text-gray-400">None</span>
-            )}
-          </div>
-
-          <div className="flex justify-between text-sm md:text-base">
-            <p>Total Fee: <span className="font-semibold">₹{s.fee?.total || 0}</span></p>
-            <p className="text-red-600 font-semibold">Remaining: ₹{pending}</p>
-          </div>
-        </div>
-
-        <div>
-          <select
-            className="w-full border border-gray-300 rounded-xl p-2 mt-2 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-            defaultValue=""
-            onChange={(e) =>
-              enrollCourse({ studentId: s._id, courseId: e.target.value })
-            }
+        {/* Right */}
+        <div className="text-right">
+          <span
+            className={`text-sm font-semibold ${
+              pending === 0 ? "text-green-600" : "text-red-600"
+            }`}
           >
-            <option value="" disabled>
-              Enroll in Course
-            </option>
-            {courses.map((c) => (
-              <option key={c._id} value={c._id}>
-                {c.title} - ₹{c.price || 0}
-              </option>
-            ))}
-          </select>
+            ₹{pending}
+          </span>
+          <p className="text-xs text-gray-400">pending</p>
         </div>
+
       </div>
     );
   })}
 </div>
 
-      {/* Pagination */}
+
       <div className="flex justify-center gap-2 mt-6 flex-wrap mb-10">
         <button
           disabled={page === 1}

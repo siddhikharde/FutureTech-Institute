@@ -51,9 +51,9 @@ console.error(error);
     <>
      <AdminNavbar/>
   
- <div className="max-w-7xl mx-auto px-6 py-8 bg-gray-50">
+ <div className="w-full mx-auto px-6 py-8 bg-gray-50 ">
    
-  <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+  <div className="flex flex-col md:flex-row md:mx-10 md:items-center md:justify-between mb-8">
     <h1 className="text-3xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent">
       Admin Dashboard
     </h1>
@@ -62,7 +62,7 @@ console.error(error);
     </p>
   </div>
 
-  <div className="grid grid-cols-1 my-2 sm:grid-cols-2 gap-6">
+  <div className="grid grid-cols-1 md:mx-5 my-2 sm:grid-cols-2 gap-6">
    <StatCard title="Total Students" value={stats.students} type="students" />
 <StatCard title="Pending Fees" value={stats.pendingFees} type="fees"  valueColor={"text-red-400"}/>
   </div>

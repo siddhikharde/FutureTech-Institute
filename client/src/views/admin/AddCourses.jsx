@@ -97,7 +97,7 @@ const deleteCourse=async(id)=>{
     return (
         <div className='min-h-screen bg-gray-50'>
             <AdminNavbar />
-            <div className='max-w-7xl mx-auto p-4 space-y-5'>
+            <div className='max-w-7xl p-5 mx-auto space-y-5 md:p-10'>
                 <h1 className='text-4xl font-bold text-center my-8  bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent'>
                     Manage Courses
                 </h1>
