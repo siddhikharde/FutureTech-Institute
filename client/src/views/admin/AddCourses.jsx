@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import AdminNavbar from '../../components/adminComponenets/AdminNavbar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import toast from 'react-hot-toast';
 
 function AddCourses() {
     const navigate=useNavigate();
@@ -30,6 +31,34 @@ function AddCourses() {
         }
     }
     
+    const handleSubmit=async(e)=>{
+         e.preventDefault();
+         const {title, description, price, duration}=form;
+         try{
+        const token=localStorage.getItem("JwtToken");
+        const res=await axios.post("http://localhost:8080/courses", {
+            title,
+            description,
+            price,
+            duration,
+        },{
+            headers:{Authorization:`Bearer ${token}`}
+        })
+        if(res.data.success){
+            toast.success("Course added");
+            setForm({
+                title:"",
+                description:"",
+                duration:"",
+                price:""
+            })
+            fetchCourses();
+        }
+
+         }catch(e){
+toast.error("Course creation failed");
+         }       
+    }
     useEffect(()=>{
         fetchCourses();
     },[])
@@ -52,6 +81,7 @@ const fadeInUp = {
               Manage Courses
          </h1>
          <motion.form 
+         onSubmit={handleSubmit}
          variants={fadeInUp}
          initial="hidden"
          animate="visible"
@@ -60,19 +90,19 @@ const fadeInUp = {
             <Input type={"text"} placeholder={"Course Title"}
             value={form.title}
             onChange={(e)=>{
-                setForm({...from, title:e.target.value})
+                setForm({...form, title:e.target.value})
             }}/>
 
             <Input type={"number"} placeholder={"Price (₹)"}
             value={form.price}
             onChange={(e)=>{
-                setForm({...from, price:e.target.value})
+                setForm({...form, price:e.target.value})
             }}/>
 
             <Input type={"text"} placeholder={"Duration (eg. 3 Months)"}
             value={form.duration}
             onChange={(e)=>{
-                setForm({...from, title:e.target.value})
+                setForm({...form, duration:e.target.value})
             }}/>
 
             <Button title={"Add"} type='submit'/>
