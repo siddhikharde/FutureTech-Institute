@@ -11,6 +11,7 @@ import AddStudent from './views/admin/AddStudent'
 import Dashboard from './views/admin/Dashboard'
 import AddCourses from './views/admin/AddCourses'
 import StudentDetails from './views/admin/StudentDetail'
+import StudentDashboard from './views/StudentDashboard'
 function App() {
   return (
     <div>
@@ -26,6 +27,7 @@ function App() {
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='add-courses' element={<AddCourses/>}/>
           <Route path='/student-detail/:id' element={<StudentDetails/>}/>
+          <Route path='/student-dashboard' element={<StudentDashboard/>}/>
         </Routes>
       </BrowserRouter>
 

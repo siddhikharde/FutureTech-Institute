@@ -49,8 +49,8 @@ function StudentTable() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-6 ">
-      <div className="flex flex-col bg-white rounded-2xl p-5 shadow-md py-10 md:flex-row md:items-center md:justify-around gap-4 mb-6">
+    <div className="max-w-7xl mx-auto md:px-4 ">
+      <div className="flex flex-col bg-white mx-0 rounded-2xl p-5 shadow-md py-7 md:flex-row md:items-center md:justify-around gap-4 mb-6">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A]">
           Students
         </h2>

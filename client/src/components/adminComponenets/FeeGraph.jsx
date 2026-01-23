@@ -12,7 +12,7 @@ function FeeGraph({data}) {
         },
     ]
   return (
-    <div className="bg-white p-6 rounded-xl shadow">
+    <div className="bg-white my-5 md:m-10 p-5 rounded-xl shadow">
       <h2 className="font-semibold mb-4">Fee Overview</h2>
       <ResponsiveContainer width="50%" height={250}>
         <BarChart data={graphData}>

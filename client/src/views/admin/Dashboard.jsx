@@ -10,76 +10,80 @@ export default function Dashboard() {
   const [stats, setStats] = useState({
     students: 0,
     pendingFees: 0,
-    totalPaid:0,
+    totalPaid: 0,
   });
 
-   const getStudentsData=async ()=>{
-   try{
-        const token=localStorage.getItem("JwtToken");
-        if(!token){
+  const getStudentsData = async () => {
+    try {
+      const token = localStorage.getItem("JwtToken");
+      if (!token) {
         navigate("/login");
         return;
-     }
-     
-       const response=await axios.get("http://localhost:8080/dashboard-stats", {
-        headers:{
-           Authorization:`Bearer ${token}`
+      }
+
+      const response = await axios.get("http://localhost:8080/dashboard-stats", {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-    })
-    if(response.data.success){
-       const students=response.data.data;
+      })
+      if (response.data.success) {
+        const students = response.data.data;
         setStats({
-        students: students.totalStudents,
-        pendingFees: students.pendingFee,
-        totalPaid:students.totalPaid,
-      });
-      
-       toast.success("Students data loaded..", {id:"success"});
-       console.log(response.data)
-    }else{
-        toast.error("Faild to load data..", {id:"failiour"});
+          students: students.totalStudents,
+          pendingFees: students.pendingFee,
+          totalPaid: students.totalPaid,
+        });
+
+        toast.success("Students data loaded..", { id: "success" });
+        console.log(response.data)
+      } else {
+        toast.error("Faild to load data..", { id: "failiour" });
+      }
     }
-}
-    catch(e){
-console.error(error);
+    catch (e) {
+      console.error(error);
       toast.error(
         error.response?.data?.message || "Server error")
-     }
+    }
   }
   useEffect(() => {
-  getStudentsData();
-     
-}, []); 
+    getStudentsData();
+
+  }, []);
   return (
     <>
-     <AdminNavbar/>
-  
- <div className="w-full mx-auto px-6 py-8 bg-gray-50 ">
-   
-  <div className="flex flex-col md:flex-row md:mx-10 md:items-center md:justify-between mb-8">
-    <h1 className="text-3xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent">
-      Admin Dashboard
-    </h1>
-    <p className="text-gray-500 mt-2 md:mt-0">
-      Manage students, courses & fees
-    </p>
-  </div>
+      <AdminNavbar />
 
-  <div className="grid grid-cols-1 md:mx-5 my-2 sm:grid-cols-2 gap-6">
-   <StatCard title="Total Students" value={stats.students} type="students" />
-<StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} type="fees"  valueColor={"text-red-400"}/>
-  </div>
-</div>
- <FeeGraph
+      <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#143A8A] to-[#0F172A] p-6">
+
+
+        <div className="flex flex-col md:flex-row md:mx-10 md:items-center md:justify-between mb-8">
+          <h1 className="text-3xl font-bold text-gray-200">
+            Admin Dashboard
+          </h1>
+          <p className="text-gray-500 mt-2 md:mt-0">
+            Manage students, courses & fees
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:mx-5 my-2 sm:grid-cols-2 gap-6">
+          <StatCard title="Total Students" value={stats.students} type="students" />
+          <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} type="fees" valueColor={"text-red-400"} />
+        </div>
+         <FeeGraph
         data={{
           paid: stats.totalPaid,
           pending: stats.pendingFees
         }}
       />
-<div className="md:p-5 bg-gray-50">
-   <StudentTable/>
-</div>
-</>
+
+      <div className="md:p-5 ">
+        <StudentTable />
+      </div>
+      </div>
+     
+      
+    </>
 
   );
 }
