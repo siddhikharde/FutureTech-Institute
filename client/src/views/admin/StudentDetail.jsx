@@ -91,6 +91,31 @@ const fetchStudent=async()=>{
         </div>
       </div>
       
+      <div className="bg-white p-6 rounded-xl shadow">
+        <h3 className="font-semibold mb-2">Enrolled Courses</h3>
+        <div className="flex flex-wrap gap-2">
+          {student.enrolledCourses.map((c) => (
+            <span
+              key={c._id}
+              className="px-3 py-1 bg-blue-100 rounded-full text-sm"
+            >
+              {c.title}
+            </span>
+          ))}
+        </div>
+            <select
+          className="mt-4 border p-2 rounded w-full"
+          defaultValue=""
+          onChange={(e) => enrollCourse(e.target.value)}
+        >
+          <option disabled value="">Enroll new course</option>
+          {courses.map((c) => (
+            <option key={c._id} value={c._id}>
+              {c.title} - ₹{c.price}
+            </option>
+          ))}
+        </select>
+      </div>
     </div>
   )
 }
