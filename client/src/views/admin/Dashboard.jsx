@@ -4,11 +4,13 @@ import StatCard from "../../components/adminComponenets/StatCard";
 import toast from "react-hot-toast";
 import StudentTable from "../../components/adminComponenets/StudentTable";
 import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
+import FeeGraph from "../../components/adminComponenets/FeeGraph";
 
 export default function Dashboard() {
   const [stats, setStats] = useState({
     students: 0,
     pendingFees: 0,
+    totalPaid:0,
   });
 
    const getStudentsData=async ()=>{
@@ -29,6 +31,7 @@ export default function Dashboard() {
         setStats({
         students: students.totalStudents,
         pendingFees: students.pendingFee,
+        totalPaid:students.totalPaid,
       });
       
        toast.success("Students data loaded..", {id:"success"});
@@ -67,6 +70,12 @@ console.error(error);
 <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} type="fees"  valueColor={"text-red-400"}/>
   </div>
 </div>
+ <FeeGraph
+        data={{
+          paid: stats.totalPaid,
+          pending: stats.pendingFees
+        }}
+      />
 <div className="md:p-5 bg-gray-50">
    <StudentTable/>
 </div>
