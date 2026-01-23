@@ -190,7 +190,7 @@ app.post("/payment", auth, admin, async (req, res)=>{
 
 app.get("/students", auth, admin, async(req, res)=>{
   try{
-    const search = req.query.search.trim();;
+    const search = (req.query.search || "").trim();;
 
 const searchFilter = search
   ? {
@@ -441,11 +441,11 @@ app.put("/student/:id", auth, admin, async (req, res)=>{
   const id=req.params.id;
   try{
     const {name, email, password , parent, phone}=req.body;
-    const hashedPassword=bcrypt.hashSync(password,10);
-  const student =await User.findByIdAndUpdate(id,{
-    name, email, password:hashedPassword, parent, phone
-  }, 
-{new:true});
+    const updateData = { name, email, parent, phone };
+    if (password) {
+  updateData.password = bcrypt.hashSync(password, 10);
+}
+  const student = await User.findByIdAndUpdate(id, updateData, { new: true });
 res.json({
       success: true,
       message: "Student updated",
