@@ -433,6 +433,50 @@ app.get("/student/:id", auth, admin, async(req, res)=>{
   res.json({ success: true, data: student });
   
 })
+
+app.delete("/remove-course", auth, admin, async (req, res)=>{
+       try{
+         const {studentId, courseId}=req.body;
+        if(!studentId || !courseId){
+          return res.json({
+            success:false,
+            message:"Student ID and Course ID required"
+          })
+        }
+        const course= await Course.findById(courseId);
+        if(!course){
+          return res.json({
+            success:false,
+            message: "Course not found",
+          })
+        }
+
+        const student=await User.findById(studentId);
+        if(!student){
+          return res.json({
+            success:false,
+            message:"Student not found",
+          })
+        }
+        student.enrolledCourses=student.enrolledCourses.filter((c)=>courseId!=c.toString());
+        student.fee.total = Math.max(
+      0,
+      (student.fee.total || 0) - (course.price || 0)
+    );
+        await student.save();
+        res.json({
+          success:true,
+          message:"Course removed successfully",
+          
+        })
+       } catch (e) {
+    res.json({
+      success: false,
+      message: "Failed to remove course",
+      error: e.message,
+    });
+  }
+})
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
