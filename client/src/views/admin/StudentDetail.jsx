@@ -59,15 +59,15 @@ function StudentDetail() {
   }
 
   const removeCourse = async (studentId, courseId) => {
-    if(!window.confirm("Are you sure you want to remove this course?")) return;
+    if (!window.confirm("Are you sure you want to remove this course?")) return;
     try {
-      
+
       const res = await axios.delete("http://localhost:8080/remove-course",
         {
           headers: { Authorization: `Bearer ${token}` }
-        , 
-        data: { studentId, courseId }
-      }
+          ,
+          data: { studentId, courseId }
+        }
       );
       if (res.data.success) {
         toast.success("Course removed");
@@ -88,68 +88,79 @@ function StudentDetail() {
   const pending = (student.fee.total || 0) - (student.fee.paid || 0);
   return (
     <>
-     <AdminNavbar/>
-    <div className="max-w-6xl mx-auto p-6 space-y-6">
-      <h1 className="text-3xl font-bold">{student.name}</h1>
-      <div className="grid md:grid-cols-2 gap-4 bg-white p-6 rounded-xl shadow">
-        <p>Email:{student.email}</p>
-        <p>Phone:{student.phone}</p>
-        <p>Parent: {student.parent?.name}</p>
-        <p>Parent Phone: {student.parent?.phone}</p>
-      </div>
+      <AdminNavbar />
+      <div className="max-w-6xl mx-auto p-6 space-y-6">
+        <h1 className="text-3xl font-bold">{student.name}</h1>
+        <div className="grid md:grid-cols-2 gap-4 bg-white p-6 rounded-xl shadow">
+          <p>Email:{student.email}</p>
+          <p>Phone:{student.phone}</p>
+          <p>Parent: {student.parent?.name}</p>
+          <p>Parent Phone: {student.parent?.phone}</p>
+        </div>
 
-      <div className="bg-white p-6 rounded-xl shadow space-y-3">
-        <p>Total Fee: ₹{student.fee.total}</p>
-        <p>Paid: ₹{student.fee.paid}</p>
-        <p className="text-red-600 font-bold">Pending: ₹{pending}</p>
+        <div className="bg-white p-6 rounded-xl shadow space-y-3">
+          <p>Total Fee: ₹{student.fee.total}</p>
+          <p>Paid: ₹{student.fee.paid}</p>
+          <p className="text-red-600 font-bold">Pending: ₹{pending}</p>
 
-        <div className="flex gap-3">
-          <Input
-            type="number"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-            placeholder="Add payment"
-          />
-          <Button title="Add Payment" size='sm' onClick={addPayment} />
+          <div className="flex gap-3">
+            <Input
+              type="text"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              placeholder="Add payment"
+            />
+            <Button title="Add Payment" size='sm' onClick={addPayment} />
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow">
+          <h3 className="font-semibold mb-2">Enrolled Courses</h3>
+          <div className="flex flex-wrap gap-2">
+            {student.enrolledCourses.map((c) => (
+              <div key={c._id}
+                className="flex items-center gap-2 bg-blue-100 px-3 py-1 rounded-full">
+                <span
+
+                  className=" text-sm"
+                >
+                  {c.title}
+                </span>
+                <button
+                  onClick={() => removeCourse(student._id, c._id)}
+                  className="text-red-400 hover:text-red-600 text-sm cursor-pointer font-bold"
+                >
+                  ✕
+                </button>
+              </div>
+
+            ))}
+          </div>
+          <select
+            className="mt-4 border p-2 rounded w-full focus:ring-1 ring-blue-500 outline-0"
+            defaultValue=""
+            onChange={(e) => enrollCourse(e.target.value)}
+          >
+            <option disabled value="">Enroll new course</option>
+            {courses.map((c) => {
+              const isEnrolled = student.enrolledCourses.some(
+                (ec) => ec._id === c._id
+              );
+
+              return (
+                <option
+                  key={c._id}
+                  value={c._id}
+                  disabled={isEnrolled}
+                >
+                  {c.title} - ₹{c.price}
+                  {isEnrolled ? " (Already Enrolled)" : ""}
+                </option>
+              );
+            })}
+          </select>
         </div>
       </div>
-
-      <div className="bg-white p-6 rounded-xl shadow">
-        <h3 className="font-semibold mb-2">Enrolled Courses</h3>
-        <div className="flex flex-wrap gap-2">
-          {student.enrolledCourses.map((c) => (
-           <div  key={c._id}
-           className="flex items-center gap-2 bg-blue-100 px-3 py-1 rounded-full">
-             <span
-             
-              className=" text-sm"
-            >
-              {c.title}
-            </span>
-             <button
-        onClick={() => removeCourse(student._id, c._id)}
-        className="text-red-400 hover:text-red-600 text-sm cursor-pointer font-bold"
-      >
-        ✕
-      </button>
-           </div>
-            
-          ))}
-        </div>
-        <select
-          className="mt-4 border p-2 rounded w-full"
-          defaultValue=""
-          onChange={(e) => enrollCourse(e.target.value)}
-        >
-          <option disabled value="">Enroll new course</option>
-          {courses.map((c) => (
-            <option key={c._id} value={c._id}>
-              {c.title} - ₹{c.price}
-            </option>
-          ))}
-        </select>
-      </div>
-    </div>
     </>
   )
 }
