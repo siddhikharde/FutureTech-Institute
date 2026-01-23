@@ -59,7 +59,9 @@ function StudentDetail() {
   }
 
   const removeCourse = async (studentId, courseId) => {
+    if(!window.confirm("Are you sure you want to remove this course?")) return;
     try {
+      
       const res = await axios.delete("http://localhost:8080/remove-course",
         {
           headers: { Authorization: `Bearer ${token}` }

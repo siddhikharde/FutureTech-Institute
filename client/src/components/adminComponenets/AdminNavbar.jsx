@@ -17,7 +17,6 @@ export default function AdminNavbar() {
   const menuItems = [
     { name: "Dashboard", path: "/dashboard" },
     { name: "Add Student", path: "/addStudents" },
-    { name: "Add Fee", path: "/add-fee" },
     { name: "Add Courses", path: "/add-courses" },
   ];
 
@@ -34,7 +33,7 @@ export default function AdminNavbar() {
             <Link
               key={item.name}
               to={item.path}
-              className="hover:text-blue-700 text-lg text-[#0F172A] font-semibold transition-colors"
+              className="hover:text-blue-700 text-[17px] text-[#0F172A] font-semibold transition-colors"
             >
               {item.name}
             </Link>
