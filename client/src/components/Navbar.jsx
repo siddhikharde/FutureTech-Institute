@@ -1,138 +1,69 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { Link } from "react-router";
+import Button from "./Button";
+import { Menu, X } from "lucide-react";
+import { useState } from "react";
+import logo from '../assets/logo.png'
 
-export default function StudentDashboard() {
-  const [student, setStudent] = useState(null);
-  const token = localStorage.getItem("JwtToken");
-
-  const fetchDashboard = async () => {
-    const res = await axios.get("http://localhost:8080/student-dashboard", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (res.data.success) {
-      setStudent(res.data.data);
-    }
-  };
-
-  useEffect(() => {
-    fetchDashboard();
-  }, []);
-
-  if (!student) return null;
-
-  const total = student.fee?.total || 0;
-  const paid = student.fee?.paid || 0;
-  const pending = total - paid;
-
-  const graphData = [
-    { name: "Paid", amount: paid },
-    { name: "Pending", amount: pending },
-  ];
-
+function Navbar(){
+    const [open, setOpen] = useState(false);
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F172A] via-[#143A8A] to-[#0F172A] p-6">
-      
-      {/* HEADER */}
-      <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white">
-          Welcome, {student.name} 👋
-        </h1>
-        <p className="text-blue-200 mt-2">
-          Your learning progress at FutureTech
-        </p>
-      </div>
+    <div className="bg-white shadow-md z-1000 sticky top-0 left-0 right-0">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
 
-      {/* INFO CARDS */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-        
-        <InfoCard title="Total Fee" value={`₹ ${total}`} />
-        <InfoCard title="Paid Fee" value={`₹ ${paid}`} accent />
-        <InfoCard title="Pending Fee" value={`₹ ${pending}`} danger />
+          <Link
+            to="/"
+            className="text-2xl font-bold bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent flex items-center justify-center"
+          >
+            <img src={logo} alt="FutureTech Logo" className="h-9" />
+            FutureTech
+          </Link>
 
-      </div>
+          <div className="hidden md:flex space-x-6">
+            <Link to="/" className="text-[#0F172A] text-[17px] font-bold hover:text-blue-700">
+              Home
+            </Link>
+            <Link to="/courses" className="text-[#0F172A]  text-[17px] font-bold hover:text-blue-700">
+              Courses
+            </Link>
+            <Link to="/about" className="text-[#0F172A]  font-bold text-[17px] hover:text-blue-700">
+              About
+            </Link>
+            <Link to="/contact" className="text-[#0F172A]  font-bold text-[17px] hover:text-blue-700">
+              Contact
+            </Link>
+          </div>
 
-      {/* GRAPH + COURSES */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* GRAPH */}
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <h2 className="font-semibold text-lg mb-4 text-[#0F172A]">
-            Fee Overview
-          </h2>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={graphData}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="amount" fill="#2563EB" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="hidden md:flex items-center space-x-3">
+            <Link to="/login">
+              <Button variant="outline" size="md" title={"Login"}/>
+            </Link>
+          </div>
+           <button
+            onClick={() => setOpen(!open)}
+            className="md:hidden text-[#0F172A] cursor-pointer"
+          >
+            {open ? <X size={26} /> : <Menu size={26} />}
+          </button>
+
         </div>
+      </div>
+      {open && (
+        <div className="md:hidden flex flex-col gap-6 justify-center items-start bg-[#020617] px-4 py-4 fixed right-0 left-0">
+          <Link onClick={() => setOpen(false)} to="/" className="block text-gray-200 text-[17px] font-bold">Home</Link>
+          <Link onClick={() => setOpen(false)} to="/courses" className="block text-gray-200 text-[17px] font-bold">Courses</Link>
+          <Link onClick={() => setOpen(false)} to="/about" className="block text-gray-200 text-[17px] font-bold">About</Link>
+          <Link onClick={() => setOpen(false)} to="/contact" className="block text-gray-200 text-[17px] font-bold">Contact</Link>
 
-        {/* COURSES */}
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <h2 className="font-semibold text-lg mb-4 text-[#0F172A]">
-            Enrolled Courses
-          </h2>
-
-          {student.enrolledCourses.length === 0 ? (
-            <p className="text-gray-500">No courses enrolled yet</p>
-          ) : (
-            <div className="space-y-3">
-              {student.enrolledCourses.map((c) => (
-                <div
-                  key={c._id}
-                  className="flex justify-between items-center bg-blue-50 p-4 rounded-xl"
-                >
-                  <div>
-                    <p className="font-semibold text-[#0F172A]">
-                      {c.title}
-                    </p>
-                    <p className="text-sm text-gray-500">
-                      Duration: {c.duration}
-                    </p>
-                  </div>
-                  <span className="font-bold text-[#143A8A]">
-                    ₹{c.price}
-                  </span>
-                </div>
-              ))}
-            </div>
+          <div className=" flex gap-3 py-2 w-full items-start justify-start pt-3 border-t border-gray-700">
+            <Link to="/login">
+              <Button variant="outline" size="md" title={"Login"} className="w-full"/>
+            </Link>
+          </div>
+        </div>
           )}
-        </div>
-
-      </div>
     </div>
   );
-}
+};
 
-/* SMALL COMPONENT */
-function InfoCard({ title, value, accent, danger }) {
-  return (
-    <div
-      className={`rounded-2xl p-6 shadow bg-white ${
-        accent && "border-l-4 border-blue-600"
-      } ${danger && "border-l-4 border-red-500"}`}
-    >
-      <p className="text-gray-500">{title}</p>
-      <p
-        className={`text-2xl font-bold ${
-          danger ? "text-red-500" : "text-[#0F172A]"
-        }`}
-      >
-        {value}
-      </p>
-    </div>
-  );
-}
+export default Navbar;
