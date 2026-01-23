@@ -4,71 +4,92 @@ import toast from 'react-hot-toast';
 import { useParams } from 'react-router'
 import Button from '../../components/Button';
 import Input from '../../components/Input';
+import AdminNavbar from '../../components/adminComponenets/AdminNavbar';
 
 function StudentDetail() {
-    const {id}=useParams();
-    const token=localStorage.getItem("JwtToken")
-    const [courses, setCourses]=useState([]);
-    const [amount, setAmount]=useState("");
-    const [student, setStudent]=useState(null)
+  const { id } = useParams();
+  const token = localStorage.getItem("JwtToken")
+  const [courses, setCourses] = useState([]);
+  const [amount, setAmount] = useState("");
+  const [student, setStudent] = useState(null)
 
-    const fetchCourses=async()=>{
+  const fetchCourses = async () => {
 
-            const res=await axios.get("http://localhost:8080/courses", {
-                headers:{Authorization:`Bearer ${token}`}
-            });
-            if(res.data.success){
-                setCourses(res.data.data);
-            }
-    };
-    const addPayment=async ()=>{
-         if(!amount) return toast.error("Enter amount.")
-            const res= await axios.post("http://localhost:8080/payment",
-        {studentId: id, amount},
-        {headers:{Authorization:`Bearer ${token}`}});
-        if(res.data.success){
-             toast.success("Payment added");
-    setAmount("");
-    fetchStudent();
-        }
-        else{
-            toast.error("Fail")
-        }
-        
+    const res = await axios.get("http://localhost:8080/courses", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    if (res.data.success) {
+      setCourses(res.data.data);
     }
-const fetchStudent=async()=>{
-    try{
-        const res=await axios.get(`http://localhost:8080/student/${id}`,
-            {headers:{Authorization:`Bearer ${token}`}}
-        )
-        if(res.data.success){
-            setStudent(res.data.data)
-        }
-    }catch {
-      toast.error("Failed to load student", {id:"succ"});
-    }
-}
-    const enrollCourse=async (courseId)=>{
-        await axios.post("http://localhost:8080/enroll-course",
-            { studentId: id, courseId },
-             { headers: { Authorization: `Bearer ${token}` } }
-        );
-          toast.success("Course enrolled");
-    fetchStudent();
-    }
-
-    useEffect(()=>{
-      fetchCourses();
+  };
+  const addPayment = async () => {
+    if (!amount) return toast.error("Enter amount.")
+    const res = await axios.post("http://localhost:8080/payment",
+      { studentId: id, amount },
+      { headers: { Authorization: `Bearer ${token}` } });
+    if (res.data.success) {
+      toast.success("Payment added");
+      setAmount("");
       fetchStudent();
-    },[])
+    }
+    else {
+      toast.error("Fail")
+    }
 
-    if (!student) return null;
+  }
+  const fetchStudent = async () => {
+    try {
+      const res = await axios.get(`http://localhost:8080/student/${id}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      )
+      if (res.data.success) {
+        setStudent(res.data.data)
+      }
+    } catch {
+      toast.error("Failed to load student", { id: "succ" });
+    }
+  }
+  const enrollCourse = async (courseId) => {
+    await axios.post("http://localhost:8080/enroll-course",
+      { studentId: id, courseId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    toast.success("Course enrolled");
+    fetchStudent();
+  }
 
-    const pending=(student.fee.total || 0)- (student.fee.paid || 0);
+  const removeCourse = async (studentId, courseId) => {
+    try {
+      const res = await axios.delete("http://localhost:8080/remove-course",
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        , 
+        data: { studentId, courseId }
+      }
+      );
+      if (res.data.success) {
+        toast.success("Course removed");
+        fetchStudent();
+      }
+    } catch {
+      toast.error("Failed to remove course");
+    }
+  }
+
+  useEffect(() => {
+    fetchCourses();
+    fetchStudent();
+  }, [])
+
+  if (!student) return null;
+
+  const pending = (student.fee.total || 0) - (student.fee.paid || 0);
   return (
+    <>
+     <AdminNavbar/>
     <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <h1 className="text-3xl font-bold">{student.name}</h1>
-            <div className="grid md:grid-cols-2 gap-4 bg-white p-6 rounded-xl shadow">
+      <h1 className="text-3xl font-bold">{student.name}</h1>
+      <div className="grid md:grid-cols-2 gap-4 bg-white p-6 rounded-xl shadow">
         <p>Email:{student.email}</p>
         <p>Phone:{student.phone}</p>
         <p>Parent: {student.parent?.name}</p>
@@ -90,20 +111,30 @@ const fetchStudent=async()=>{
           <Button title="Add Payment" size='sm' onClick={addPayment} />
         </div>
       </div>
-      
+
       <div className="bg-white p-6 rounded-xl shadow">
         <h3 className="font-semibold mb-2">Enrolled Courses</h3>
         <div className="flex flex-wrap gap-2">
           {student.enrolledCourses.map((c) => (
-            <span
-              key={c._id}
-              className="px-3 py-1 bg-blue-100 rounded-full text-sm"
+           <div  key={c._id}
+           className="flex items-center gap-2 bg-blue-100 px-3 py-1 rounded-full">
+             <span
+             
+              className=" text-sm"
             >
               {c.title}
             </span>
+             <button
+        onClick={() => removeCourse(student._id, c._id)}
+        className="text-red-400 hover:text-red-600 text-sm cursor-pointer font-bold"
+      >
+        ✕
+      </button>
+           </div>
+            
           ))}
         </div>
-            <select
+        <select
           className="mt-4 border p-2 rounded w-full"
           defaultValue=""
           onChange={(e) => enrollCourse(e.target.value)}
@@ -117,6 +148,7 @@ const fetchStudent=async()=>{
         </select>
       </div>
     </div>
+    </>
   )
 }
 
