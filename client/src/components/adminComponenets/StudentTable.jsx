@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Input from "../../components/Input";
+import Button from "../Button";
+import { useNavigate } from "react-router";
 
 function StudentTable() {
+  const navigate=useNavigate();
   const [students, setStudents] = useState([]);
   const [courses, setCourses] = useState([]);
   const [page, setPage] = useState(1);
@@ -40,25 +43,7 @@ function StudentTable() {
       toast.error("Failed to load courses");
     }
   };
-
-  const enrollCourse = async ({ studentId, courseId }) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/enroll-course",
-        { studentId, courseId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-
-      if (response.data.success) {
-        toast.success("Course enrolled successfully");
-        loadStudents(page);
-      }
-    } catch {
-      toast.error("Enrollment failed");
-    }
-  };
-
-  useEffect(() => {
+ useEffect(() => {
     loadStudents(page);
     loadCourses();
   }, []);
@@ -93,6 +78,7 @@ function StudentTable() {
                 <th className="p-4">Courses</th>
                 <th className="p-4">Total Fee</th>
                 <th className="p-4">Remaining</th>
+                <th className="p-4">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -112,7 +98,13 @@ function StudentTable() {
                     </td>
                     <td className="p-3">₹{s.fee?.total || 0}</td>
                     <td className="p-3 text-red-400 font-semibold">₹{pending}</td>
-                  
+                  <td className="p-3">
+  <Button
+    onClick={() => navigate(`/student-detail/${s._id}`)} title={"View"} size="sm"
+/>
+    
+
+</td>
                   </tr>
                 );
               })}
