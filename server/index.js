@@ -503,6 +503,29 @@ app.delete("/remove-course", auth, admin, async (req, res)=>{
     });
   }
 })
+
+app.get("/student-dashboard", auth, async(req, res)=>{
+  try{
+    if(req.existingUser.role!="student"){
+          return res.json({
+            success:false,
+            message:"Access denied"
+          })
+    }
+    const student=await User.findById(req.existingUser.id).populate("enrolledCourses", "title price duration");
+    res.json({
+      success:true,
+      data:student,
+    })
+  }catch(e){
+    res.json({
+      success:false,
+      message:"Failed",
+      error:e.message
+    })
+  }
+
+})
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
