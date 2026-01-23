@@ -12,6 +12,14 @@ function StudentDetail() {
   const [courses, setCourses] = useState([]);
   const [amount, setAmount] = useState("");
   const [student, setStudent] = useState(null)
+  const [editMode, setEditMode] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    parentName: "",
+    parentPhone: ""
+  })
 
   const fetchCourses = async () => {
 
@@ -43,7 +51,16 @@ function StudentDetail() {
         { headers: { Authorization: `Bearer ${token}` } }
       )
       if (res.data.success) {
-        setStudent(res.data.data)
+        setStudent(res.data.data);
+        const student = res.data.data;
+        setEditForm({
+          name: student.name,
+          email: student.email,
+          phone: student.phone,
+          parentName: student.parent?.name || "",
+          parentPhone: student.parent?.phone || "",
+
+        })
       }
     } catch {
       toast.error("Failed to load student", { id: "succ" });
@@ -77,6 +94,32 @@ function StudentDetail() {
       toast.error("Failed to remove course");
     }
   }
+  const updateStudent = async () => {
+  try {
+    const res = await axios.put(
+      `http://localhost:8080/student/${id}`,
+      {
+        name: editForm.name,
+        email: editForm.email,
+        phone: editForm.phone,
+        parent: {
+          name: editForm.parentName,
+          phone: editForm.parentPhone,
+        },
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    if (res.data.success) {
+      toast.success("Student updated");
+      setEditMode(false);
+      fetchStudent();
+    }
+  } catch (e) {
+    toast.error("Update failed");
+  }
+};
+
 
   useEffect(() => {
     fetchCourses();
@@ -90,13 +133,61 @@ function StudentDetail() {
     <>
       <AdminNavbar />
       <div className="max-w-6xl mx-auto p-6 space-y-6">
-        <h1 className="text-3xl font-bold">{student.name}</h1>
-        <div className="grid md:grid-cols-2 gap-4 bg-white p-6 rounded-xl shadow">
-          <p>Email:{student.email}</p>
-          <p>Phone:{student.phone}</p>
-          <p>Parent: {student.parent?.name}</p>
-          <p>Parent Phone: {student.parent?.phone}</p>
+        <div className="flex justify-between items-center">
+          <h1 className="text-3xl font-bold">{student.name}</h1>
+          <Button
+            title={editMode ? "Cancel" : "Edit"}
+            size="sm"
+            onClick={() => setEditMode(!editMode)}
+          />
         </div>
+        {editMode && (
+  <div className="bg-white p-6 rounded-xl shadow space-y-4">
+    <h3 className="font-semibold text-lg">Edit Student</h3>
+
+    <Input
+      placeholder="Name"
+      value={editForm.name}
+      onChange={(e) =>
+        setEditForm({ ...editForm, name: e.target.value })
+      }
+    />
+
+    <Input
+      placeholder="Email"
+      value={editForm.email}
+      onChange={(e) =>
+        setEditForm({ ...editForm, email: e.target.value })
+      }
+    />
+
+    <Input
+      placeholder="Phone"
+      value={editForm.phone}
+      onChange={(e) =>
+        setEditForm({ ...editForm, phone: e.target.value })
+      }
+    />
+
+    <Input
+      placeholder="Parent Name"
+      value={editForm.parentName}
+      onChange={(e) =>
+        setEditForm({ ...editForm, parentName: e.target.value })
+      }
+    />
+
+    <Input
+      placeholder="Parent Phone"
+      value={editForm.parentPhone}
+      onChange={(e) =>
+        setEditForm({ ...editForm, parentPhone: e.target.value })
+      }
+    />
+
+    <Button title="Save Changes" onClick={updateStudent} />
+  </div>
+)}
 
         <div className="bg-white p-6 rounded-xl shadow space-y-3">
           <p>Total Fee: ₹{student.fee.total}</p>
@@ -108,12 +199,13 @@ function StudentDetail() {
               type="text"
               value={amount}
               onChange={(e) => {
-                 const value = Number(e.target.value);
-                 if (value < 0) return;
-                if(pending<value){
-                  toast.error(`Max allowed: ₹${pending}`, {id:"ss"})
+                const value = Number(e.target.value);
+                if (value < 0) return;
+                if (pending < value) {
+                  toast.error(`Max allowed: ₹${pending}`, { id: "ss" })
                 }
-                setAmount(value)}}
+                setAmount(value)
+              }}
               placeholder="Add payment"
             />
             <Button title="Add Payment" size='sm' onClick={addPayment} />
