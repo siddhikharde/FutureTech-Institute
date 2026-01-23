@@ -190,7 +190,7 @@ function AddStudent() {
 
             <Input
               placeholder="Password"
-              type="password"
+              type="text"
               value={form.password}
               onChange={(e) =>
                 setForm({ ...form, password: e.target.value })

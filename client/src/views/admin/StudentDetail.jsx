@@ -107,7 +107,13 @@ function StudentDetail() {
             <Input
               type="text"
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={(e) => {
+                 const value = Number(e.target.value);
+                 if (value < 0) return;
+                if(pending<value){
+                  toast.error(`Max allowed: ₹${pending}`, {id:"ss"})
+                }
+                setAmount(value)}}
               placeholder="Add payment"
             />
             <Button title="Add Payment" size='sm' onClick={addPayment} />
