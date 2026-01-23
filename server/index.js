@@ -399,15 +399,18 @@ app.get("/dashboard-stats", auth, admin, async (req, res)=>{
   try{
      const students=await User.find({role:"student"}).select("fee").lean();
      let pendingFee=0;
+     let totalPaid=0
      students.forEach(s=>{
-     pendingFee+=(s.fee.total || 0)-(s.fee.paid || 0)
+       totalPaid += s.fee?.paid || 0;
+     pendingFee+=(s.fee.total || 0)-(s.fee.paid || 0);
   });
 
   return res.json({
       success: true,
       data: {
         totalStudents: students.length,
-        pendingFee
+        pendingFee,
+        totalPaid
       },          
       message:"Students fetched successfully.."
 
@@ -432,6 +435,29 @@ app.get("/student/:id", auth, admin, async(req, res)=>{
   }
   res.json({ success: true, data: student });
   
+})
+
+app.put("/student/:id", auth, admin, async (req, res)=>{
+  const id=req.params.id;
+  try{
+    const {name, email, password , parent, phone}=req.body;
+    const hashedPassword=bcrypt.hashSync(password,10);
+  const student =await User.findByIdAndUpdate(id,{
+    name, email, password:hashedPassword, parent, phone
+  }, 
+{new:true});
+res.json({
+      success: true,
+      message: "Student updated",
+      data: student
+    });
+  }catch(e){
+    res.json({
+      success:false,
+      message:"Update failed",
+      error:e.message
+    })
+  }
 })
 
 app.delete("/remove-course", auth, admin, async (req, res)=>{
