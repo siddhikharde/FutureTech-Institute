@@ -167,16 +167,19 @@ app.post("/payment", auth, admin, async (req, res)=>{
       user.fee = { total: 0, paid: 0 };
     }
      user.fee.paid += Number(amount);
+     user.paymentHistory.push({
+    amount: Number(amount)
+  });
     await user.save();
   const remainingFee=user.fee.total-user.fee.paid;
 
- 
   return res.json({
     success: true,
       message: "Fee updated",
       data: {
         paid: user.fee.paid,
         remaining: remainingFee,
+        data: user.paymentHistory
       },
   })
  }catch(e){

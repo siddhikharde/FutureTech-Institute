@@ -30,10 +30,10 @@ const userSchema=new Schema({
             default:0
         }
     },
-    paymentHistory:{
+    paymentHistory:[{
         amount:Number,
         date:{type:Date, default:Date.now}
-    },
+    }],
        enrolledCourses:[
         {
             type:Schema.Types.ObjectId, ref:"Course"
