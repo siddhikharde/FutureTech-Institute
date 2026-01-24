@@ -20,7 +20,7 @@ export default function Dashboard() {
   const getStudentGrowth=async ()=>{
     try{
       const token=localStorage.getItem("JwtToken");
-      const res=await axios.get("http://localhost:8080/students-growth",{
+      const res=await axios.get(`${import.meta.env.VITE_BASE_URL}/students-growth`,{
         headers:{Authorization:`Bearer ${token}`}});
         if(res.data.success){
           setStudentGrowthData(res.data.data)
@@ -38,7 +38,7 @@ export default function Dashboard() {
         return;
       }
 
-      const response = await axios.get("http://localhost:8080/dashboard-stats", {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/dashboard-stats`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

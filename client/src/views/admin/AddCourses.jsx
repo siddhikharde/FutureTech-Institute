@@ -21,7 +21,7 @@ function AddCourses() {
     const fetchCourses = async () => {
         try {
             const token = localStorage.getItem("JwtToken");
-            const res = await axios.get("http://localhost:8080/courses", {
+            const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.success) {
@@ -37,7 +37,7 @@ function AddCourses() {
         const { title, description, price, duration } = form;
         try {
             const token = localStorage.getItem("JwtToken");
-            const res = await axios.post("http://localhost:8080/courses", {
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/courses`, {
                 title,
                 description,
                 price,
@@ -66,7 +66,7 @@ const deleteCourse=async(id)=>{
 
     try{
         const token=localStorage.getItem("JwtToken");
-        const res=await axios.delete(`http://localhost:8080/courses/${id}`,
+        const res=await axios.delete(`${import.meta.env.VITE_BASE_URL}/courses/${id}`,
             {headers:{
                 Authorization:`Bearer ${token}`,
             }}

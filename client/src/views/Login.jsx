@@ -31,7 +31,7 @@ const handleSubmit = async (e) => {
     }
 
     try{
-    const response=await axios.post("http://localhost:8080/login", form);
+    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, form);
     if(response.data.success){
       toast.success(response.data.message || "Login Successful", {id:"loginsuccess"});
       setForm({

@@ -19,7 +19,7 @@ function StudentTable() {
   const loadStudents = async (pageNo = 1, searchText = search) => {
     try {
       const response = await axios.get(
-        `http://localhost:8080/students?page=${pageNo}&limit=${limit}&search=${searchText}`,
+        `${import.meta.env.VITE_BASE_URL}/students?page=${pageNo}&limit=${limit}&search=${searchText}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -35,7 +35,7 @@ function StudentTable() {
 
   const loadCourses = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/courses", {
+      const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (response.data.success) setCourses(response.data.data);

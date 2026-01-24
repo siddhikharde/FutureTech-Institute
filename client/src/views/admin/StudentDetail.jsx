@@ -23,7 +23,7 @@ function StudentDetail() {
 
   const fetchCourses = async () => {
 
-    const res = await axios.get("http://localhost:8080/courses", {
+    const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`, {
       headers: { Authorization: `Bearer ${token}` }
     });
     if (res.data.success) {
@@ -32,7 +32,8 @@ function StudentDetail() {
   };
   const addPayment = async () => {
     if (!amount) return toast.error("Enter amount.")
-    const res = await axios.post("http://localhost:8080/payment",
+      console.log(import.meta.env.VITE_BASE_URL)
+    const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/payment`,
       { studentId: id, amount },
       { headers: { Authorization: `Bearer ${token}` } });
     if (res.data.success) {
@@ -47,7 +48,7 @@ function StudentDetail() {
   }
   const fetchStudent = async () => {
     try {
-      const res = await axios.get(`http://localhost:8080/student/${id}`,
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/student/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       )
       if (res.data.success) {
@@ -67,7 +68,7 @@ function StudentDetail() {
     }
   }
   const enrollCourse = async (courseId) => {
-    await axios.post("http://localhost:8080/enroll-course",
+    await axios.post(`${import.meta.env.VITE_BASE_URL}/enroll-course`,
       { studentId: id, courseId },
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -79,7 +80,7 @@ function StudentDetail() {
     if (!window.confirm("Are you sure you want to remove this course?")) return;
     try {
 
-      const res = await axios.delete("http://localhost:8080/remove-course",
+      const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/remove-course`,
         {
           headers: { Authorization: `Bearer ${token}` }
           ,
@@ -97,7 +98,7 @@ function StudentDetail() {
   const updateStudent = async () => {
   try {
     const res = await axios.put(
-      `http://localhost:8080/student/${id}`,
+      `${import.meta.env.VITE_BASE_URL}/student/${id}`,
       {
         name: editForm.name,
         email: editForm.email,

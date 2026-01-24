@@ -27,7 +27,7 @@ function AddStudent() {
   const loadCourses = async () => {
     try {
       const token = localStorage.getItem("JwtToken");
-      const res = await axios.get("http://localhost:8080/courses", {
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/courses`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -104,7 +104,7 @@ function AddStudent() {
       }
 
       const res = await axios.post(
-        "http://localhost:8080/students",
+        `${import.meta.env.VITE_BASE_URL}/students`,
         {
           name,
           email,
@@ -125,7 +125,7 @@ function AddStudent() {
       );
 
       if (res.data.success) {
-        toast.success("Student added successfully");
+        toast.success("Student added successfully", {id:"aaa"});
         setForm({
           name: "",
           email: "",
@@ -137,7 +137,7 @@ function AddStudent() {
           paidFee: "",
         });
       } else {
-        toast.error(res.data.message);
+        toast.error(res.data.message, {id:"errorr"});
       }
     } catch (err) {
       toast.error(

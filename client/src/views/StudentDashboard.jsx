@@ -9,7 +9,7 @@ function StudentDashboard() {
     const token=localStorage.getItem("JwtToken");
 
     useEffect(()=>{
-       axios.get("http://localhost:8080/student-dashboard",{
+       axios.get(`${import.meta.env.VITE_BASE_URL}/student-dashboard`,{
         headers:{Authorization:`Bearer ${token}`}
        }).then(res=>{
         if(res.data.success) setStudent(res.data.data)
