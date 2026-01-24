@@ -6,6 +6,7 @@ import StudentTable from "../../components/adminComponenets/StudentTable";
 import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
 import {FeeGraph, StudentGraph} from "../../components/adminComponenets/FeeGraph";
 import { useNavigate } from "react-router";
+import { setPageTitle } from "../../Utils";
 
 export default function Dashboard() {
   const navigate=useNavigate();
@@ -66,6 +67,7 @@ export default function Dashboard() {
     getStudentsData();
     getStudentGrowth();
 
+    setPageTitle({title:"Admin Dashboard"})
   }, []);
   return (
     <>

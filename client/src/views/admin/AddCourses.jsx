@@ -6,6 +6,7 @@ import AdminNavbar from '../../components/adminComponenets/AdminNavbar';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import toast, { Toaster } from 'react-hot-toast';
+import { setPageTitle } from '../../Utils';
 
 function AddCourses() {
     const navigate = useNavigate();
@@ -82,6 +83,7 @@ const deleteCourse=async(id)=>{
 }
     useEffect(() => {
         fetchCourses();
+         setPageTitle({title:"Admin Courses"})
     }, [])
 
     const fadeInUp = {

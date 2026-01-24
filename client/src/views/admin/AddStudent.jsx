@@ -6,6 +6,7 @@ import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router";
+import { setPageTitle } from "../../Utils";
 
 function AddStudent() {
   const navigate = useNavigate();
@@ -42,6 +43,7 @@ function AddStudent() {
 
   useEffect(() => {
     loadCourses();
+     setPageTitle({title:"Admin Students"})
   }, []);
 
  
