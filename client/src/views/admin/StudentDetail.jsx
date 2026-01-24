@@ -189,6 +189,40 @@ function StudentDetail() {
   </div>
 )}
 
+<div className="bg-white p-6 rounded-xl shadow mt-6">
+   <h3 className="font-semibold text-lg mb-4">Payment History</h3>
+   {
+    student.paymetHistory?.length==0?(
+      <p className="text-gray-500">No payments yet</p>
+    ):(
+      <div className='overflow-x-auto'>
+        <table className="w-full text-sm">
+           <thead className='border-b' >
+            <tr className='text-left text-gray-600'>
+              <th className='py-2'>Date</th>
+              <th className='py-2'>Amount</th>
+                        </tr>
+           </thead>
+           <tbody>
+            {
+              student.paymentHistory.slice().reverse().map((p, index)=>(
+                <tr key={index} className='border-b'>
+                   <td className='py-2'>
+                    {new Date(p.date).toLocaleDateString()}
+                   </td>
+                   <td className="py-2 font-semibold text-green-600">
+                       ₹{p.amount}
+                   </td>
+                </tr>
+              ))
+            }
+           </tbody>
+        </table>
+        </div>
+    )
+   }
+
+</div>
         <div className="bg-white p-6 rounded-xl shadow space-y-3">
           <p>Total Fee: ₹{student.fee.total}</p>
           <p>Paid: ₹{student.fee.paid}</p>
