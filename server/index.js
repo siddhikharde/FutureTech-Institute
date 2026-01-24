@@ -8,6 +8,7 @@ import { postLogin } from './controllers/auth.js';
 import { getSingleStudent, getStudent, getStudentDashboard, postStudent, putStudent } from './controllers/students.js';
 import { deleteCourse, getCourse, postCourse, postEnrollCourse, removeEnrolledCourse } from './controllers/courses.js';
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
+import { postPayment } from './controllers/payment.js';
 
 const app=express();
 dotenv.config();
@@ -37,15 +38,11 @@ app.get("/courses", auth, admin, getCourse);
 app.delete("/courses/:id", auth, admin, deleteCourse);
 app.delete("/remove-course", auth, admin, removeEnrolledCourse)
 
+//payment
+app.post("/payment", auth, admin, postPayment)
+
 //dashboard
 app.get("/dashboard-stats", auth, admin,getStatestic)
-
-
-
-
-
-
-
 
 app.get("/students-growth", auth, admin, getStudentGrowthGraph)
 app.listen(PORT,()=>{
