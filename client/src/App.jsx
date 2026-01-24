@@ -1,6 +1,9 @@
 
 import React from 'react'
-import { Routes, BrowserRouter, Route } from 'react-router'
+import { Routes,  Route, useNavigate } from 'react-router'
+import { useEffect } from 'react'
+import { isTokenExpired } from './Utils'
+import toast from 'react-hot-toast'
 import Login from './views/Login'
 import Register from './views/Register'
 import Contact from './views/Contact'
@@ -12,10 +15,21 @@ import Dashboard from './views/admin/Dashboard'
 import AddCourses from './views/admin/AddCourses'
 import StudentDetails from './views/admin/StudentDetail'
 import StudentDashboard from './views/StudentDashboard'
+
 function App() {
+
+  const navigate=useNavigate();
+  useEffect(()=>{
+     const token=localStorage.getItem("JwtToken");
+     if(isTokenExpired(token)){
+      localStorage.removeItem("JwtToken");
+      localStorage.removeItem("UserData");
+      toast.error("Session expired. Please login again.");
+      navigate("/login")
+     }
+  },[navigate])
   return (
     <div>
-      <BrowserRouter>
         <Routes>
           <Route path='/' element={<Home />} />
           <Route path='/login' element={<Login />} />
@@ -29,7 +43,6 @@ function App() {
           <Route path='/student-detail/:id' element={<StudentDetails/>}/>
           <Route path='/student-dashboard' element={<StudentDashboard/>}/>
         </Routes>
-      </BrowserRouter>
 
     </div>
   )
