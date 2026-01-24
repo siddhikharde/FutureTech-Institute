@@ -14,13 +14,21 @@ export default function Dashboard() {
     pendingFees: 0,
     totalPaid: 0,
   });
+  const [studentGrowthData, setStudentGrowthData]=useState([]);
 
-  const studentGrowthData = [
-  { month: "Jan", count: 20 },
-  { month: "Feb", count: 35 },
-  { month: "Mar", count: 50 },
-  { month: "Apr", count: 70 },
-];
+  const getStudentGrowth=async ()=>{
+    try{
+      const token=localStorage.getItem("JwtToken");
+      const res=await axios.get("http://localhost:8080/students-growth",{
+        headers:{Authorization:`Bearer ${token}`}});
+        if(res.data.success){
+          setStudentGrowthData(res.data.data)
+        }
+
+    }catch (e) {
+    toast.error("Failed to load student growth");
+  }
+  }
   const getStudentsData = async () => {
     try {
       const token = localStorage.getItem("JwtToken");
@@ -56,6 +64,7 @@ export default function Dashboard() {
   }
   useEffect(() => {
     getStudentsData();
+    getStudentGrowth();
 
   }, []);
   return (
