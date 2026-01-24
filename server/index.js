@@ -506,12 +506,7 @@ app.delete("/remove-course", auth, admin, async (req, res)=>{
 
 app.get("/student-dashboard", auth, async(req, res)=>{
   try{
-    if(req.existingUser.role!="student"){
-          return res.json({
-            success:false,
-            message:"Access denied"
-          })
-    }
+  
     const student=await User.findById(req.existingUser.id).populate("enrolledCourses", "title price duration");
     res.json({
       success:true,
@@ -525,6 +520,50 @@ app.get("/student-dashboard", auth, async(req, res)=>{
     })
   }
 
+})
+app.get("/students-growth", async (req, res)=>{
+  try{
+    const startOfYear=new Date(new Date().getFullYear(),0,1);
+    const data=await User.aggregate([
+      {
+        $match:{
+          createdAt:{$gte:startOfYear}
+        }
+      },
+      {
+        $group:{
+          _id:{$month:"$createdAt"},
+          count:{$sum:1}
+        }
+      },
+      {
+        $sort:{_id:1}
+      }
+    ]);
+    const monthMap = [
+      "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+      "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+    ];
+
+    const formattedData=data.map(item=>(
+      {
+        month:monthMap[item._id - 1],
+        count:item.count
+      }
+    ));
+
+    return res.json({
+      success: true,
+      data: formattedData
+    });
+  }catch(e){
+    return res.json({
+      success:false,
+      message:"Failed to load student growth data",
+      error:e.message,
+
+    })
+  }
 })
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
