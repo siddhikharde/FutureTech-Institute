@@ -9,7 +9,7 @@ export default function AdminNavbar() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const user = JSON.parse(localStorage.getItem("UserData"));
+  const user = JSON.parse(localStorage.getItem("userData"));
 
   if (user?.role !== "admin") return null;
 
@@ -62,7 +62,7 @@ export default function AdminNavbar() {
           </Link>
 
 
-          <div className="text-right">
+          <div className="text-right flex flex-col items-center justify-center">
             <p className="text-sm font-semibold text-[#0F172A]">
               {user?.name || "Admin"}
             </p>
@@ -78,7 +78,7 @@ export default function AdminNavbar() {
         </div>
 
         <button
-          className="md:hidden text-[#0F172A]"
+          className="md:hidden text-[#0F172A] cursor-pointer hover:scale-[1.1] duration-150"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <X size={24} /> : <Menu size={24} />}
