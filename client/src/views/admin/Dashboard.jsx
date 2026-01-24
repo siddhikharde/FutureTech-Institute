@@ -87,7 +87,7 @@ export default function Dashboard() {
           <StatCard title="Total Students" value={stats.students} type="students" />
           <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} type="fees" valueColor={"text-red-400"} />
         </div>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid md:grid-cols-2 gap-4 mb-5">
   <FeeGraph data={{ paid: stats.totalPaid, pending: stats.pendingFees }} />
   <StudentGraph data={studentGrowthData} />
 </div>

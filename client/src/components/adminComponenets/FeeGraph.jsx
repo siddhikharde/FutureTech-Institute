@@ -13,7 +13,7 @@ function FeeGraph({data}) {
     ]
   return (
     <div className="bg-white my-5 md:m-10 p-5 rounded-xl shadow">
-      <h2 className="font-semibold mb-4">Fee Overview</h2>
+      <h2 className="font-semibold ">Fee Overview</h2>
       <ResponsiveContainer width="100%" height={250}>
         <BarChart data={graphData}>
             <XAxis dataKey="name"/>
@@ -32,14 +32,14 @@ function FeeGraph({data}) {
 
 function StudentGraph({ data }) {
   return (
-    <div className="bg-white p-5 my-5 rounded-xl shadow">
-      <h2 className="font-semibold mb-4">Student Growth</h2>
+    <div className="bg-white my-5 md:m-10 p-5 rounded-xl shadow">
+      <h2 className="font-semibold ">Student Growth</h2>
       <ResponsiveContainer width="100%" height={250}>
         <LineChart data={data}>
           <XAxis dataKey="month" />
           <YAxis />
           <Tooltip />
-          <Line dataKey="count" stroke="#143a8a" />
+          <Line dataKey="students" stroke="#143a8a" />
         </LineChart>
       </ResponsiveContainer>
     </div>
