@@ -33,7 +33,7 @@ const handleSubmit = async (e) => {
     try{
     const response=await axios.post("http://localhost:8080/login", form);
     if(response.data.success){
-      toast.success(response.data.message || "Login Successful");
+      toast.success(response.data.message || "Login Successful", {id:"loginsuccess"});
       setForm({
         email:"",
         password:""
@@ -62,7 +62,7 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="bg-[#F8FAFC] min-h-screen overflow-y-scroll">
+    <div className="bg-gradient-to-br from-[#0F172A] via-[#143A8A] to-[#0F172A] min-h-screen ">
       <Navbar />
 
       <motion.div

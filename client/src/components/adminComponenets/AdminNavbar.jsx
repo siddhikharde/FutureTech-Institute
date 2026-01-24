@@ -42,7 +42,7 @@ export default function AdminNavbar() {
           title={"Logout"}
             onClick={handleLogout}
            variant="danger"
-           size="sm"
+           size="md"
          />
             
          
@@ -71,7 +71,7 @@ export default function AdminNavbar() {
           title={"Logout"}
             onClick={handleLogout}
            variant="danger"
-           size="sm"
+           size="md"
          /></div>
           
         </div>

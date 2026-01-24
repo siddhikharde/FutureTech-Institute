@@ -4,15 +4,23 @@ import StatCard from "../../components/adminComponenets/StatCard";
 import toast from "react-hot-toast";
 import StudentTable from "../../components/adminComponenets/StudentTable";
 import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
-import FeeGraph from "../../components/adminComponenets/FeeGraph";
+import {FeeGraph, StudentGraph} from "../../components/adminComponenets/FeeGraph";
+import { useNavigate } from "react-router";
 
 export default function Dashboard() {
+  const navigate=useNavigate();
   const [stats, setStats] = useState({
     students: 0,
     pendingFees: 0,
     totalPaid: 0,
   });
 
+  const studentGrowthData = [
+  { month: "Jan", count: 20 },
+  { month: "Feb", count: 35 },
+  { month: "Mar", count: 50 },
+  { month: "Apr", count: 70 },
+];
   const getStudentsData = async () => {
     try {
       const token = localStorage.getItem("JwtToken");
@@ -41,7 +49,7 @@ export default function Dashboard() {
       }
     }
     catch (e) {
-      console.error(error);
+      console.e(error);
       toast.error(
         error.response?.data?.message || "Server error")
     }
@@ -70,12 +78,10 @@ export default function Dashboard() {
           <StatCard title="Total Students" value={stats.students} type="students" />
           <StatCard title="Pending Fees" value={`₹ ${stats.pendingFees}`} type="fees" valueColor={"text-red-400"} />
         </div>
-         <FeeGraph
-        data={{
-          paid: stats.totalPaid,
-          pending: stats.pendingFees
-        }}
-      />
+        <div className="grid md:grid-cols-2 gap-6">
+  <FeeGraph data={{ paid: stats.totalPaid, pending: stats.pendingFees }} />
+  <StudentGraph data={studentGrowthData} />
+</div>
 
       <div className="md:p-5 ">
         <StudentTable />
