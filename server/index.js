@@ -521,7 +521,7 @@ app.get("/student-dashboard", auth, async(req, res)=>{
   }
 
 })
-app.get("/students-growth", async (req, res)=>{
+app.get("/students-growth", auth, admin, async (req, res)=>{
   try{
     const startOfYear=new Date(new Date().getFullYear(),0,1);
     const data=await User.aggregate([
@@ -533,7 +533,7 @@ app.get("/students-growth", async (req, res)=>{
       {
         $group:{
           _id:{$month:"$createdAt"},
-          count:{$sum:1}
+          students:{$sum:1}
         }
       },
       {
@@ -548,7 +548,7 @@ app.get("/students-growth", async (req, res)=>{
     const formattedData=data.map(item=>(
       {
         month:monthMap[item._id - 1],
-        count:item.count
+        students:item.students
       }
     ));
 
