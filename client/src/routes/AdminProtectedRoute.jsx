@@ -1,10 +1,10 @@
-import { Navigate, Outlet } from "react-router";
+import { Navigate, Outlet } from "react-router-dom";
 import { isTokenExpired } from "../Utils";
 import React from 'react'
 
 function AdminProtectedRoute() {
     const token=localStorage.getItem("JwtToken");
-    const user=JSON.parse(localStorage.getItem("UserData"));
+    const user=JSON.parse(localStorage.getItem("userData"));
     if(!token || isTokenExpired(token)){
         localStorage.clear();
         return <Navigate to="/login" replace/>

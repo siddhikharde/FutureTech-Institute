@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import StudentTable from "../../components/adminComponenets/StudentTable";
 import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
 import {FeeGraph, StudentGraph} from "../../components/adminComponenets/FeeGraph";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { setPageTitle } from "../../Utils";
 
 export default function Dashboard() {

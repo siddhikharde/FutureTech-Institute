@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "./Button";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
@@ -10,7 +10,7 @@ function Navbar(){
     const token=localStorage.getItem("JwtToken");
     const handleLogout=()=>{
       localStorage.removeItem("JwtToken");
-      localStorage.removeItem("UserData");
+      localStorage.removeItem("userData");
       setTimeout(()=>{
         navigate("/login");
       },1000)

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import Input from "../components/Input";
@@ -43,13 +43,16 @@ const handleSubmit = async (e) => {
       localStorage.setItem("JwtToken", jwt);
       localStorage.setItem("userData", JSON.stringify(data));
 
-       setTimeout(() => navigate("/"), 1200);
-    }
+      if (data.role === "admin") {
+    navigate("/dashboard", { replace: true });
+  }else{
+       setTimeout(() => navigate("/", { replace: true }), 1200);
+   } }
     else{
       toast.error(response.data.message || "Invalid email or password..")
     }}catch(e){
        toast.error(
-      error.response?.data?.message || "Server error. Try again."
+      e.response?.data?.message || "Server error. Try again."
     );
     }
 

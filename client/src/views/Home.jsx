@@ -13,7 +13,7 @@ import Footer from "../components/Footer";
 
 function Home (){
   useEffect(()=>{
-    setPageTitle({title:""});
+    setPageTitle({title:"Home"});
     window.scrollTo(0, 0);
   },[])
   const navigate=useNavigate();
