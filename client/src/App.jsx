@@ -15,6 +15,7 @@ import Dashboard from './views/admin/Dashboard'
 import AddCourses from './views/admin/AddCourses'
 import StudentDetails from './views/admin/StudentDetail'
 import StudentDashboard from './views/StudentDashboard'
+import AdminProtectedRoute from './routes/AdminProtectedRoute'
 
 function App() {
 
@@ -37,11 +38,18 @@ function App() {
           <Route path='/contact' element={<Contact />} />
           <Route path='/about' element={<About />} />
           <Route path='/courses' element={<Courses />} />
-          <Route path='/addStudents' element={<AddStudent />} />
-          <Route path='/dashboard' element={<Dashboard />} />
-          <Route path='add-courses' element={<AddCourses/>}/>
-          <Route path='/student-detail/:id' element={<StudentDetails/>}/>
           <Route path='/student-dashboard' element={<StudentDashboard/>}/>
+
+   
+    <Route path="/" element={<Home/>}/>
+    <Route path="/login" element={<Login/>}/>
+    <Route element={<AdminProtectedRoute/>}>
+     <Route path="/dashboard" element={<Dashboard />} />
+    <Route path="/addStudents" element={<AddStudent />} />
+    <Route path="/add-courses" element={<AddCourses />} />
+    <Route path="/student-detail/:id" element={<StudentDetails />} />
+    </Route>
+
         </Routes>
 
     </div>
