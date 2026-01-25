@@ -70,7 +70,7 @@ const courses = [
     description: "Master SQL and database design fundamentals, including query optimization, normalization, and database management for data-driven applications.",
   },{
      id: 11,
-    title: "SQL & Databases",
+    title: "Data Science",
     img: "/courseImages/data-science.png",
     duration: "6 Months",
     description: "Learn to analyze, visualize, and interpret data. Master Python, machine learning, and real-world projects to become a confident Data Scientist.",

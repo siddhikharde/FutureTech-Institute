@@ -270,7 +270,7 @@ function AddStudent() {
               </div>
 
               <Input
-                type="number"
+                type="text"
                 placeholder="Paid Fee"
                 value={form.paidFee}
                 onChange={(e) =>
