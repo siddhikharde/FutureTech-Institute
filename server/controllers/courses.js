@@ -166,14 +166,23 @@ const removeEnrolledCourse=async (req, res)=>{
 
 const putCourse=async (req, res)=>{
   const {id}=req.params;
-  const {price}=req.body;
+  let {price}=req.body;
 
-  if(!price){
-    return res.json({
-      success:false,
-      message:"Price is required"
-    })
+  if (price === undefined || price === null) {
+    return res.status(400).json({
+      success: false,
+      message: "Price is required"
+    });
   }
+  price = Number(price);
+  if (isNaN(price) || price < 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid price"
+    });
+  }
+
+
   try{
     const course=await Course.findByIdAndUpdate(
       id,
@@ -192,7 +201,7 @@ const putCourse=async (req, res)=>{
       data:course
     })
   }catch(e){
-    console.error("Update price error:", error);
+    console.error("Update price error:", e);
     return res.json({
       success: false, 
       message: "Server error"
