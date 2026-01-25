@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import axios from "axios";
 import Footer from "../components/Footer";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
   const navigate = useNavigate(); useEffect(() => {
@@ -20,6 +21,8 @@ function Login() {
     email: "",
     password: "",
   });
+
+  const [showPassword, setShowPassword] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -52,11 +55,11 @@ function Login() {
         }, 1000);
       }
       else {
-        toast.error(response.data.message || "Invalid email or password..")
+        toast.error(response.data.message || "Invalid email or password..",{id:"invalid"}) 
       }
     } catch (e) {
       toast.error(
-        e.response?.data?.message || "Server error. Try again."
+        e.response?.data?.message || "Server error. Try again.", {id:"error"}
       );
     }
 
@@ -92,15 +95,20 @@ function Login() {
                 setForm({ ...form, email: e.target.value })
               }
             />
-
-            <Input
-              type="password"
-              placeholder="Password"
-              value={form.password}
-              onChange={(e) =>
-                setForm({ ...form, password: e.target.value })
-              }
-            />
+<div className="relative">
+              <Input
+                type={showPassword ? "text" : "password"} // 👈 toggle type
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+              />
+              <span
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </span>
+            </div>
             <div className="flex items-center justify-center">
               <Button
                 type="submit"
