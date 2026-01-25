@@ -6,7 +6,7 @@ import { getHealth, getHome } from './controllers/home.js';
 import connectDb from './db.js';
 import { postLogin } from './controllers/auth.js';
 import { getSingleStudent, getStudent, getStudentDashboard, postStudent, putStudent } from './controllers/students.js';
-import { deleteCourse, getCourse, postCourse, postEnrollCourse, removeEnrolledCourse } from './controllers/courses.js';
+import { deleteCourse, getCourse, postCourse, postEnrollCourse, putCourse, removeEnrolledCourse } from './controllers/courses.js';
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 
@@ -36,7 +36,8 @@ app.post("/courses" ,auth, admin, postCourse);
 app.post("/enroll-course",auth, admin, postEnrollCourse);
 app.get("/courses", auth, admin, getCourse);
 app.delete("/courses/:id", auth, admin, deleteCourse);
-app.delete("/remove-course", auth, admin, removeEnrolledCourse)
+app.delete("/remove-course", auth, admin, removeEnrolledCourse);
+app.put("/edit-course-price/:id", auth, admin, putCourse);
 
 //payment
 app.post("/payment", auth, admin, postPayment)

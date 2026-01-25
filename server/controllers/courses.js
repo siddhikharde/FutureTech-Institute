@@ -163,4 +163,40 @@ const removeEnrolledCourse=async (req, res)=>{
     });
   }
 }
-export {postCourse, postEnrollCourse, getCourse, deleteCourse, removeEnrolledCourse}
+
+const putCourse=async (req, res)=>{
+  const {id}=req.params;
+  const {price}=req.body;
+
+  if(!price){
+    return res.json({
+      success:false,
+      message:"Price is required"
+    })
+  }
+  try{
+    const course=await Course.findByIdAndUpdate(
+      id,
+      {price},
+      {new: true}
+    );
+
+    if(!course){
+      return res.json({
+        success: false, message: "Course not found" 
+      })
+    }
+    return res.json({
+      success:true,
+      message: "Course price updated successfully",
+      data:course
+    })
+  }catch(e){
+    console.error("Update price error:", error);
+    return res.json({
+      success: false, 
+      message: "Server error"
+    })
+  }
+}
+export {postCourse, postEnrollCourse, getCourse, deleteCourse, removeEnrolledCourse, putCourse}
