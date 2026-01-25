@@ -7,6 +7,7 @@ import Navbar from '../components/Navbar';
 function StudentDashboard() {
     const [student, setStudent]=useState(null);
     const token=localStorage.getItem("JwtToken");
+    const firstName = student?.name?.split(" ")[0] || "Student";
 
     useEffect(()=>{
        axios.get(`${import.meta.env.VITE_BASE_URL}/student-dashboard`,{
@@ -44,12 +45,13 @@ function StudentDashboard() {
      
      <div className='p-5'>
             <div className="max-w-7xl mx-auto mb-8">
-        <h1 className="text-3xl font-bold md:text-4xl text-center font-boldtext-center my-8 bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent">
-          Welcome, {student.name || "User"} 
-        </h1>
-        <p className="text-center bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent mt-2">
-          Your learning progress at FutureTech
-        </p>
+        <h1 className="text-3xl font-bold md:text-4xl text-center my-8 bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] bg-clip-text text-transparent">
+  Hello, {firstName}! 
+</h1>
+<p className="text-center text-gray-500 mt-2">
+  Welcome to your FutureTech dashboard. Here's your learning progress:
+</p>
+      
       </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
         
