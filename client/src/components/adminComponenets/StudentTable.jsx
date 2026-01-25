@@ -114,38 +114,59 @@ function StudentTable() {
       </div>
 
 
-<div className="md:hidden max-w-md mx-auto divide-y divide-gray-200 rounded-2xl bg-white">
-  {students.map((s) => {
-    const pending = (s.fee?.total || 0) - (s.fee?.paid || 0);
+<div className="md:hidden space-y-4">
+  {students.length === 0 ? (
+    <p className="text-center text-gray-500">No students found</p>
+  ) : (
+    students.map((s) => {
+      const pending = (s.fee?.total || 0) - (s.fee?.paid || 0);
 
-    return (
-      <div key={s._id} className="px-4 py-4 flex items-center justify-between">
-        
-        {/* Left */}
-        <div className="flex flex-col">
-          <span className="text-base font-medium text-gray-900">
-            {s.name}
-          </span>
-          <span className="text-sm text-gray-500 truncate max-w-[220px]">
-            {s.email}
-          </span>
+      return (
+        <div
+          key={s._id}
+          className="bg-white rounded-2xl shadow-md p-4 space-y-3 border border-gray-200"
+        >
+          <div className="flex justify-between mb-1 items-center">
+            <div className="flex flex-col">
+              <span className="text-md font-semibold text-gray-900">{s.name}</span>
+              <span className="text-[12px] text-gray-500 truncate max-w-[200px]">{s.email}</span>
+            </div>
+            <Button
+              onClick={() => navigate(`/student-detail/${s._id}`)}
+              title="View"
+              size="sm"
+            />
+          </div>
+
+          <div className="mb-0">
+            <span className="text-sm font-medium text-gray-600">Courses: </span>
+            <span className="text-sm text-gray-800">
+              {s.enrolledCourses?.length
+                ? s.enrolledCourses.map((c) => c.title).join(", ")
+                : "None"}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-sm font-medium text-gray-600">Total Fee: </span>
+              <span className="text-sm text-gray-800">₹{s.fee?.total || 0}</span>
+            </div>
+            <div className="text-right">
+              <span
+                className={`text-sm font-semibold ${
+                  pending === 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                ₹{pending}
+              </span>
+              <p className="text-xs text-gray-400">pending</p>
+            </div>
+          </div>
         </div>
-
-        {/* Right */}
-        <div className="text-right">
-          <span
-            className={`text-sm font-semibold ${
-              pending === 0 ? "text-green-600" : "text-red-600"
-            }`}
-          >
-            ₹{pending}
-          </span>
-          <p className="text-xs text-gray-400">pending</p>
-        </div>
-
-      </div>
-    );
-  })}
+      );
+    })
+  )}
 </div>
 
 
