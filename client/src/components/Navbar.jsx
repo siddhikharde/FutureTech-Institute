@@ -4,17 +4,18 @@ import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import logo from '../assets/logo.png'
 
-function Navbar(){
-  const navigate=useNavigate();
-    const [open, setOpen] = useState(false);
-    const token=localStorage.getItem("JwtToken");
-    const handleLogout=()=>{
-      localStorage.removeItem("JwtToken");
-      localStorage.removeItem("userData");
-      setTimeout(()=>{
-        navigate("/login");
-      },1000)
-    }
+function Navbar() {
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const token = localStorage.getItem("JwtToken");
+  const userData = JSON.parse(localStorage.getItem("userData"));
+  const handleLogout = () => {
+    localStorage.removeItem("JwtToken");
+    localStorage.removeItem("userData");
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000)
+  }
   return (
     <div className="bg-white shadow-md z-1000 sticky top-0 left-0 right-0">
       <div className="max-w-7xl mx-auto px-4">
@@ -44,15 +45,20 @@ function Navbar(){
           </div>
 
           <div className="hidden md:flex items-center space-x-3">
-             {
-              token?(
-                <Button variant="danger" size="md" title={"Logout"} onClick={handleLogout}/>
-              )
-            :(<Link to="/login">
-              <Button variant="outline" size="md" title={"Login"} className="w-full"/>
-            </Link>)}
+            {
+              token && userData ? (
+                 <div className="flex items-center gap-3">
+                   <div className="w-8 h-8 rounded-full bg-[#0F172A] flex items-center justify-center text-white font-bold">
+        <Link to={"/student-dashboard"}>{userData.name ? userData.name.charAt(0).toUpperCase() : "S"}</Link>
+      </div>
+                <Button variant="danger" size="md" title={"Logout"} onClick={handleLogout} />
+              </div>  )
+            
+                : (<Link to="/login">
+                  <Button variant="outline" size="md" title={"Login"} className="w-full" />
+                </Link>)}
           </div>
-           <button
+          <button
             onClick={() => setOpen(!open)}
             className="md:hidden text-[#0F172A] cursor-pointer"
           >
@@ -68,17 +74,23 @@ function Navbar(){
           <Link onClick={() => setOpen(false)} to="/about" className="block text-gray-200 text-[17px] font-bold">About</Link>
           <Link onClick={() => setOpen(false)} to="/contact" className="block text-gray-200 text-[17px] font-bold">Contact</Link>
 
+
           <div className=" flex gap-3 py-2 w-full items-start justify-start pt-3 border-t border-gray-700">
+            {token && userData && (
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-white font-bold">
+                <Link to={"/student-dashboard"}>{userData.name ? userData.name.charAt(0).toUpperCase() : "U"}</Link>
+              </div>
+            )}
             {
-              token?(
-                <Button variant="danger" size="md" title={"Logout"} onClick={handleLogout}/>
+              token ? (
+                <Button variant="danger" size="md" title={"Logout"} onClick={handleLogout} />
               )
-            :(<Link to="/login">
-              <Button variant="outline" size="md" title={"Login"} className="w-full"/>
-            </Link>)}
+                : (<Link to="/login">
+                  <Button variant="outline" size="md" title={"Login"} className="w-full" />
+                </Link>)}
           </div>
         </div>
-          )}
+      )}
     </div>
   );
 };
