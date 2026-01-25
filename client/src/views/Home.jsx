@@ -3,7 +3,6 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router";
 import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
-import studReviews from "../configs/Reviews";
 import {setPageTitle} from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
@@ -97,31 +96,7 @@ function Home (){
           </div>
         </div>
       </div>
-        <div className="py-16">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold text-[#020617] mb-10">
-            Student Reviews
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-8">
-           {
-              studReviews.map((item, index)=>{
-                return(
-                 <div className="bg-white p-6 rounded-xl shadow" key={index}>
-              <p className="text-[#475569] mb-4">
-               {item.message}
-              </p>
-              <h4 className="font-semibold">- {item.name}</h4>
-            </div>
-                )
-              })
-
-           } 
-
-
-          </div>
-        </div>
-      </div>
+       
 <Footer/>
     </div>
   );
