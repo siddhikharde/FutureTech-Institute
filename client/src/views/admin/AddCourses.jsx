@@ -42,7 +42,6 @@ function AddCourses() {
                 description,
                 price,
                 duration,
-                category
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             })
@@ -52,8 +51,7 @@ function AddCourses() {
                     title: "",
                     description: "",
                     duration: "",
-                    price: "",
-                    category: ""
+                    price: ""
                 })
                 fetchCourses();
             }
@@ -63,31 +61,29 @@ function AddCourses() {
         }
     }
 
-    const deleteCourse = async (id) => {
-        if (!window.confirm("Are you sure you want to delete this course?")) return;
+const deleteCourse=async(id)=>{
+    if (!window.confirm("Are you sure you want to delete this course?")) return;
 
-        try {
-            const token = localStorage.getItem("JwtToken");
-            const res = await axios.delete(`${import.meta.env.VITE_BASE_URL}/courses/${id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    }
-                }
-            )
-            if (res.data.success) {
-                toast.success("Course deleted");
-                fetchCourses();
-            } else {
-                toast.error(res.data.message)
-            }
-        } catch (e) {
-            toast.error("Delete failed");
-        }
+    try{
+        const token=localStorage.getItem("JwtToken");
+        const res=await axios.delete(`${import.meta.env.VITE_BASE_URL}/courses/${id}`,
+            {headers:{
+                Authorization:`Bearer ${token}`,
+            }}
+        )
+        if (res.data.success) {
+      toast.success("Course deleted");
+      fetchCourses();
+    }else{
+        toast.error(res.data.message)
     }
+    }catch(e){
+         toast.error("Delete failed");
+    }
+}
     useEffect(() => {
         fetchCourses();
-        setPageTitle({ title: "Admin Courses" })
+         setPageTitle({title:"Admin Courses"})
     }, [])
 
     const fadeInUp = {
@@ -131,25 +127,8 @@ function AddCourses() {
                         onChange={(e) => {
                             setForm({ ...form, duration: e.target.value })
                         }} />
-                    <select
-                        className="border rounded-xl p-3 text-gray-500 border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
-                        value={form.category}
-                        onChange={(e) =>
-                            setForm({ ...form, category: e.target.value.toLowerCase() })
-                        }
-                    >
 
-                        <option value="c">C Programming</option>
-                        <option value="cpp">C++ Programming</option>
-                        <option value="dS">Data Structures</option>
-                        <option value="excel">MS Excel</option>
-                        <option value="java1">Java</option>
-                        <option value="php">PHP</option>
-                        <option value="python">Python</option>
-                        <option value="sql">SQL</option>
-                        <option value="dotnet">.NET</option>
-                        <option value="webdevelopment">Web Development</option>
-                    </select>
+                    <Button title={"Add"} type='submit' />
                     <textarea
                         placeholder='Description (optional)'
                         className="md:col-span-4 border rounded-xl p-3 border border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
@@ -159,8 +138,6 @@ function AddCourses() {
                                 ...form, description: e.target.value
                             })
                         }} />
-
-                    <Button title={"Add"} type='submit' />
 
 
                 </motion.form>
@@ -194,7 +171,7 @@ function AddCourses() {
                                                 <td className="p-4 text-center">
                                                     <Button
                                                         title={" Delete"} variant='danger' size='sm'
-                                                        onClick={() => {
+                                                        onClick={()=>{
                                                             deleteCourse(c._id)
                                                         }}
                                                     />
@@ -211,36 +188,36 @@ function AddCourses() {
 
                 </div>
 
-                <div className="md:hidden space-y-4">
-                    {courses.length === 0 ? (
-                        <p className="text-center text-gray-500">No courses found</p>
-                    ) : (
-                        courses.map((c) => (
-                            <div
-                                key={c._id}
-                                className="bg-white rounded-xl mt-10 shadow-md p-5 space-y-2"
-                            >
-                                <h3 className="text-lg font-semibold">{c.title}</h3>
+      <div className="md:hidden space-y-4">
+  {courses.length === 0 ? (
+    <p className="text-center text-gray-500">No courses found</p>
+  ) : (
+    courses.map((c) => (
+      <div
+        key={c._id}
+        className="bg-white rounded-xl mt-10 shadow-md p-5 space-y-2"
+      >
+        <h3 className="text-lg font-semibold">{c.title}</h3>
 
-                                <p className="text-sm text-gray-600">
-                                    Duration: <span className="font-medium">{c.duration || "-"}</span>
-                                </p>
+        <p className="text-sm text-gray-600">
+          Duration: <span className="font-medium">{c.duration || "-"}</span>
+        </p>
 
-                                <p className="text-sm text-gray-600">
-                                    Price: <span className="font-medium">₹{c.price}</span>
-                                </p>
+        <p className="text-sm text-gray-600">
+          Price: <span className="font-medium">₹{c.price}</span>
+        </p>
 
-                                <div className="flex gap-2 pt-2">
-                                    <Button title="Delete" size="sm" variant="danger" />
-                                </div>
-                            </div>
-                        ))
-                    )}
-                </div>
+        <div className="flex gap-2 pt-2">
+          <Button title="Delete" size="sm" variant="danger" />
+        </div>
+      </div>
+    ))
+  )}
+</div>
 
 
             </div>
-            <Toaster />
+<Toaster/>
 
         </div>
     )

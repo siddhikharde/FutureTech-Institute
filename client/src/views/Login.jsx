@@ -4,23 +4,23 @@ import Navbar from "../components/Navbar";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import toast, { Toaster } from "react-hot-toast";
-import {setPageTitle} from '../Utils'
+import { setPageTitle } from '../Utils'
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import axios from "axios";
 import Footer from "../components/Footer";
 
 function Login() {
-  const navigate = useNavigate(); useEffect(()=>{
-      setPageTitle({title:"Login"});
-      window.scrollTo(0, 0);
-    },[])
+  const navigate = useNavigate(); useEffect(() => {
+    setPageTitle({ title: "Login" });
+    window.scrollTo(0, 0);
+  }, [])
 
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const { email, password } = form;
@@ -30,30 +30,34 @@ const handleSubmit = async (e) => {
       return;
     }
 
-    try{
-    const response=await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, form);
-    if(response.data.success){
-      toast.success(response.data.message || "Login Successful", {id:"loginsuccess"});
-      setForm({
-        email:"",
-        password:""
-      })
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/login`, form);
+      if (response.data.success) {
+        toast.success(response.data.message || "Login Successful", { id: "loginsuccess", duration: 1000 });
+        setForm({
+          email: "",
+          password: ""
+        })
 
-      const {jwt, data}=response.data;
-      localStorage.setItem("JwtToken", jwt);
-      localStorage.setItem("userData", JSON.stringify(data));
+        const { jwt, data } = response.data;
+        localStorage.setItem("JwtToken", jwt);
+        localStorage.setItem("userData", JSON.stringify(data));
 
-      if (data.role === "admin") {
-    navigate("/dashboard", { replace: true });
-  }else{
-       setTimeout(() => navigate("/", { replace: true }), 1200);
-   } }
-    else{
-      toast.error(response.data.message || "Invalid email or password..")
-    }}catch(e){
-       toast.error(
-      e.response?.data?.message || "Server error. Try again."
-    );
+        setTimeout(() => {
+          if (data.role === "admin") {
+            navigate("/dashboard", { replace: true });
+          } else {
+            navigate("/", { replace: true });
+          }
+        }, 1000);
+      }
+      else {
+        toast.error(response.data.message || "Invalid email or password..")
+      }
+    } catch (e) {
+      toast.error(
+        e.response?.data?.message || "Server error. Try again."
+      );
     }
 
   };
@@ -107,9 +111,9 @@ const handleSubmit = async (e) => {
             </div>
           </form>
         </div>
-        <Toaster/>
+        <Toaster />
       </motion.div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
