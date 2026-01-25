@@ -226,8 +226,36 @@ function AddCourses() {
                             <p className="text-sm text-gray-600">
                                 Duration: <span className="font-medium">{c.duration || "-"}</span>
                             </p>
-                            <p className="text-sm text-gray-600">
-                                Price: <span className="font-medium">₹{c.price}</span>
+                            <p className="text-sm text-gray-600 flex items-center gap-2">
+                                Price:{
+                                    editingPriceId === c._id ? (
+                                        <>
+                                            <input
+                                                type="text"
+                                                value={newPrice}
+                                                onChange={(e) => setNewPrice(e.target.value)}
+                                                className="border rounded px-2 py-1 w-20"
+                                            />
+                                            <Button
+                                                title="Save"
+                                                size="sm"
+                                                onClick={() => savePrice(c._id)}
+                                            />
+                                            <Button
+                                                title="Cancel"
+                                                size="sm"
+                                                variant="secondary"
+                                                onClick={() => setEditingPriceId(null)}
+                                            />
+                                        </>
+                                    )
+                                : (<><span className="font-medium">₹{c.price}</span>
+                                    <Button
+                                        title="Edit Price"
+                                        size="sm"
+                                        onClick={() => editPrice(c._id, c.price)}
+                                    /></>)
+                                }
                             </p>
                             <div className="flex gap-2 pt-2">
                                 <Button title="Delete" size="sm" variant="danger" onClick={() => deleteCourse(c._id)} />
