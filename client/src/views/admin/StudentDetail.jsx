@@ -135,7 +135,15 @@ function StudentDetail() {
       <AdminNavbar />
       <div className="max-w-6xl mx-auto p-6 space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-3xl font-bold">{student.name}</h1>
+          <h1 className="text-3xl font-bold flex flex-col items-center justify-center">{student.name}
+            <p className="text-center text-gray-500 mt-1 text-sm font-semibold">
+  Enrolled on:{" "}
+  <span className="font-semibold text-sm text-[#143A8A]">
+    {new Date(student.enrolledAt).toLocaleDateString()}
+  </span>
+</p>
+          </h1>
+          
           <Button
             title={editMode ? "Cancel" : "Edit"}
             size="sm"

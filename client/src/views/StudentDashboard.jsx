@@ -51,6 +51,12 @@ function StudentDashboard() {
 <p className="text-center text-gray-500 mt-2">
   Welcome to your FutureTech dashboard. Here's your learning progress:
 </p>
+<p className="text-center text-gray-500 mt-1">
+  Enrolled on:{" "}
+  <span className="font-semibold text-[#143A8A]">
+    {new Date(student.enrolledAt).toLocaleDateString()}
+  </span>
+</p>
       
       </div>
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
