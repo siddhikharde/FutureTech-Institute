@@ -71,7 +71,12 @@ const postStudent=async (req, res)=>{
         total: totalFee,
         paid: paidFee,
         remaining: remainingFee
-      }
+      },
+      paymentHistory:
+        paidFee> 0?[{
+          amount:paidFee
+        }]:[]
+      ,
     });
   try{
     const savedUser=await student.save()

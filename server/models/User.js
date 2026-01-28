@@ -38,7 +38,11 @@ const userSchema=new Schema({
         {
             type:Schema.Types.ObjectId, ref:"Course"
         }
-    ],phone:{
+    ],
+    enrolledAt: {
+  type: Date,
+  default: Date.now
+},phone:{
     type:Number,
 },
 },{
