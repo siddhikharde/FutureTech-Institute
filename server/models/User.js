@@ -45,6 +45,10 @@ const userSchema=new Schema({
 },phone:{
     type:Number,
 },
+isActive:{
+    type:Boolean,
+    default:true,
+}
 },{
     timestamps:true
 })

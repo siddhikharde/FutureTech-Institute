@@ -5,12 +5,13 @@ import Course from '../models/Courses.js';
 dotenv.config();
 
 const postCourse=async (req, res)=>{
-  const {title, description, price, duration}=req.body;
+  const {title, description, price, duration, imageUrl}=req.body;
   const course = new Course({
     title,
     description,
     price,
-    duration
+    duration,
+    imageUrl,
   });
   try{
     const data=await course.save();

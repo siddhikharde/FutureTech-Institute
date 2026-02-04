@@ -9,6 +9,7 @@ import { getSingleStudent, getStudent, getStudentDashboard, postStudent, putStud
 import { deleteCourse, getCourse, postCourse, postEnrollCourse, putCourse, removeEnrolledCourse } from './controllers/courses.js';
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
+import { upload } from './config/multer.js';
 
 const app=express();
 dotenv.config();
@@ -46,6 +47,13 @@ app.post("/payment", auth, admin, postPayment)
 app.get("/dashboard-stats", auth, admin,getStatestic)
 
 app.get("/students-growth", auth, admin, getStudentGrowthGraph)
+
+app.post("/upload",upload.single('image'), (req, res)=>{
+    res.json({
+        success:true,
+        imageUrl: req.file.path,
+    })
+})
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();
