@@ -11,13 +11,14 @@ import { setPageTitle } from '../../Utils';
 function AddCourses() {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
-     const [loading, setloading]=useState(false);
+    const [loading, setloading] = useState(false);
+    const [imgFile, setImgFile] = useState(null);
     const [form, setForm] = useState({
         title: "",
         description: "",
         price: "",
         duration: "",
-        imageUrl:" "
+        imageUrl: " "
     });
     const [editingPriceId, setEditingPriceId] = useState(null);
     const [newPrice, setNewPrice] = useState("");
@@ -36,28 +37,6 @@ function AddCourses() {
         }
     }
 
-    const handleUpload= async (e)=>{
-        const formData= new FormData();
-        formData.append("image", e.target.files[0]);
-
-        try {
-            setloading(true);
-            const token = localStorage.getItem("JwtToken");
-            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/upload`, formData, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            if (res.data.success) {
-                toast.success("Image uploaded");
-                setForm({ ...form, imageUrl: res.data.imageUrl });
-                setloading(false);
-            } else {
-                toast.error(res.data.message || "Upload failed");
-            }
-        } catch (e) {
-            console.error(e);
-            toast.error("Upload failed");
-        }
-    }
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { title, description, price, duration, imageUrl } = form;
@@ -68,25 +47,43 @@ function AddCourses() {
         }
 
         try {
+            setloading(true);
+            
             const token = localStorage.getItem("JwtToken");
+             const imgForm = new FormData();
+        imgForm.append("image",imgFile);
+
+        const uploadRes  = await axios.post(`${import.meta.env.VITE_BASE_URL}/upload`, imgForm, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+             if (!uploadRes.data.success) {
+      toast.error("Image upload failed");
+      setloading(false);
+      return;
+    }
+     const imageUrl = uploadRes.data.imageUrl;
             const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/courses`, {
                 title,
                 description,
                 price: Number(price),
                 duration,
+                imageUrl,
             }, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.success) {
                 toast.success("Course added");
-                setForm({ title: "", description: "", price: "", duration: "" });
+                setForm({ title: "", description: "", price: "", duration: "", imageUrl: "" });
                 fetchCourses();
             }
 
         } catch (e) {
             console.error(e);
             toast.error("Course creation failed");
-        }
+        } finally {
+    setloading(false);
+  }
     }
 
     const deleteCourse = async (id) => {
@@ -171,10 +168,6 @@ function AddCourses() {
                         value={form.title}
                         onChange={(e) => setForm({ ...form, title: e.target.value })}
                     />
-                    <Input
-                    type="file"
-                    onChange={(e) => {  handleUpload(e)}}
-                    placeholder="Upload Image"/>
 
                     <Input
                         type="text"
@@ -189,15 +182,39 @@ function AddCourses() {
                         value={form.duration}
                         onChange={(e) => setForm({ ...form, duration: e.target.value })}
                     />
+                    <div className='flex gap-1'>
 
-                    <Button title="Add" type='submit' />
+                        <Input
+                            type="file"
+                            onChange={(e) => setImgFile(e.target.files[0])}
+                            placeholder="Upload Image"
+                        />
+                        {loading ? (
+                            <p className="text-gray-500">Uploading...</p>
+                        ) : form.imageUrl ? (
 
-                    <textarea
-                        placeholder="Description (optional)"
-                        className="md:col-span-4 border rounded-xl p-3 border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
-                        value={form.description}
-                        onChange={(e) => setForm({ ...form, description: e.target.value })}
-                    />
+                            <div className="flex items-center gap-2">
+
+                                {imgFile && (
+                                    <img
+                                        src={URL.createObjectURL(imgFile)}
+                                        alt="Preview"
+                                        className="w-16 h-16 object-cover rounded-md"
+                                    />
+                                )}
+                            </div>
+                        ) : (
+                            " "
+                        )}
+                    </div>
+                    <div className='md:col-span-4 flex md:flex-row flex-col gap-4 '>
+                        <textarea
+                            placeholder="Description (optional)"
+                            className="w-full border rounded-xl p-3 border-gray-300 outline-0 focus:ring-1 focus:ring-blue-500"
+                            value={form.description}
+                            onChange={(e) => setForm({ ...form, description: e.target.value })}
+                        />
+                        <Button title="Add" type='submit' /></div>
                 </motion.form>
 
                 <div className="bg-white hidden md:block mt-10 rounded-2xl shadow-md overflow-x-auto">
@@ -277,12 +294,12 @@ function AddCourses() {
                                             />
                                         </>
                                     )
-                                : (<><span className="font-medium">₹{c.price}</span>
-                                    <Button
-                                        title="Edit Price"
-                                        size="sm"
-                                        onClick={() => editPrice(c._id, c.price)}
-                                    /></>)
+                                        : (<><span className="font-medium">₹{c.price}</span>
+                                            <Button
+                                                title="Edit Price"
+                                                size="sm"
+                                                onClick={() => editPrice(c._id, c.price)}
+                                            /></>)
                                 }
                             </p>
                             <div className="flex gap-2 pt-2">
