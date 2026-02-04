@@ -11,11 +11,13 @@ import { setPageTitle } from '../../Utils';
 function AddCourses() {
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
+     const [loading, setloading]=useState(false);
     const [form, setForm] = useState({
         title: "",
         description: "",
         price: "",
         duration: "",
+        imageUrl:" "
     });
     const [editingPriceId, setEditingPriceId] = useState(null);
     const [newPrice, setNewPrice] = useState("");
@@ -34,11 +36,33 @@ function AddCourses() {
         }
     }
 
+    const handleUpload= async (e)=>{
+        const formData= new FormData();
+        formData.append("image", e.target.files[0]);
+
+        try {
+            setloading(true);
+            const token = localStorage.getItem("JwtToken");
+            const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/upload`, formData, {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            if (res.data.success) {
+                toast.success("Image uploaded");
+                setForm({ ...form, imageUrl: res.data.imageUrl });
+                setloading(false);
+            } else {
+                toast.error(res.data.message || "Upload failed");
+            }
+        } catch (e) {
+            console.error(e);
+            toast.error("Upload failed");
+        }
+    }
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { title, description, price, duration } = form;
+        const { title, description, price, duration, imageUrl } = form;
 
-        if (!title || !duration || price === "" || price < 0) {
+        if (!title || !duration || price === "" || price < 0 || !imageUrl) {
             toast.error("Please fill all required fields with valid values");
             return;
         }
@@ -147,6 +171,10 @@ function AddCourses() {
                         value={form.title}
                         onChange={(e) => setForm({ ...form, title: e.target.value })}
                     />
+                    <Input
+                    type="file"
+                    onChange={(e) => {  handleUpload(e)}}
+                    placeholder="Upload Image"/>
 
                     <Input
                         type="text"
