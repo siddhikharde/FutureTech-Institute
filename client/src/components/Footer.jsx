@@ -6,7 +6,7 @@ import logo from '../assets/logo.png'
 
 function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A] text-gray-300">
+    <footer className="bg-[#0F172A] text-gray-300">
       <div className="max-w-7xl mx-auto px-6 py-10 grid gap-10 md:grid-cols-4">
 
         <motion.div

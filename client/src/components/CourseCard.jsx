@@ -1,26 +1,55 @@
 import React from 'react'
 import Button from './Button'
 import { Clock } from 'lucide-react'
+import { motion } from 'framer-motion'
 
 function CourseCard({title, description, duration, img, buttonTitle, onClick}) {
   return (
-   <div className='flex flex-col shadow-[2px_2px_10px_#666666] rounded-2xl ' >
-                  <div className='overflow-hidden cursor-pointer relative top-0 right-0 w-full object-contain  rounded-t-2xl h-[200px]'>
-                    <img src={img} alt={title} className='w-full h-full  transition-all duration-500 ease-in-out
-    hover:scale-125 hover:brightness-70' />
-                  </div>
-                  <div className='flex flex-col justify-center gap-3 p-5'>
-                    <h2 className='text-[22px] font-bold'>{title}</h2>
-                    <p className='text-gray-700 text-[15px]'>{description}</p>
-                    <p className='flex items-center gap-2 text-[15px] text-gray-500'><Clock size={17}/>{duration}</p>
-                    <div className='flex items-center'>
-                      <Button title={buttonTitle} size='lg' onClick={onClick}/>
-                    </div>
-                    </div>
+      <motion.div
+      className='flex flex-col rounded-2xl overflow-hidden bg-[#0F172A] text-white shadow-xl border border-gray-800'
+      whileHover={{ scale: 1.05, rotate: 0.5 }}
+      transition={{ type: 'spring', stiffness: 200 }}
+    >
 
+      {/* Image */}
+      <div className='relative overflow-hidden h-[200px]'>
+        <motion.img
+          src={img}
+          alt={title}
+          className='w-full h-full object-cover'
+          whileHover={{ scale: 1.2 }}
+          transition={{ duration: 0.6 }}
+        />
 
-                  </div>
-  )
+        {/* Gradient overlay */}
+        <div className='absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 hover:opacity-100 transition duration-500'/>
+      </div>
+
+      {/* Content */}
+      <div className='flex flex-col gap-3 p-5'>
+        <h2 className='text-[20px] font-bold leading-snug'>
+          {title}
+        </h2>
+
+        <p className='text-gray-400 text-[14px] line-clamp-3'>
+          {description}
+        </p>
+
+        <p className='flex items-center gap-2 text-[14px] text-gray-400'>
+          <Clock size={16}/> {duration}
+        </p>
+
+        {/* Button with animation */}
+        <motion.div whileTap={{ scale: 0.95 }} className='mt-2'>
+          <Button
+            title={buttonTitle}
+            size='md'
+            onClick={onClick}
+          />
+        </motion.div>
+      </div>
+    </motion.div>
+    )
 }
 
 export default CourseCard
