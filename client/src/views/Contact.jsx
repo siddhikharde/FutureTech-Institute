@@ -1,137 +1,158 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import Input from "../components/Input";
 import Button from "../components/Button";
 import toast from "react-hot-toast";
 import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from "framer-motion";
-import {setPageTitle} from '../Utils'
-import { useEffect } from "react";
+import { setPageTitle } from "../Utils";
 import Footer from "../components/Footer";
 
 function Contact() {
-   useEffect(()=>{
-      setPageTitle({title:"Contact Us"})
-       window.scrollTo(0, 0);
-    },[])
-   const [form, setForm] = useState({
+
+  useEffect(() => {
+    setPageTitle({ title: "Contact Us" });
+    window.scrollTo(0, 0);
+  }, []);
+
+  const [form, setForm] = useState({
     name: "",
     email: "",
     message: "",
   });
 
-   const handleSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!form.name || !form.email || !form.message) {
-      toast.error("Please fill all fields", { id: "contact-error" });
+      toast.error("Please fill all fields");
       return;
     }
 
-    const phoneNumber = "917774912734"; 
+    const phoneNumber = "917774912734";
 
-  const whatsappMessage = `
+    const whatsappMessage = `
 New Contact Message – FutureTech Institute
 
- Name: ${form.name}
- Email: ${form.email}
+Name: ${form.name}
+Email: ${form.email}
 Message: ${form.message}
-  `;
+    `;
 
-  const encodedMessage = encodeURIComponent(whatsappMessage);
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
-  const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
-
-  window.open(whatsappURL, "_blank");
-
-  toast.success("Redirecting to WhatsApp...", {
-    id: "contact-success",
-  });
+    window.open(whatsappURL, "_blank");
+    toast.success("Redirecting to WhatsApp...");
 
     setForm({ name: "", email: "", message: "" });
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
+  // 🔥 SAME ANIMATIONS AS HOME
+  const floating = {
+    animate: {
+      y: [0, -15, 0],
+      transition: { duration: 4, repeat: Infinity }
+    }
   };
 
-  const containerAnimation = {
-    hidden: {},
-    visible: { transition: { containerAnimation: 0.2 } },
+  const slideLeft = {
+    hidden: { opacity: 0, x: -80 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8 } }
   };
+
+  const slideRight = {
+    hidden: { opacity: 0, x: 80 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.8 } }
+  };
+
+  const stagger = {
+    hidden: {},
+    visible: { transition: { staggerChildren: 0.15 } }
+  };
+
   return (
-    <div className="bg-[#F9FAFB] min-h-screen">
+    <div className="bg-[#020617] text-white overflow-hidden">
+
       <Navbar />
 
-    
-      <motion.div
-        className="relative overflow-hidden"
-        variants={containerAnimation}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0F172A] via-[#143a8a] to-[#0F172A]" />
+      {/* 🔥 HERO (MATCHES HOME) */}
+      <div className="relative">
 
-        <div className="relative max-w-7xl mx-auto px-4 py-24 text-center">
+        <motion.div
+          className="absolute w-72 h-72 bg-blue-500 rounded-full blur-3xl opacity-30 top-10 left-10"
+          variants={floating}
+          animate="animate"
+        />
+        <motion.div
+          className="absolute w-72 h-72 bg-purple-500 rounded-full blur-3xl opacity-30 bottom-10 right-10"
+          variants={floating}
+          animate="animate"
+        />
+
+        <motion.div
+          className="text-center py-16 px-5 relative z-10"
+          initial="hidden"
+          animate="visible"
+          variants={stagger}
+        >
           <motion.h1
-            className="text-4xl md:text-5xl font-bold text-gray-200 mb-4"
-            variants={fadeInUp}
+            className="text-5xl md:text-7xl font-extrabold"
+            variants={slideLeft}
           >
-            Contact <span className="text-[#0EA5E9]">Us</span>
+            Contact
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+              FutureTech
+            </span>
           </motion.h1>
 
           <motion.p
-            className="text-gray-400 max-w-3xl mx-auto text-lg"
-            variants={fadeInUp}
+            className="mt-6 text-lg text-gray-300 max-w-2xl mx-auto"
+            variants={slideRight}
           >
             We’d love to hear from you. Let’s build your future together.
           </motion.p>
-        </div>
-      </motion.div>
-<motion.div
-        className="max-w-7xl mx-auto px-4 py-20 grid md:grid-cols-2 gap-12"
-        variants={containerAnimation}
+        </motion.div>
+      </div>
+
+      <motion.div
+        className="max-w-7xl mx-auto px-5 py-20 grid md:grid-cols-2 gap-12"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={stagger}
       >
-      
-        <motion.div variants={fadeInUp} className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-[#111827] mb-4">
-              Get in Touch
-            </h2>
 
-            <div className="flex items-center gap-3 text-[#4B5563] mb-3">
-              <Mail className="text-[#0EA5E9]" />
-              <a href="mailto:Info@futuret.in" className="hover:underline">
-                Info@futuret.in
-              </a>
+        {/* LEFT */}
+        <motion.div variants={slideLeft}>
+          <div className="bg-[#0F172A] rounded-2xl shadow-xl p-8 border border-gray-700">
+            <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
+
+            <div className="flex items-center gap-3 mb-4 text-gray-300">
+              <Mail className="text-blue-400" />
+              <span>info@futuret.in</span>
             </div>
 
-            <div className="flex items-center gap-3 text-[#4B5563] mb-3">
-              <Phone className="text-[#0EA5E9]" />
-              <a href="tel:7774912734" className="hover:underline">
-                +91 77749 12734
-              </a>
+            <div className="flex items-center gap-3 mb-4 text-gray-300">
+              <Phone className="text-blue-400" />
+              <span>+91 77749 12734</span>
             </div>
 
-            <div className="flex items-start gap-3 text-[#4B5563]">
-              <MapPin className="text-[#0EA5E9] mt-1" />
+            <div className="flex items-start gap-3 text-gray-300">
+              <MapPin className="text-blue-400 mt-1" />
               <p>
                 Anantaa City Center, Office No.13,<br />
-                Shrirampur–Newasa Road, Shrirampur
+                Shrirampur–Newasa Road
               </p>
             </div>
           </div>
         </motion.div>
-         <motion.div variants={fadeInUp}>
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-[#111827] mb-6">
-              Send a Message
-            </h2>
 
-            <form className="flex flex-col gap-4 " onSubmit={handleSubmit}>
+        {/* RIGHT (FORM) */}
+        <motion.div variants={slideRight}>
+          <div className="bg-[#0F172A] rounded-2xl shadow-xl p-8 border border-gray-700">
+            <h2 className="text-2xl font-bold mb-6">Send a Message</h2>
+
+            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
               <Input
                 type="text"
                 placeholder="Your Name"
@@ -156,22 +177,17 @@ Message: ${form.message}
                 onChange={(e) =>
                   setForm({ ...form, message: e.target.value })
                 }
-                className="w-full border border-gray-300 rounded-lg p-3 h-32 resize-none outline-none focus:ring-2 focus:ring-[#0EA5E9]"
+                className="bg-[#020617] border border-gray-600 rounded-lg p-3 h-32 text-white outline-none focus:ring-2 focus:ring-blue-500"
               />
 
-              <div className="flex items-center justify-center">
-                <Button
-                type="submit"
-                size="lg"
-                title="Send Message"
-                className="w-full"
-              />
-              </div>
+              <Button type="submit" size="lg" title="Send Message" />
             </form>
           </div>
         </motion.div>
-        </motion.div>
-      <Footer/>
+
+      </motion.div>
+
+      <Footer />
     </div>
   );
 }

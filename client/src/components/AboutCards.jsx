@@ -1,38 +1,57 @@
-import { icons } from "lucide-react";
 import { motion } from "framer-motion";
 
+/* 🔥 STAT CARD */
 function StatCard({ title, subtitle }) {
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 text-center">
-      <h3 className="text-2xl font-bold text-[#0EA5E9]">{title}</h3>
-      <p className="text-[#4B5563] text-sm">{subtitle}</p>
-    </div>
+    <motion.div
+      className="bg-[#0F172A] border border-gray-700 rounded-xl p-6 text-center shadow-lg"
+      whileHover={{ scale: 1.05 }}
+    >
+      <h3 className="text-2xl font-bold text-blue-400">{title}</h3>
+      <p className="text-gray-400 text-sm">{subtitle}</p>
+    </motion.div>
   );
 }
 function InfoCard({ icon, title, text }) {
   return (
-    <div className="bg-white border cursor-pointer border-[#E5E7EB] rounded-2xl p-8 hover:shadow-md transition">
-      <div className="text-blue-600 mb-4">{icon}</div>
-      <h3 className="text-xl font-semibold text-[#111827] mb-2">
+    <motion.div
+      className="bg-[#0F172A] border border-gray-700 rounded-2xl p-8 cursor-pointer shadow-lg"
+      whileHover={{ y: -8, scale: 1.03 }}
+      transition={{ type: "spring", stiffness: 200 }}
+    >
+      <div className="text-blue-400 mb-4">{icon}</div>
+
+      <h3 className="text-xl font-semibold text-white mb-2">
         {title}
       </h3>
-      <p className="text-[#4B5563]">{text}</p>
-    </div>
+
+      <p className="text-gray-400">{text}</p>
+    </motion.div>
   );
 }
 
 function ValueCard({ icon, title, text }) {
   return (
-    <motion.div className="bg-white border border-[#E5E7EB] rounded-xl p-6 cursor-pointer text-center hover:shadow-md transition"
-      whileHover={{ y: -5,    boxShadow: "0px 10px 20px rgba(0, 0, 0, 0.2)",}}
-                 transition={{ ease: "easeOut" , duration: 0.1 }}>
-      <p className="flex items-center justify-center text-center w-full mb-3 text-[#0EA5E9]">{icon}</p>
-      <h4 className="font-semibold text-[#111827] mb-2">{title}</h4>
-      <p className="text-[#4B5563] text-sm">{text}</p>
+    <motion.div
+      className="bg-[#0F172A] border border-gray-700 rounded-xl p-6 text-center shadow-lg cursor-pointer"
+      whileHover={{
+        y: -8,
+        scale: 1.05,
+        boxShadow: "0px 15px 30px rgba(0,0,0,0.5)",
+      }}
+      transition={{ type: "spring", stiffness: 200 }}
+    >
+      <div className="flex justify-center mb-3 text-blue-400">
+        {icon}
+      </div>
+
+      <h4 className="font-semibold text-white mb-2">
+        {title}
+      </h4>
+
+      <p className="text-gray-400 text-sm">{text}</p>
     </motion.div>
   );
 }
 
-
-
-export {StatCard, InfoCard, ValueCard};
+export { StatCard, InfoCard, ValueCard };
