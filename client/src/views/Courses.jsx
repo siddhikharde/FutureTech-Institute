@@ -1,22 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { motion } from 'framer-motion'
-import courses from '../configs/Courses'
 import { useNavigate } from 'react-router'
 import { setPageTitle } from '../Utils'
 import CourseCard from '../components/CourseCard'
 import Footer from '../components/Footer'
 import Button from '../components/Button'
+import axios from "axios";
 
 function Courses() {
 
   useEffect(() => {
     setPageTitle({ title: "Courses" });
+      fetchCourses();
     window.scrollTo(0, 0);
   }, [])
 
+  const [courses, setCourses]=useState([]);
+
   const navigate = useNavigate();
 
+  const fetchCourses=async()=>{
+    try{
+      const res=await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/public/courses`
+      )
+      if(res.data.success){
+        setCourses(res.data.data);
+      }
+    }catch(e){
+      console.log(e);
+    }
+  }
   // 🔥 SAME ANIMATIONS AS HOME (COPY PASTE)
   const floating = {
     animate: {
@@ -102,17 +117,22 @@ function Courses() {
         viewport={{ once: true }}
         variants={stagger}
       >
-        {courses.map((item, index) => (
+        {courses.map((course, index) => (
           <motion.div
             key={index}
             variants={cardAnimation}
             whileHover={{ scale: 1.05, y: -12 }}
           >
-            <CourseCard
-              {...item}
-              buttonTitle="Enroll Now"
-              onClick={() => navigate("/contact")}
-            />
+           <CourseCard
+    key={course._id}
+    title={course.title}
+    description={course.description}
+    duration={course.duration}
+    img={course.imageUrl}
+    price={course.price}
+    buttonTitle="Explore Course"
+    onClick={() => navigate(`/courses/${course._id}`)}
+/>
           </motion.div>
         ))}
       </motion.div>

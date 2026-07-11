@@ -48,21 +48,28 @@ function AddCourses() {
 
         try {
             setloading(true);
-            
+
             const token = localStorage.getItem("JwtToken");
-             const imgForm = new FormData();
-        imgForm.append("image",imgFile);
+            const imgForm = new FormData();
+            imgForm.append("image", imgFile);
 
-        const uploadRes  = await axios.post(`${import.meta.env.VITE_BASE_URL}/upload`, imgForm, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const uploadRes = await axios.post(
+                `${import.meta.env.VITE_BASE_URL}/upload`,
+                imgForm,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
 
-             if (!uploadRes.data.success) {
-      toast.error("Image upload failed");
-      setloading(false);
-      return;
-    }
-     const imageUrl = uploadRes.data.imageUrl;
+            if (!uploadRes.data.success) {
+                toast.error("Image upload failed");
+                setloading(false);
+                return;
+            }
+            const imageUrl = uploadRes.data.imageUrl;
             const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/courses`, {
                 title,
                 description,
@@ -80,10 +87,10 @@ function AddCourses() {
 
         } catch (e) {
             console.error(e);
-            toast.error("Course creation failed");
+            toast.error( e.response?.data?.message || "Course creation failed");
         } finally {
-    setloading(false);
-  }
+            setloading(false);
+        }
     }
 
     const deleteCourse = async (id) => {

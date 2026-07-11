@@ -14,7 +14,6 @@ function About() {
     window.scrollTo(0, 0);
   }, []);
 
-  // 🔥 SAME AS HOME
   const floating = {
     animate: {
       y: [0, -15, 0],
@@ -42,7 +41,6 @@ function About() {
 
       <Navbar />
 
-      {/* 🔥 HERO (MATCH HOME) */}
       <div className="relative">
 
         <motion.div
@@ -82,7 +80,6 @@ function About() {
         </motion.div>
       </div>
 
-      {/* STATS */}
       <motion.div
         className="max-w-7xl mx-auto px-5 py-16 grid grid-cols-2 md:grid-cols-4 gap-6"
         initial="hidden"
