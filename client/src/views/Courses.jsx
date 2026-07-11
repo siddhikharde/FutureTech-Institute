@@ -12,7 +12,7 @@ function Courses() {
 
   useEffect(() => {
     setPageTitle({ title: "Courses" });
-      fetchCourses();
+ fetchCourses();
     window.scrollTo(0, 0);
   }, [])
 
@@ -110,13 +110,7 @@ function Courses() {
         </motion.div>
       </div>
 
-      <motion.div
-        className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true }}
-        variants={stagger}
-      >
+   <div className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
         {courses.map((course, index) => (
           <motion.div
             key={index}
@@ -135,7 +129,7 @@ function Courses() {
 />
           </motion.div>
         ))}
-      </motion.div>
+      </div>
 
       {/* FOOTER */}
       <Footer />
