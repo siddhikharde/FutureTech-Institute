@@ -5,17 +5,32 @@ import featuresConfig from "../configs/HomePageFeatures";
 import FeatureCard from "../components/HomeFeatureCard";
 import { setPageTitle } from '../Utils';
 import { motion } from "framer-motion";
-import { useEffect } from "react";
-import courses from "../configs/HomeCourses";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import CourseCard from "../components/CourseCard";
 import Footer from "../components/Footer";
 
 function Home() {
   useEffect(() => {
-    setPageTitle({ title: "Home" });
-    window.scrollTo(0, 0);
-  }, []);
+  setPageTitle({ title: "Home" });
+  window.scrollTo(0, 0);
 
+  const fetchCourses = async () => {
+    try {
+      const res = await axios.get("http://localhost:8080/public/courses");
+
+      if (res.data.success) {
+        // Only show first 6 popular courses on home page
+        setCourses(res.data.data.slice(0, 3));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  fetchCourses();
+}, []);
+  const [courses, setCourses] = useState([]);
   const navigate = useNavigate();
 
   const floating = {
@@ -131,19 +146,23 @@ function Home() {
           </motion.h2>
 
           <div className="grid md:grid-cols-3 gap-12">
-            {courses.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={rotateIn}
-                whileHover={{ scale: 1.05, y: -15 }}
-              >
-                <CourseCard
-                  {...item}
-                  buttonTitle="Explore"
-                  onClick={() => navigate("/courses")}
-                />
-              </motion.div>
-            ))}
+            {courses.map((course) => (
+  <motion.div
+    key={course._id}
+    variants={rotateIn}
+    whileHover={{ scale: 1.05, y: -15 }}
+  >
+    <CourseCard
+      title={course.title}
+      description={course.description}
+      duration={course.duration}
+      img={course.imageUrl}
+      price={course.price}
+      buttonTitle="Explore"
+      onClick={() => navigate("/courses")}
+    />
+  </motion.div>
+))}
           </div>
         </div>
       </motion.div>
