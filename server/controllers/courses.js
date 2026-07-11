@@ -85,6 +85,22 @@ const getCourse=async (req, res)=>{
   }
 }
 
+const getPublicCourses=async (req, res)=>{
+  try{
+    const courses=await Course.find();
+    res.json({
+      success:true,
+      data:courses
+    })
+  }catch(e){
+    res.json({
+      success:false,
+      message:"Error occure while feching courses",
+      error:e.message
+    })
+  }
+}
+
 const deleteCourse=async(req, res)=>{
   try{
       const {id}=req.params;
@@ -209,4 +225,4 @@ const putCourse=async (req, res)=>{
     })
   }
 }
-export {postCourse, postEnrollCourse, getCourse, deleteCourse, removeEnrolledCourse, putCourse}
+export {postCourse, postEnrollCourse, getCourse, deleteCourse, getPublicCourses, removeEnrolledCourse, putCourse}

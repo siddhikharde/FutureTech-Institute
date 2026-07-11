@@ -6,7 +6,7 @@ import { getHealth, getHome } from './controllers/home.js';
 import connectDb from './db.js';
 import { postLogin } from './controllers/auth.js';
 import { getSingleStudent, getStudent, getStudentDashboard, postStudent, putStudent } from './controllers/students.js';
-import { deleteCourse, getCourse, postCourse, postEnrollCourse, putCourse, removeEnrolledCourse } from './controllers/courses.js';
+import { deleteCourse, getCourse, getPublicCourses, postCourse, postEnrollCourse, putCourse, removeEnrolledCourse } from './controllers/courses.js';
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 import { upload } from './config/multer.js';
@@ -39,6 +39,7 @@ app.get("/courses", auth, admin, getCourse);
 app.delete("/courses/:id", auth, admin, deleteCourse);
 app.delete("/remove-course", auth, admin, removeEnrolledCourse);
 app.put("/edit-course-price/:id", auth, admin, putCourse);
+app.get("/public/courses", getPublicCourses);   
 
 //payment
 app.post("/payment", auth, admin, postPayment)
@@ -48,12 +49,14 @@ app.get("/dashboard-stats", auth, admin,getStatestic)
 
 app.get("/students-growth", auth, admin, getStudentGrowthGraph)
 
-app.post("/upload",upload.single('image'), (req, res)=>{
-    res.json({
-        success:true,
-        imageUrl: req.file.path,
-    })
-})
+app.post("/upload", upload.single("image"), (req, res) => {
+  console.log(req.file);
+
+  res.json({
+    success: true,
+    imageUrl: req.file.path,
+  });
+});
 app.listen(PORT,()=>{
     console.log(`Srever is running on a Port:${PORT}`);
     connectDb();

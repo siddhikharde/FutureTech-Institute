@@ -1,13 +1,15 @@
-import multer from 'multer';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary from './cloudinary.js';
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "./cloudinary.js";
 
-const storage= new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params:{
-        folder:'FutureTechInstitute',
-        allowed_formats:['jpg','png','jpeg']
+const storage = new CloudinaryStorage({
+    cloudinary,
+    params: {
+        folder: "FutureTech",
+        allowed_formats: ["jpg","jpeg","png","webp"]
     }
 });
 
-export const upload = multer({storage:storage});
+export const upload = multer({
+    storage
+});
