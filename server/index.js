@@ -6,7 +6,7 @@ import { getHealth, getHome } from './controllers/home.js';
 import connectDb from './db.js';
 import { postLogin } from './controllers/auth.js';
 import { getSingleStudent, getStudent, getStudentDashboard, postStudent, putStudent } from './controllers/students.js';
-import { deleteCourse, getCourse, getPublicCourses, postCourse, postEnrollCourse, putCourse, removeEnrolledCourse } from './controllers/courses.js';
+import { deleteCourse, getCourse, getPublicCourses, postCourse, postEnrollCourse, putCourse, getSingleCourse, removeEnrolledCourse } from './controllers/courses.js';
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 import { upload } from './config/multer.js';
@@ -39,7 +39,8 @@ app.get("/courses", auth, admin, getCourse);
 app.delete("/courses/:id", auth, admin, deleteCourse);
 app.delete("/remove-course", auth, admin, removeEnrolledCourse);
 app.put("/edit-course-price/:id", auth, admin, putCourse);
-app.get("/public/courses", getPublicCourses);   
+app.get("/public/courses", getPublicCourses);
+app.get("/courses/:id", auth, admin, getSingleCourse);   
 
 //payment
 app.post("/payment", auth, admin, postPayment)

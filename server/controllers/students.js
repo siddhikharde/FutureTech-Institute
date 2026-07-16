@@ -97,7 +97,8 @@ const postStudent=async (req, res)=>{
 const getStudent= async(req, res)=>{
   try{
     const search = (req.query.search || "").trim();;
-
+    const courseId=req.query.courseId;
+    
 const searchFilter = search
   ? {
       $or: [
@@ -108,18 +109,26 @@ const searchFilter = search
     }
   : {};
 
+  let filter={
+    role:"student", 
+  ...searchFilter
+  };
+  if(courseId){
+    filter.enrolledCourses=courseId;
+  }
+
      const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
     const [students, total] = await Promise.all([
-      User.find({ role: "student", ...searchFilter })
+      User.find(filter)
         .select("name email fee enrolledCourses")
         .populate("enrolledCourses", "title price")
         .skip(skip)
         .limit(limit)
         .lean(),
 
-      User.countDocuments({ role: "student", ...searchFilter })
+      User.countDocuments(filter)
       
     ]);
    return res.json({

@@ -70,7 +70,7 @@ const postEnrollCourse= async (req, res)=>{
 
 const getCourse=async (req, res)=>{
   try{
-     const courses=await Course.find().select("title price duration");
+     const courses=await Course.find().select("title price  imageUrl duration");
      return res.json({
       success:true,
       message:"Courses loaded successfully",
@@ -225,4 +225,37 @@ const putCourse=async (req, res)=>{
     })
   }
 }
-export {postCourse, postEnrollCourse, getCourse, deleteCourse, getPublicCourses, removeEnrolledCourse, putCourse}
+
+const getSingleCourse = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const course = await Course.findById(id);
+
+    if (!course) {
+      return res.json({
+        success: false,
+        message: "Course not found",
+      });
+    }
+
+    const students = await User.find({
+      enrolledCourses: id,
+    }).select("name email phone");
+
+    return res.json({
+      success: true,
+      data: {
+        course,
+        students,
+      },
+    });
+  } catch (e) {
+    return res.json({
+      success: false,
+      message: "Failed to load course",
+      error: e.message,
+    });
+  }
+};
+export {postCourse,getSingleCourse, postEnrollCourse, getCourse, deleteCourse, getPublicCourses, removeEnrolledCourse, putCourse}
