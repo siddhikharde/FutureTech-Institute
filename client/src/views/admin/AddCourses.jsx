@@ -33,7 +33,7 @@ function AddCourses() {
                 setCourses(res.data.data);
             }
         } catch (e) {
-            toast.error("Failed to load courses");
+            toast.error("Failed to load courses", { duration: 2000 });
         }
     }
 
@@ -42,7 +42,7 @@ function AddCourses() {
         const { title, description, price, duration, imageUrl } = form;
 
         if (!title || !duration || price === "" || price < 0 || !imageUrl) {
-            toast.error("Please fill all required fields with valid values");
+            toast.error("Please fill all required fields with valid values", { duration: 2000, id: "submiterror" });
             return;
         }
 
@@ -65,7 +65,7 @@ function AddCourses() {
             );
 
             if (!uploadRes.data.success) {
-                toast.error("Image upload failed");
+                toast.error("Image upload failed", { duration: 2000, id: "error" });
                 setloading(false);
                 return;
             }
@@ -80,14 +80,14 @@ function AddCourses() {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.success) {
-                toast.success("Course added");
+                toast.success("Course added", { id: "courseSuccess" });
                 setForm({ title: "", description: "", price: "", duration: "", imageUrl: "" });
                 fetchCourses();
             }
 
         } catch (e) {
             console.error(e);
-            toast.error( e.response?.data?.message || "Course creation failed");
+            toast.error(e.response?.data?.message || "Course creation failed", { id: "courseFAIL" });
         } finally {
             setloading(false);
         }
@@ -101,10 +101,10 @@ function AddCourses() {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.data.success) {
-                toast.success("Course deleted");
+                toast.success("Course deleted", { id: "deleteSuccess" });
                 fetchCourses();
             } else {
-                toast.error(res.data.message || "Delete failed");
+                toast.error(res.data.message || "Delete failed", { id: "DELETEfail" });
             }
         } catch (e) {
             console.error(e);
@@ -119,7 +119,7 @@ function AddCourses() {
     const savePrice = async (id) => {
         const priceNumber = Number(newPrice);
         if (isNaN(priceNumber) || priceNumber < 0) {
-            toast.error("Invalid price");
+            toast.error("Invalid price", { id: "invalid" });
             return;
         }
 
@@ -132,15 +132,15 @@ function AddCourses() {
             });
 
             if (res.data.success) {
-                toast.success("Price updated");
+                toast.success("Price updated", { id: "updation" });
                 setEditingPriceId(null);
                 fetchCourses();
             } else {
-                toast.error(res.data.message || "Failed to update price");
+                toast.error(res.data.message || "Failed to update price", { id: "updateFail" });
             }
         } catch (e) {
             console.error("Price update error:", e.response?.data || e.message);
-            toast.error("Failed to update price");
+            toast.error("Failed to update price", { id: "updateFail" });
         }
     }
 
@@ -261,6 +261,11 @@ function AddCourses() {
                                         ) : (
                                             <Button title="Edit Price" size="sm" onClick={() => editPrice(c._id, c.price)} />
                                         )}
+                                        <Button title="View"
+                                            size="sm"
+                                            variant="secondary"
+                                            onClick={() => navigate(`/admin/course/${c._id}`)}
+                                        />
                                         <Button title="Delete" variant='danger' size='sm' onClick={() => deleteCourse(c._id)} />
                                     </td>
                                 </tr>
@@ -310,6 +315,11 @@ function AddCourses() {
                                 }
                             </p>
                             <div className="flex gap-2 pt-2">
+                                <Button
+                                    title="View"
+                                    size="sm"
+                                    onClick={() => navigate(`/admin/course/${c._id}`)}
+                                />
                                 <Button title="Delete" size="sm" variant="danger" onClick={() => deleteCourse(c._id)} />
                             </div>
                         </div>

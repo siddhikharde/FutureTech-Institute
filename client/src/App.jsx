@@ -16,6 +16,7 @@ import AddCourses from './views/admin/AddCourses'
 import StudentDetails from './views/admin/StudentDetail'
 import StudentDashboard from './views/StudentDashboard'
 import AdminProtectedRoute from './routes/AdminProtectedRoute'
+import CourseDetail from './views/admin/CourseDetail'
 
 function App() {
 
@@ -37,6 +38,7 @@ function App() {
           <Route path="/addStudents" element={<AddStudent />} />
           <Route path="/add-courses" element={<AddCourses />} />
           <Route path="/student-detail/:id" element={<StudentDetails />} />
+           <Route path="/admin/course/:id" element={<CourseDetail/>}/>
         </Route>
 
       </Routes>

@@ -81,7 +81,7 @@ function StudentTable() {
           <select
   value={selectedCourse}
   onChange={(e) => setSelectedCourse(e.target.value)}
-  className="border rounded-lg px-4 py-3 bg-white outline-none md:w-64"
+  className="border rounded-lg px-4 py-3 bg-white border border-gray-300 rounded-lg p-3 focus:ring-1 focus:ring-blue-500 outline-none md:w-64"
 >
   <option value="">All Courses</option>
 
