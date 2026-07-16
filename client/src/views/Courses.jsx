@@ -124,8 +124,8 @@ function Courses() {
     duration={course.duration}
     img={course.imageUrl}
     price={course.price}
-    buttonTitle="Explore Course"
-    onClick={() => navigate(`/courses/${course._id}`)}
+    buttonTitle="Enroll Now"
+    onClick={() => navigate(`/contact`)}
 />
           </motion.div>
         ))}

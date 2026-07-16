@@ -43,7 +43,7 @@ function Login() {
       );
 
       if (response.data.success) {
-        toast.success("Login Successful");
+        toast.success("Login Successful", {duration:2000});
 
         const { jwt, data } = response.data;
         localStorage.setItem("JwtToken", jwt);
