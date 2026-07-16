@@ -12,16 +12,27 @@ function StudentTable() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [search, setSearch] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
   const limit = 6;
 
   const token = localStorage.getItem("JwtToken");
 
   const loadStudents = async (pageNo = 1, searchText = search) => {
     try {
-      const response = await axios.get(
-        `${import.meta.env.VITE_BASE_URL}/students?page=${pageNo}&limit=${limit}&search=${searchText}`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+     const response = await axios.get(
+  `${import.meta.env.VITE_BASE_URL}/students`,
+  {
+    params: {
+      page: pageNo,
+      limit,
+      search: searchText,
+      courseId: selectedCourse,
+    },
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
 
       if (response.data.success) {
         setStudents(response.data.data);
@@ -44,17 +55,20 @@ function StudentTable() {
     }
   };
  useEffect(() => {
-    loadStudents(page);
-    loadCourses();
+    loadStudents();
+    loadCourses(1);
   }, []);
 
+  useEffect(() => {
+  loadStudents(1);
+}, [selectedCourse]);
   return (
     <div className="max-w-7xl mx-auto md:px-4 ">
       <div className="flex flex-col bg-white mx-0 rounded-2xl p-5 shadow-md py-7 md:flex-row md:items-center md:justify-around gap-4 mb-6">
         <h2 className="text-2xl md:text-3xl font-bold text-[#0F172A]">
           Students
         </h2>
-        <div className="w-full md:w-[75%]">
+       <div className="flex flex-col md:flex-row gap-3 w-full md:w-[75%]">
           <Input
             type="text"
             placeholder="Search students..."
@@ -64,6 +78,19 @@ function StudentTable() {
               loadStudents(1, e.target.value);
             }}
           />
+          <select
+  value={selectedCourse}
+  onChange={(e) => setSelectedCourse(e.target.value)}
+  className="border rounded-lg px-4 py-3 bg-white outline-none md:w-64"
+>
+  <option value="">All Courses</option>
+
+  {courses.map((course) => (
+    <option key={course._id} value={course._id}>
+      {course.title}
+    </option>
+  ))}
+</select>
         </div>
       </div>
 

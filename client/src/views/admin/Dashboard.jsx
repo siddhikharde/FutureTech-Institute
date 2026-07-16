@@ -66,7 +66,6 @@ export default function Dashboard() {
   useEffect(() => {
     getStudentsData();
     getStudentGrowth();
-
     setPageTitle({title:"Admin Dashboard"})
   }, []);
   return (
@@ -93,7 +92,6 @@ export default function Dashboard() {
   <FeeGraph data={{ paid: stats.totalPaid, pending: stats.pendingFees }} />
   <StudentGraph data={studentGrowthData} />
 </div>
-
       <div className="md:p-5 ">
         <StudentTable />
       </div>
