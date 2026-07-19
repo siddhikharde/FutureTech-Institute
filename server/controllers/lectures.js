@@ -1,5 +1,5 @@
-import Course from "../models/Courses";
-import Lectures from "../models/Lectures";
+import Course from "../models/Courses.js";
+import Lectures from "../models/Lectures.js";
 
 const postLecture = async (req, res) => {
     try {
