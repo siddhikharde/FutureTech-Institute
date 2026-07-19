@@ -10,6 +10,7 @@ import { deleteCourse, getCourse, getPublicCourses, postCourse, postEnrollCourse
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 import { upload } from './config/multer.js';
+import { getCourseLectures, putLecture,deleteLecture,postLecture} from './controllers/lectures.js';
 
 const app=express();
 dotenv.config();
@@ -40,7 +41,13 @@ app.delete("/courses/:id", auth, admin, deleteCourse);
 app.delete("/remove-course", auth, admin, removeEnrolledCourse);
 app.put("/edit-course-price/:id", auth, admin, putCourse);
 app.get("/public/courses", getPublicCourses);
-app.get("/course/:id", auth, admin, getSingleCourse);   
+app.get("/course/:id", auth, admin, getSingleCourse); 
+
+//lectures api
+app.post("/lectures", auth, admin, postLecture);
+app.get("lectures/:courseId", auth, getCourseLectures);
+app.put("/lectures/:lectureId", auth, admin, putLecture);
+app.delete("lectures/:lectureId", auth, admin, deleteLecture);
 
 //payment
 app.post("/payment", auth, admin, postPayment)

@@ -1,7 +1,7 @@
 import Course from "../models/Courses";
 import Lectures from "../models/Lectures";
 
-const postLectures = async (req, res) => {
+const postLecture = async (req, res) => {
     try {
         const { title, description, courseId, vedioUrl } = req.body;
         if (!title || !courseId || !vedioUrl) {
@@ -119,4 +119,4 @@ const deleteLecture = async (req, res)=>{
         })
     }
 }
-export { postLectures, getCourseLectures, putLecture, deleteLecture };
+export { postLecture, getCourseLectures, putLecture, deleteLecture };
