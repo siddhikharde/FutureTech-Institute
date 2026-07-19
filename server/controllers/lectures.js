@@ -41,4 +41,30 @@ const postLectures=async (req, res)=>{
     }
 };
 
-export {postLectures};
+const getCourseLectures=async (req,res)=>{
+    try{
+        const {courseId}=req.params;
+        const course=await Course.findById(courseId);
+        if(!course){
+            return res.json({
+                success:false,
+                message:"Course not found",
+            });
+        }
+
+        const lectures=await Lectures.find({course:courseId}).sort({createdAt:1});
+        res.json({
+            success:true,
+            message:"Lectures fetched successfully",
+            data:lectures,
+        });
+
+    }catch(err){
+        res.json({
+            success:false,
+            message:"Failed to fetch lectures",
+            error:err.message
+        });
+    }
+}
+export {postLectures, getCourseLectures};
