@@ -40,7 +40,7 @@ app.delete("/courses/:id", auth, admin, deleteCourse);
 app.delete("/remove-course", auth, admin, removeEnrolledCourse);
 app.put("/edit-course-price/:id", auth, admin, putCourse);
 app.get("/public/courses", getPublicCourses);
-app.get("/courses/:id", auth, admin, getSingleCourse);   
+app.get("/course/:id", auth, admin, getSingleCourse);   
 
 //payment
 app.post("/payment", auth, admin, postPayment)
