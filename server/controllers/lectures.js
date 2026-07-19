@@ -1,70 +1,99 @@
 import Course from "../models/Courses";
 import Lectures from "../models/Lectures";
 
-const postLectures=async (req, res)=>{
-    try{
-        const {title, description, courseId, vedioUrl}=req.body;
-        if(!title || !courseId || !vedioUrl){
+const postLectures = async (req, res) => {
+    try {
+        const { title, description, courseId, vedioUrl } = req.body;
+        if (!title || !courseId || !vedioUrl) {
             return res.json({
-                success:false,
-                message:"Title, Video URL and Course are required",
+                success: false,
+                message: "Title, Video URL and Course are required",
             });
         }
 
-        const course =await Course.findById(courseId);
-        if(!course){
+        const course = await Course.findById(courseId);
+        if (!course) {
             return res.json({
-                success:false,
-                message:"Course not found",
+                success: false,
+                message: "Course not found",
             });
         }
 
-        const lecture=await Lectures.create({
+        const lecture = await Lectures.create({
             title,
             description,
             vedioUrl,
-            course:courseId,
+            course: courseId,
         });
 
         res.json({
-            success:true,
-            message:"Lecture created successfully",
-            data:lecture,
+            success: true,
+            message: "Lecture created successfully",
+            data: lecture,
         })
 
-    }catch(err){
+    } catch (err) {
         res.json({
-            success:false,
-            message:"Failed to create lecture",
-            error:err.message
+            success: false,
+            message: "Failed to create lecture",
+            error: err.message
         });
     }
 };
 
-const getCourseLectures=async (req,res)=>{
-    try{
-        const {courseId}=req.params;
-        const course=await Course.findById(courseId);
-        if(!course){
+const getCourseLectures = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const course = await Course.findById(courseId);
+        if (!course) {
             return res.json({
-                success:false,
-                message:"Course not found",
+                success: false,
+                message: "Course not found",
             });
         }
 
-        const lectures=await Lectures.find({course:courseId}).sort({createdAt:1});
+        const lectures = await Lectures.find({ course: courseId }).sort({ createdAt: 1 });
         res.json({
-            success:true,
-            message:"Lectures fetched successfully",
-            data:lectures,
+            success: true,
+            message: "Lectures fetched successfully",
+            data: lectures,
         });
 
-    }catch(err){
+    } catch (err) {
         res.json({
-            success:false,
-            message:"Failed to fetch lectures",
-            error:err.message
+            success: false,
+            message: "Failed to fetch lectures",
+            error: err.message
         });
     }
 }
-export {postLectures, getCourseLectures};
+
+const putLecture = async (req, res) => {
+   try{
+     const { lectureId } = req.params;
+    const lecture = await Lectures.findByIdAndUpdate(
+        lectureId,
+        req.body,
+        { new: true }
+    );
+    if (!lecture) {
+        return res.json({
+            success: false,
+            message: "lecture not found",
+
+        });
+       
+    }
+     res.json({
+            success: true,
+            message: "Lecture updated successfully",
+            data: lecture,
+        });
+}catch (err) {
+    res.json({
+        success: false,
+        message: "Failed to update lecture",
+        error: err.message
+    });
+}}
+export { postLectures, getCourseLectures, putLecture };
