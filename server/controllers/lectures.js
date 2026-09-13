@@ -3,34 +3,36 @@ import Lectures from "../models/Lectures.js";
 
 const postLecture = async (req, res) => {
     try {
-        const { title, description, courseId, vedioUrl } = req.body;
-        if (!title || !courseId || !vedioUrl) {
+        const { title, description, courseId, videoUrl } = req.body;
+
+        if (!title || !courseId || !videoUrl) {
             return res.json({
                 success: false,
-                message: "Title, Video URL and Course are required",
+                message: "Title, Video URL and Course are required"
             });
         }
 
         const course = await Course.findById(courseId);
+
         if (!course) {
             return res.json({
                 success: false,
-                message: "Course not found",
+                message: "Course not found"
             });
         }
 
         const lecture = await Lectures.create({
             title,
             description,
-            vedioUrl,
-            course: courseId,
+            videoUrl,
+            course: courseId
         });
 
         res.json({
             success: true,
             message: "Lecture created successfully",
-            data: lecture,
-        })
+            data: lecture
+        });
 
     } catch (err) {
         res.json({
@@ -44,19 +46,24 @@ const postLecture = async (req, res) => {
 const getCourseLectures = async (req, res) => {
     try {
         const { courseId } = req.params;
+
         const course = await Course.findById(courseId);
+
         if (!course) {
             return res.json({
                 success: false,
-                message: "Course not found",
+                message: "Course not found"
             });
         }
 
-        const lectures = await Lectures.find({ course: courseId }).sort({ createdAt: 1 });
+        const lectures = await Lectures
+            .find({ course: courseId })
+            .sort({ createdAt: 1 });
+
         res.json({
             success: true,
             message: "Lectures fetched successfully",
-            data: lectures,
+            data: lectures
         });
 
     } catch (err) {
@@ -66,57 +73,70 @@ const getCourseLectures = async (req, res) => {
             error: err.message
         });
     }
-}
+};
 
 const putLecture = async (req, res) => {
-   try{
-     const { lectureId } = req.params;
-    const lecture = await Lectures.findByIdAndUpdate(
-        lectureId,
-        req.body,
-        { new: true }
-    );
-    if (!lecture) {
-        return res.json({
-            success: false,
-            message: "lecture not found",
+    try {
+        const { lectureId } = req.params;
 
-        });
-       
-    }
-     res.json({
+        const lecture = await Lectures.findByIdAndUpdate(
+            lectureId,
+            req.body,
+            { new: true }
+        );
+
+        if (!lecture) {
+            return res.json({
+                success: false,
+                message: "Lecture not found"
+            });
+        }
+
+        res.json({
             success: true,
             message: "Lecture updated successfully",
-            data: lecture,
+            data: lecture
         });
-}catch (err) {
-    res.json({
-        success: false,
-        message: "Failed to update lecture",
-        error: err.message
-    });
-}}
 
-const deleteLecture = async (req, res)=>{
-    try{
-        const {lectureId}=req.params;
-        const lecture=await Lectures.findByIdAndDelete(lectureId);
-        if(!lecture){
-            return res.json({
-                success:false,
-                message:"Lecture not found"
-            })
-        }
+    } catch (err) {
         res.json({
-            success:true,
-            message:"Lecture deleted successfully"
-        })
-    }catch(err){
-        res.json({
-            success:false,
-            message:"Failed to delete Lecture",
-            error:err.message
-        })
+            success: false,
+            message: "Failed to update lecture",
+            error: err.message
+        });
     }
-}
-export { postLecture, getCourseLectures, putLecture, deleteLecture };
+};
+
+const deleteLecture = async (req, res) => {
+    try {
+        const { lectureId } = req.params;
+
+        const lecture = await Lectures.findByIdAndDelete(lectureId);
+
+        if (!lecture) {
+            return res.json({
+                success: false,
+                message: "Lecture not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Lecture deleted successfully"
+        });
+
+    } catch (err) {
+        res.json({
+            success: false,
+            message: "Failed to delete lecture",
+            error: err.message
+        });
+    }
+};
+
+export {
+    postLecture,
+    getCourseLectures,
+    putLecture,
+    deleteLecture
+};

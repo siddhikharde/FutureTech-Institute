@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-import { Schema, model } from "mongoose";
 import Course from "./Courses.js";
 
 const lectureSchema= new Schema({
@@ -7,7 +5,7 @@ const lectureSchema= new Schema({
         type:String,
         required:true
     },
-    descriptin:String,
+    description:String,
     videoUrl:{
         type:String,
         required:true
