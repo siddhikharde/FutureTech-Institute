@@ -1,5 +1,3 @@
-import express from 'express'
-import dotenv from 'dotenv'
 import cors from 'cors';
 import { auth, admin } from './middlewares/jwt.js';
 import { getHealth, getHome } from './controllers/home.js';
@@ -11,6 +9,11 @@ import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 import { upload } from './config/multer.js';
 import { getCourseLectures, putLecture,deleteLecture,postLecture} from './controllers/lectures.js';
+
+import dns from 'dns';
+dns.setServers(["8.8.8.8", "8.8.4.4"]);
+import express from 'express'
+import dotenv from 'dotenv'
 
 const app=express();
 dotenv.config();
