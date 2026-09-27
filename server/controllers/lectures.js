@@ -1,5 +1,6 @@
 import Course from "../models/Courses.js";
 import Lectures from "../models/Lectures.js";
+import User from "../models/User.js";
 
 const postLecture = async (req, res) => {
     try {
@@ -56,6 +57,29 @@ const getCourseLectures = async (req, res) => {
             });
         }
 
+        // Check student enrollment
+        if (req.existingUser.role === "student") {
+            const student = await User.findById(req.existingUser.id);
+
+            if (!student) {
+                return res.json({
+                    success: false,
+                    message: "Student not found"
+                });
+            }
+
+            const isEnrolled = student.enrolledCourses.some(
+                (course) => course.toString() === courseId
+            );
+
+            if (!isEnrolled) {
+                return res.status(403).json({
+                    success: false,
+                    message: "You are not enrolled in this course"
+                });
+            }
+        }
+
         const lectures = await Lectures
             .find({ course: courseId })
             .sort({ createdAt: 1 });
@@ -74,7 +98,6 @@ const getCourseLectures = async (req, res) => {
         });
     }
 };
-
 const putLecture = async (req, res) => {
     try {
         const { lectureId } = req.params;
