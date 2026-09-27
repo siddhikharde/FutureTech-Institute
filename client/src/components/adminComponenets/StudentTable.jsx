@@ -40,7 +40,7 @@ function StudentTable() {
         setTotalPages(response.data.pagination.totalPages);
       }
     } catch (e) {
-      toast.error("Failed to load students");
+      toast.error("Failed to load students", {id:"failtoload"});
     }
   };
 
@@ -51,7 +51,7 @@ function StudentTable() {
       });
       if (response.data.success) setCourses(response.data.data);
     } catch {
-      toast.error("Failed to load courses");
+      toast.error("Failed to load courses", {id:"caourseFail"});
     }
   };
  useEffect(() => {

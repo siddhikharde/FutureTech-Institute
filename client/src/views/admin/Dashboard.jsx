@@ -27,7 +27,7 @@ export default function Dashboard() {
         }
 
     }catch (e) {
-    toast.error("Failed to load student growth");
+    toast.error("Failed to load student growth", {id:"growthFail"});
   }
   }
   const getStudentsData = async () => {
