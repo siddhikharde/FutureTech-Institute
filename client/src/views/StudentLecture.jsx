@@ -9,6 +9,7 @@ function StudentLecture() {
     const navigate = useNavigate();
 
     const [lecture, setLecture] = useState(null);
+    const [lectures, setLectures] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -17,9 +18,11 @@ function StudentLecture() {
 
     const loadLecture = async () => {
         try {
+            setLoading(true);
+
             const token = localStorage.getItem("JwtToken");
 
-            const res = await axios.get(
+            const lectureRes = await axios.get(
                 `${import.meta.env.VITE_BASE_URL}/lecture/${lectureId}`,
                 {
                     headers: {
@@ -28,17 +31,44 @@ function StudentLecture() {
                 }
             );
 
-            if (res.data.success) {
-                setLecture(res.data.data);
+            if (!lectureRes.data.success) {
+                toast.error(
+                    lectureRes.data.message || "Failed to load lecture"
+                );
+                return;
+            }
+
+            const currentLecture = lectureRes.data.data;
+
+            setLecture(currentLecture);
+
+            const courseId = currentLecture.course;
+
+            const lecturesRes = await axios.get(
+                `${import.meta.env.VITE_BASE_URL}/lectures/${courseId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (lecturesRes.data.success) {
+                setLectures(lecturesRes.data.data);
             } else {
                 toast.error(
-                    res.data.message || "Failed to load lecture"
+                    lecturesRes.data.message ||
+                    "Failed to load course lectures"
                 );
             }
 
         } catch (error) {
             console.log(error);
-            toast.error("Failed to load lecture");
+
+            toast.error(
+                error.response?.data?.message ||
+                "Failed to load lecture"
+            );
         } finally {
             setLoading(false);
         }
@@ -69,6 +99,32 @@ function StudentLecture() {
         }
     };
 
+    const currentIndex = lectures.findIndex(
+        (item) => item._id === lectureId
+    );
+
+    const previousLecture =
+        currentIndex > 0
+            ? lectures[currentIndex - 1]
+            : null;
+
+    const nextLecture =
+        currentIndex >= 0 && currentIndex < lectures.length - 1
+            ? lectures[currentIndex + 1]
+            : null;
+
+    const handlePrevious = () => {
+        if (previousLecture) {
+            navigate(`/student/lecture/${previousLecture._id}`);
+        }
+    };
+
+    const handleNext = () => {
+        if (nextLecture) {
+            navigate(`/student/lecture/${nextLecture._id}`);
+        }
+    };
+
     if (loading) {
         return (
             <div className="min-h-screen bg-[#020617] text-white">
@@ -93,6 +149,8 @@ function StudentLecture() {
                         Lecture not found
                     </p>
                 </div>
+
+                <Toaster />
             </div>
         );
     }
@@ -114,9 +172,23 @@ function StudentLecture() {
 
                 <div className="bg-[#0F172A] border border-gray-700 rounded-2xl p-6">
 
-                    <h1 className="text-3xl font-bold mb-3">
-                        {lecture.title}
-                    </h1>
+                    <div className="flex justify-between items-center mb-6">
+                        <div>
+                            <p className="text-sm text-gray-400">
+                                Lecture{" "}
+                                {currentIndex >= 0
+                                    ? currentIndex + 1
+                                    : ""}
+                                {lectures.length > 0
+                                    ? ` of ${lectures.length}`
+                                    : ""}
+                            </p>
+
+                            <h1 className="text-3xl font-bold mt-1">
+                                {lecture.title}
+                            </h1>
+                        </div>
+                    </div>
 
                     {lecture.description && (
                         <p className="text-gray-400 mb-8">
@@ -133,6 +205,36 @@ function StudentLecture() {
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
                         />
+
+                    </div>
+
+                    <div className="flex justify-between items-center gap-4 mt-8">
+
+                        <button
+                            type="button"
+                            onClick={handlePrevious}
+                            disabled={!previousLecture}
+                            className={`px-5 py-3 rounded-lg font-semibold ${
+                                previousLecture
+                                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                            }`}
+                        >
+                            ← Previous Lecture
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={handleNext}
+                            disabled={!nextLecture}
+                            className={`px-5 py-3 rounded-lg font-semibold ${
+                                nextLecture
+                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                    : "bg-gray-800 text-gray-500 cursor-not-allowed"
+                            }`}
+                        >
+                            Next Lecture →
+                        </button>
 
                     </div>
 
