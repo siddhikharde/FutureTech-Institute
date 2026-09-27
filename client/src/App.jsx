@@ -19,6 +19,7 @@ import AdminProtectedRoute from './routes/AdminProtectedRoute'
 import CourseDetail from './views/admin/CourseDetail'
 import CourseLectures from './views/admin/CourseLectures'
 import AddLecture from "./views/admin/AddLecture";
+import EditLecture from './views/admin/EditLecture'
 
 function App() {
 
@@ -40,9 +41,13 @@ function App() {
           <Route path="/addStudents" element={<AddStudent />} />
           <Route path="/add-courses" element={<AddCourses />} />
           <Route path="/student-detail/:id" element={<StudentDetails />} />
-           <Route path="/admin/course/:id" element={<CourseDetail/>}/>
-           <Route path="/admin/course/:courseId/lectures" element={<CourseLectures/>}/>
-           <Route path="/admin/add-lecture"  element={<AddLecture />}/>
+          <Route path="/admin/course/:id" element={<CourseDetail />} />
+          <Route path="/admin/course/:courseId/lectures" element={<CourseLectures />} />
+          <Route path="/admin/add-lecture" element={<AddLecture />} />
+          <Route
+            path="/admin/edit-lecture/:lectureId"
+            element={<EditLecture />}
+          />
         </Route>
 
       </Routes>
