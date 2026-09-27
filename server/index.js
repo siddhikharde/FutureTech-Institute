@@ -48,9 +48,9 @@ app.get("/course/:id", auth, admin, getSingleCourse);
 
 //lectures api
 app.post("/lectures", auth, admin, postLecture);
-app.get("lectures/:courseId", auth, getCourseLectures);
+app.get("/lectures/:courseId", auth, getCourseLectures);
 app.put("/lectures/:lectureId", auth, admin, putLecture);
-app.delete("lectures/:lectureId", auth, admin, deleteLecture);
+app.delete("/lectures/:lectureId", auth, admin, deleteLecture);
 
 //payment
 app.post("/payment", auth, admin, postPayment)
