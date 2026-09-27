@@ -170,6 +170,29 @@ const getSingleLecture = async (req, res) => {
             });
         }
 
+        if (req.existingUser.role === "student") {
+            const student = await User.findById(req.existingUser.id);
+
+            if (!student) {
+                return res.json({
+                    success: false,
+                    message: "Student not found"
+                });
+            }
+
+            const isEnrolled = student.enrolledCourses.some(
+                (courseId) =>
+                    courseId.toString() === lecture.course.toString()
+            );
+
+            if (!isEnrolled) {
+                return res.status(403).json({
+                    success: false,
+                    message: "You are not enrolled in this course"
+                });
+            }
+        }
+
         res.json({
             success: true,
             message: "Lecture fetched successfully",
@@ -184,7 +207,6 @@ const getSingleLecture = async (req, res) => {
         });
     }
 };
-
 export {
     postLecture,
     getCourseLectures,
