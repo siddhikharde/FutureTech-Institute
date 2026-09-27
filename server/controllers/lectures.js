@@ -134,9 +134,38 @@ const deleteLecture = async (req, res) => {
     }
 };
 
+const getSingleLecture = async (req, res) => {
+    try {
+        const { lectureId } = req.params;
+
+        const lecture = await Lectures.findById(lectureId);
+
+        if (!lecture) {
+            return res.json({
+                success: false,
+                message: "Lecture not found"
+            });
+        }
+
+        res.json({
+            success: true,
+            message: "Lecture fetched successfully",
+            data: lecture
+        });
+
+    } catch (err) {
+        res.json({
+            success: false,
+            message: "Failed to fetch lecture",
+            error: err.message
+        });
+    }
+};
+
 export {
     postLecture,
     getCourseLectures,
     putLecture,
-    deleteLecture
+    deleteLecture,
+    getSingleLecture
 };

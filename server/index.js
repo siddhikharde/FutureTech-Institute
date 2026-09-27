@@ -8,7 +8,7 @@ import { deleteCourse, getCourse, getPublicCourses, postCourse, postEnrollCourse
 import { getStatestic, getStudentGrowthGraph } from './controllers/dashbord.js';
 import { postPayment } from './controllers/payment.js';
 import { upload } from './config/multer.js';
-import { getCourseLectures, putLecture,deleteLecture,postLecture} from './controllers/lectures.js';
+import { getCourseLectures, putLecture,deleteLecture,postLecture, getSingleLecture} from './controllers/lectures.js';
 
 import dns from 'dns';
 dns.setServers(["8.8.8.8", "8.8.4.4"]);
@@ -49,6 +49,7 @@ app.get("/course/:id", auth, admin, getSingleCourse);
 //lectures api
 app.post("/lectures", auth, admin, postLecture);
 app.get("/lectures/:courseId", auth, getCourseLectures);
+app.get("/lecture/:lectureId", auth, getSingleLecture);
 app.put("/lectures/:lectureId", auth, admin, putLecture);
 app.delete("/lectures/:lectureId", auth, admin, deleteLecture);
 
