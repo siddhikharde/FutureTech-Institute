@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import toast from "react-hot-toast";
 import AdminNavbar from "../../components/adminComponenets/AdminNavbar";
 import { setPageTitle } from "../../Utils";
 
 function CourseDetail() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [course, setCourse] = useState(null);
   const [students, setStudents] = useState([]);
@@ -73,7 +74,15 @@ function CourseDetail() {
             <p className="text-gray-600 mt-5">
               {course.description}
             </p>
-
+            <div className="mt-6">
+              <button
+                type="button"
+                onClick={() => navigate(`/admin/course/${id}/lectures`)}
+                className="px-5 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Manage Lectures
+              </button>
+            </div>
             <div className="grid md:grid-cols-3 gap-5 mt-8">
 
               <div className="bg-blue-50 rounded-xl p-5">
