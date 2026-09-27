@@ -21,6 +21,7 @@ import CourseLectures from './views/admin/CourseLectures'
 import AddLecture from "./views/admin/AddLecture";
 import EditLecture from './views/admin/EditLecture'
 import StudentCourseLectures from './views/StudentCourseLectures'
+import StudentLecture from './views/StudentLecture'
 
 function App() {
 
@@ -38,6 +39,10 @@ function App() {
         <Route
           path="/student/course/:courseId/lectures"
           element={<StudentCourseLectures />}
+        />
+        <Route
+          path="/student/lecture/:lectureId"
+          element={<StudentLecture />}
         />
 
 
